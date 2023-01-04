@@ -11,5 +11,5 @@ public class Psychiatrist
     public string Address { get; set; } = string.Empty;
 
     //Relationships
-    public ICollection<Patient> Patients { get; set; }
+    public virtual ICollection<Patient>? Patients { get; set; }
 }

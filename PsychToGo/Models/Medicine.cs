@@ -11,9 +11,7 @@ public class Medicine
     public string Ingredients { get; set; } = string.Empty;
     public int InStock { get; set; }
 
-    //Relationships
-    public ICollection<Patient>? Patients { get; set; }
-
+    //Relationships 
     public MedicineCategory Category { get; set; }
-    public ICollection<PatientMedicine> PatientMedicines { get; set; }
+    public virtual ICollection<PatientMedicine> PatientMedicines { get; set; }
 }

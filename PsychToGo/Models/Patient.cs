@@ -11,9 +11,9 @@ public class Patient
     public string Address { get; set; } = string.Empty;
 
     //Relationships
-    public ICollection<Medicine>? Medicines { get; set; }
-
-    public ICollection<PatientMedicine> PatientMedicines { get; set; }
-    public Psychologist Psychologist { get; set; }
+    public virtual ICollection<PatientMedicine> PatientMedicines { get; set; }
+    public int PsychologistId { get; set; }
+    public Psychologist? Psychologist { get; set; }
+    public int PsychiatristId { get; set; }
     public Psychiatrist? Psychiatrist { get; set; }
 }

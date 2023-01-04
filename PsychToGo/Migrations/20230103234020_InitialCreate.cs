@@ -99,7 +99,7 @@ namespace PsychToGo.Migrations
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PsychologistId = table.Column<int>(type: "int", nullable: false),
-                    PsychiatristId = table.Column<int>(type: "int", nullable: true)
+                    PsychiatristId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -108,35 +108,12 @@ namespace PsychToGo.Migrations
                         name: "FK_Patients_Psychiatrists_PsychiatristId",
                         column: x => x.PsychiatristId,
                         principalTable: "Psychiatrists",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Patients_Psychologists_PsychologistId",
                         column: x => x.PsychologistId,
                         principalTable: "Psychologists",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "MedicinePatient",
-                columns: table => new
-                {
-                    MedicinesId = table.Column<int>(type: "int", nullable: false),
-                    PatientsId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MedicinePatient", x => new { x.MedicinesId, x.PatientsId });
-                    table.ForeignKey(
-                        name: "FK_MedicinePatient_Medicines_MedicinesId",
-                        column: x => x.MedicinesId,
-                        principalTable: "Medicines",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_MedicinePatient_Patients_PatientsId",
-                        column: x => x.PatientsId,
-                        principalTable: "Patients",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -166,11 +143,6 @@ namespace PsychToGo.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_MedicinePatient_PatientsId",
-                table: "MedicinePatient",
-                column: "PatientsId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Medicines_CategoryId",
                 table: "Medicines",
                 column: "CategoryId");
@@ -194,9 +166,6 @@ namespace PsychToGo.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "MedicinePatient");
-
             migrationBuilder.DropTable(
                 name: "PatientMedicines");
 

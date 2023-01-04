@@ -22,21 +22,6 @@ namespace PsychToGo.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("MedicinePatient", b =>
-                {
-                    b.Property<int>("MedicinesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PatientsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("MedicinesId", "PatientsId");
-
-                    b.HasIndex("PatientsId");
-
-                    b.ToTable("MedicinePatient");
-                });
-
             modelBuilder.Entity("PsychToGo.Models.Medicine", b =>
                 {
                     b.Property<int>("Id")
@@ -127,7 +112,7 @@ namespace PsychToGo.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PsychiatristId")
+                    b.Property<int>("PsychiatristId")
                         .HasColumnType("int");
 
                     b.Property<int>("PsychologistId")
@@ -229,21 +214,6 @@ namespace PsychToGo.Migrations
                     b.ToTable("Psychologists");
                 });
 
-            modelBuilder.Entity("MedicinePatient", b =>
-                {
-                    b.HasOne("PsychToGo.Models.Medicine", null)
-                        .WithMany()
-                        .HasForeignKey("MedicinesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PsychToGo.Models.Patient", null)
-                        .WithMany()
-                        .HasForeignKey("PatientsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("PsychToGo.Models.Medicine", b =>
                 {
                     b.HasOne("PsychToGo.Models.MedicineCategory", "Category")
@@ -259,7 +229,9 @@ namespace PsychToGo.Migrations
                 {
                     b.HasOne("PsychToGo.Models.Psychiatrist", "Psychiatrist")
                         .WithMany("Patients")
-                        .HasForeignKey("PsychiatristId");
+                        .HasForeignKey("PsychiatristId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("PsychToGo.Models.Psychologist", "Psychologist")
                         .WithMany("Patients")

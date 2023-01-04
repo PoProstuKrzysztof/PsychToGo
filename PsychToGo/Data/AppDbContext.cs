@@ -26,13 +26,28 @@ public class AppDbContext : DbContext
         builder.Entity<PatientMedicine>()
             .HasOne( p => p.Patient )
             .WithMany( pm => pm.PatientMedicines )
-            .HasForeignKey( m => m.MedicineId )
+            .HasForeignKey( m => m.PatientId )
             .IsRequired();
 
         builder.Entity<PatientMedicine>()
             .HasOne( m => m.Medicine )
             .WithMany( pm => pm.PatientMedicines )
-            .HasForeignKey( p => p.PatientId )
+            .HasForeignKey( p => p.MedicineId )
             .IsRequired();
+
+        builder.Entity<Patient>()
+            .HasOne(p => p.Psychologist)
+            .WithMany( ps => ps.Patients)
+            .HasForeignKey( p => p.PsychologistId)
+            .IsRequired();
+
+        builder.Entity<Patient>()
+            .HasOne( p => p.Psychiatrist )
+            .WithMany( p => p.Patients )
+            .HasForeignKey( p => p.PsychiatristId )
+            .IsRequired();
+
+            
+            
     }
 }

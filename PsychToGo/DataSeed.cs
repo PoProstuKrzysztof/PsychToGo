@@ -50,22 +50,22 @@ public class DataSeed
 
             var psychologists = new List<Psychologist>()
             {
-            
+
                 new Psychologist()
-            
+
                 {
                 Name = "Mariusz ",
                 LastName = "Wilczyński",
                 Email = "mariusz.wilczyn@gmail.com",
                 Phone = "764238901",
-                DateOfBirth = DateTime.Parse( "1987-05-21" ),         
+                DateOfBirth = DateTime.Parse( "1987-05-21" ),
                     Address = "Migdałowa 33a",
-            
+
                 },
-           
-                
+
+
                 new Psychologist()
-             
+
                 {
                  Name = "Antonina",
                  LastName = "Małecka",
@@ -73,19 +73,19 @@ public class DataSeed
                  Phone = "454212566",
                  DateOfBirth = DateTime.Parse( "1998-04-06" ),
                  Address = "Migdałowa 33a",
-            
+
                 },
 
             };
-             _context.Psychologists.AddRange(psychologists);
+            _context.Psychologists.AddRange( psychologists );
             _context.SaveChanges();
-             
+
         };
 
 
 
 
-        if(!_context.Patients.Any())
+        if (!_context.Patients.Any())
         {
             var patients = new List<Patient>()
             {
@@ -96,7 +96,9 @@ public class DataSeed
                     Email = "maciej.kizug@gmail.com",
                     Phone = "565432125",
                     DateOfBirth = DateTime.Parse("1990-01-06"),
-                    Address = "Fiołkowa 15b"
+                    Address = "Fiołkowa 15b",
+                    PsychiatristId = 1,
+                    PsychologistId = 2
                 },
                 new Patient()
                 {
@@ -106,48 +108,21 @@ public class DataSeed
                     Phone = "2456123534",
                     DateOfBirth = DateTime.Parse("2000-12-24"),
                     Address = "Akacjowa 15b",
+                    PsychiatristId = 2,
+                    PsychologistId = 1
+
 
                 }
-                
+
             };
             _context.Patients.AddRange( patients );
             _context.SaveChanges();
         }
 
-        //if(!_context.MedicinesCategories.Any())
-        //{
-        //    var categoryMedicines = new List<MedicineCategory>()
-        //    {
-        //        new MedicineCategory()
-        //        {
-        //            Name = "Anxiolytic",
-        //        },
 
 
-        //        new MedicineCategory()
-        //        {
-        //            Name = "Antidepressant",
-        //        },
 
-
-        //        new MedicineCategory()
-        //        {
-        //            Name = "SSRI",
-        //        },
-
-
-        //        new MedicineCategory()
-        //        {
-        //            Name = "Antipsychotic",
-        //        },
-
-        //    };
-        //    _context.MedicinesCategories.AddRange( categoryMedicines );
-        //    _context.SaveChanges();
-        //}
-
-
-        if(!_context.Medicines.Any())
+        if (!_context.Medicines.Any())
         {
             var medicines = new List<Medicine>()
             {
@@ -217,37 +192,41 @@ public class DataSeed
             _context.Medicines.AddRange( medicines );
             _context.SaveChanges();
         }
-        if(!_context.PatientMedicines.Any())
-        {
-            var patientMedicines = new List<PatientMedicine>()
-            {
-                new PatientMedicine()
-                {
-                    PatientId = 1,
-                    MedicineId = 1,
-                },
-                new PatientMedicine()
-                {
-                    PatientId = 1,
-                    MedicineId = 2,
-                },
-                new PatientMedicine()
-                {
-                    PatientId = 1,
-                    MedicineId = 3,
-                },
-                new PatientMedicine()
-                {
-                    PatientId = 2,
-                    MedicineId = 3,
-                },
+
+        //First seed code above, after that, comment it, uncomment code belove and run seeddata again
+
+        //if (!_context.PatientMedicines.Any())
+        //{
+        //    var patientMedicines = new List<PatientMedicine>()
+        //    {
+        //        new PatientMedicine()
+        //        {
+        //            PatientId = 1,
+        //            MedicineId = 1,
+        //        },
+        //        new PatientMedicine()
+        //        {
+        //            PatientId = 1,
+        //            MedicineId = 2,
+        //        },
+        //        new PatientMedicine()
+        //        {
+        //            PatientId = 1,
+        //            MedicineId = 3,
+        //        },
+        //        new PatientMedicine()
+        //        {
+        //            PatientId = 2,
+        //            MedicineId = 3,
+        //        },
 
 
-            };
-            _context.PatientMedicines.AddRange( patientMedicines );
-            _context.SaveChanges();
-        }
-     
+        //    };
+        //    _context.PatientMedicines.AddRange( patientMedicines );
+        //    _context.SaveChanges();
+        //}
+
+
 
     }
 }
