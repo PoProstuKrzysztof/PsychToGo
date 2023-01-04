@@ -1,15 +1,20 @@
 using Microsoft.EntityFrameworkCore;
 using PsychToGo;
 using PsychToGo.Data;
+using PsychToGo.Interfaces;
+using PsychToGo.Repository;
 
 var builder = WebApplication.CreateBuilder( args );
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddScoped<IPatientRepository, PatientRepository>();
+builder.Services.AddScoped<IPsychologistRepository, PsychologistsRepository>();
 builder.Services.AddTransient<DataSeed>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 builder.Services.AddDbContext<AppDbContext>( options =>
 {
     options.UseSqlServer( builder.Configuration.GetConnectionString( "DefaultConnection" ) );
