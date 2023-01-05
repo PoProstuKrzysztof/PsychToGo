@@ -9,8 +9,11 @@ var builder = WebApplication.CreateBuilder( args );
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies() );
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
 builder.Services.AddScoped<IPsychologistRepository, PsychologistsRepository>();
+builder.Services.AddScoped<IMedicineRepository, MedicineRepository>();
+builder.Services.AddScoped<IPsychiatristRepository, PsychiatristRepository>();
 builder.Services.AddTransient<DataSeed>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

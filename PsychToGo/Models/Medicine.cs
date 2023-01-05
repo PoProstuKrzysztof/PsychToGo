@@ -1,4 +1,6 @@
-﻿namespace PsychToGo.Models;
+﻿using Newtonsoft.Json;
+
+namespace PsychToGo.Models;
 
 public class Medicine
 {
@@ -12,6 +14,8 @@ public class Medicine
     public int InStock { get; set; }
 
     //Relationships 
+    
     public MedicineCategory Category { get; set; }
+    
     public virtual ICollection<PatientMedicine> PatientMedicines { get; set; }
 }
