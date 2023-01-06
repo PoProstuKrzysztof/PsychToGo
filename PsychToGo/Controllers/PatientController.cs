@@ -26,7 +26,7 @@ public class PatientController : Controller
 
     [HttpGet]
     [ProducesResponseType( 200, Type = typeof( ICollection<Patient> ) )]
-    public async Task<IActionResult> GetPatients()
+    public async Task<IActionResult> GetAllPatients()
     {
         var patients = await _patientRepository.GetPatients();
         if (!ModelState.IsValid)

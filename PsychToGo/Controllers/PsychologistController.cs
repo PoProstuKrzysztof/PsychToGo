@@ -20,7 +20,7 @@ public class PsychologistController : Controller
 
 	[HttpGet]
 	[ProducesResponseType(200,Type = typeof(ICollection<Psychologist>))]
-	public async Task<IActionResult> GetPsychologists()
+	public async Task<IActionResult> GetAllPsychologists()
 	{
 		var psychologists =await _psychologistRepository.GetPsychologists();
 		if(!ModelState.IsValid)
@@ -29,6 +29,27 @@ public class PsychologistController : Controller
 		}
 
 		return Ok(psychologists);
+	}
+
+
+	[HttpGet("{id}")]
+	[ProducesResponseType(200, Type = typeof(Psychologist))]
+    [ProducesResponseType( 400, Type = typeof( Psychologist ) )]
+    public async Task<IActionResult> GetPsychologist(int id)
+	{
+		if(! await _psychologistRepository.PsychologistExist(id))
+		{
+			return NotFound();
+		}
+
+		var psychologist = await _psychologistRepository.GetPsychologist( id );
+
+		if(!ModelState.IsValid)
+		{
+			return BadRequest();
+		}
+
+		return Ok(psychologist);
 	}
 
 }
