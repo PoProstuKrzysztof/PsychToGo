@@ -97,7 +97,7 @@ public class MedicineCategoryController : Controller
 
         if(! await _medicineCategoryRepository.CheckDuplicate(newCategory))
         {
-            ModelState.AddModelError( "", "Patient already exists." );
+            ModelState.AddModelError( "", "Category already exists." );
             return StatusCode( 422, ModelState );
         }
 
