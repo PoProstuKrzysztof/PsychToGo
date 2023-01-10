@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PsychToGo.Data;
+using PsychToGo.DTO;
 using PsychToGo.Interfaces;
 using PsychToGo.Models;
 
@@ -12,6 +13,16 @@ public class PsychologistsRepository : IPsychologistRepository
     public PsychologistsRepository(AppDbContext context)
     {
         _context = context;
+    }
+
+    public Task<bool> CheckDuplicate(PsychologistDTO psychologist)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> CreatePsychologist(Psychologist psychologist)
+    {
+        throw new NotImplementedException();
     }
 
     public async Task<Psychologist> GetPsychologist(int id)
@@ -35,7 +46,7 @@ public class PsychologistsRepository : IPsychologistRepository
         }
     }
 
-    public Task<Psychologist> GetPsychologist(string name)
+    public async Task<Psychologist> GetPsychologist(string name)
     {
         throw new NotImplementedException();
     }
@@ -90,5 +101,10 @@ public class PsychologistsRepository : IPsychologistRepository
         {
             throw;
         }
+    }
+
+    public Task<bool> Save()
+    {
+        throw new NotImplementedException();
     }
 }

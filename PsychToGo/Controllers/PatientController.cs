@@ -1,9 +1,11 @@
 ﻿
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using PsychToGo.DTO;
 using PsychToGo.Interfaces;
 using PsychToGo.Models;
+using PsychToGo.Repository;
 
 namespace PsychToGo.Controllers;
 
@@ -14,12 +16,16 @@ namespace PsychToGo.Controllers;
 public class PatientController : Controller
 {
     private readonly IPatientRepository _patientRepository;
+    private readonly IPsychologistRepository _psychologistRepository;
     private readonly IMapper _mapper;
+    private readonly IPsychiatristRepository _psychiatristRepository;
 
-    public PatientController(IPatientRepository patientRepository, IMapper mapper)
+    public PatientController(IPatientRepository patientRepository, IMapper mapper, IPsychiatristRepository psychiatristRepository, IPsychologistRepository psychologistRepository)
     {
         _patientRepository = patientRepository;
         _mapper = mapper;
+        _psychiatristRepository = psychiatristRepository;
+        _psychologistRepository = psychologistRepository;
     }
 
 
@@ -29,12 +35,18 @@ public class PatientController : Controller
     public async Task<IActionResult> GetAllPatients()
     {
         var patients = await _patientRepository.GetPatients();
-        if (!ModelState.IsValid)
+        if (patients == null)
         {
-            return NotFound(); 
+            return NotFound();
         }
 
-        return Ok( _mapper.Map<List<PatientDTO>>(patients) );
+
+        if (!ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+
+        return Ok( _mapper.Map<List<PatientDTO>>( patients ) );
     }
 
 
@@ -42,7 +54,7 @@ public class PatientController : Controller
     [HttpGet( "{id}" )]
     [ProducesResponseType( 200, Type = typeof( Patient ) )]
     [ProducesResponseType( 400 )]
-    public async Task<IActionResult> GetPatient(int id)
+    public async Task<IActionResult> GetPatientById(int id)
     {
         if (!await _patientRepository.PatientExists( id ))
         {
@@ -51,51 +63,115 @@ public class PatientController : Controller
 
 
 
-        var patient = await (_patientRepository.GetPatient( id ));
+        var patient = await (_patientRepository.GetPatientById( id ));
+        if (patient == null)
+        {
+            return NotFound();
+        }
+
+
         if (!ModelState.IsValid)
         {
             return BadRequest();
         }
 
 
-        return Ok( _mapper.Map<PatientDTO>(patient) );
+        return Ok( _mapper.Map<PatientDTO>( patient ) );
     }
 
 
-    //[HttpGet( "{string}" )]
-    //[ProducesResponseType( 200, Type = typeof( Patient ) )]
-    //[ProducesResponseType( 400 )]
-    //public async Task<IActionResult> GetPatientByName(string name)
-    //{
-    //    var patient = await _patientRepository.GetPatient( name );
-    //    if(!ModelState.IsValid)
-    //    {
-    //        return BadRequest();
-    //    }
+    [HttpGet( "{name}/patient" )]
+    [ProducesResponseType( 200, Type = typeof( Patient ) )]
+    [ProducesResponseType( 400 )]
+    public async Task<IActionResult> GetPatientByName(string name)
+    {
+        if (name.IsNullOrEmpty())
+        {
+            return BadRequest();
+        }
 
-    //    return Ok( patient );
-    //}
-
-
-    //[HttpGet( "{id}/medicines" )]
-    //[ProducesResponseType( 200, Type = typeof( ICollection<Medicine> ) )]
-    //[ProducesResponseType( 400 )]
-    //public async Task<IActionResult> GetPatientMedicines(int id)
-    //{
-    //    if(! await _patientRepository.PatientExists(id))
-    //    {
-    //        return NotFound();
-    //    }
-
-    //    var patientMedicines = await _patientRepository.GetPatientMedicines( id );
-    //    if(!ModelState.IsValid)
-    //    {
-    //        return BadRequest();
-    //    }
+        var patient = await _patientRepository.GetPatientByName( name );
+        if (patient == null)
+        {
+            return NotFound();
+        }
 
 
-    //    return Ok( patientMedicines );
-    //}
+        if (!ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+
+        return Ok( _mapper.Map<PatientDTO>( patient ) );
+    }
+
+
+    [HttpGet( "{id}/medicines" )]
+    [ProducesResponseType( 200, Type = typeof( ICollection<Medicine> ) )]
+    [ProducesResponseType( 400 )]
+    public async Task<IActionResult> GetPatientMedicines(int id)
+    {
+        if (!await _patientRepository.PatientExists( id ))
+        {
+            return NotFound();
+        }
+
+        var patientMedicines = await _patientRepository.GetPatientMedicines( id );
+        if (patientMedicines == null)
+        {
+            return NotFound();
+        }
+
+
+        if (!ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+
+
+        return Ok( _mapper.Map<List<MedicineDTO>>( patientMedicines ) );
+    }
+
+
+    [HttpPost]
+    [ProducesResponseType( 204 )]
+    [ProducesResponseType( 400 )]
+    public async Task<IActionResult> CreatePatient([FromQuery]int psychologistId, [FromQuery] int psychiatristId, [FromQuery] int medicineId,[FromBody] PatientDTO newPatient)
+    {
+        if(newPatient == null)
+        {
+            return BadRequest( ModelState );
+        }
+       
+        if(await _patientRepository.CheckDuplicate(newPatient))
+        {
+            ModelState.AddModelError( "", "Patient already exists." );
+            return StatusCode( 422, ModelState );
+        }
+           
+        if(!ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+
+        var patientMap = _mapper.Map<Patient>( newPatient );
+
+        patientMap.Psychiatrist = await _psychiatristRepository.GetPsychiatrist( psychiatristId );
+        patientMap.Psychologist = await _psychologistRepository.GetPsychologist( psychologistId );
+
+
+        if ( ! await _patientRepository.CreatePatient(medicineId, patientMap ))
+        {
+            ModelState.AddModelError( "","Something went wrong while saving patient.");
+            return StatusCode( 500, ModelState ); 
+        }
+
+        return Ok("Successfully created patient");
+            
+
+
+        
+    }
 
 }
 

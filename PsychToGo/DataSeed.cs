@@ -194,6 +194,7 @@ public class DataSeed
         }
 
         //First seed code above, after that, comment it, uncomment code belove and run seeddata again
+        //If it doesn't work, restart visual studio and try again
 
         //if (!_context.PatientMedicines.Any())
         //{

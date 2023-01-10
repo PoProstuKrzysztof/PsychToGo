@@ -1,8 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿namespace PsychToGo.DTO;
 
-namespace PsychToGo.Models;
-
-public class Psychiatrist
+public class PsychiatristDTO
 {
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
@@ -11,8 +9,4 @@ public class Psychiatrist
     public string Phone { get; set; } = string.Empty;
     public DateTime DateOfBirth { get; set; }
     public string Address { get; set; } = string.Empty;
-
-    //Relationships
-    
-    public virtual ICollection<Patient>? Patients { get; set; }
 }

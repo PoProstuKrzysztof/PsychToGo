@@ -1,13 +1,21 @@
-﻿using PsychToGo.Models;
+﻿using PsychToGo.DTO;
+using PsychToGo.Models;
 
 namespace PsychToGo.Interfaces;
 
 public interface IPatientRepository
 {
-
-   Task<ICollection<Patient>> GetPatients();
-    Task<Patient> GetPatient(int id);
-    Task<Patient> GetPatient(string name);
+    //Get
+    Task<ICollection<Patient>> GetPatients();
+    Task<Patient> GetPatientById(int id);
+    Task<Patient> GetPatientByName(string name);
     Task<ICollection<Medicine>?> GetPatientMedicines(int id);
-    Task<bool> PatientExists(int id);   
+    Task<bool> PatientExists(int id); 
+    
+    //Post
+    Task<bool> CreatePatient(int medicineId, Patient patient);
+    Task<bool> Save();
+    Task<bool> CheckDuplicate(PatientDTO patient);
+
+
 }

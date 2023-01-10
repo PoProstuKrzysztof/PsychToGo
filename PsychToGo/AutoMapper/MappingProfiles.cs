@@ -9,6 +9,15 @@ public class MappingProfiles : Profile
     public MappingProfiles()
     {
         CreateMap<Patient, PatientDTO>();
-        CreateMap<Psychologist, PsychologistDTO>(); 
+        CreateMap<PatientDTO, Patient>();
+
+        CreateMap<Psychologist, PsychologistDTO>();
+        
+        CreateMap<Medicine, MedicineDTO>();
+
+        CreateMap<MedicineCategory, MedicineCategoryDTO>();
+        CreateMap<MedicineCategoryDTO,MedicineCategory>();
+
+        CreateMap<Psychiatrist, PsychiatristDTO>();
     }
 }

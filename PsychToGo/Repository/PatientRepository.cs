@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PsychToGo.Data;
+using PsychToGo.DTO;
 using PsychToGo.Interfaces;
 using PsychToGo.Models;
 
@@ -16,41 +17,99 @@ public class PatientRepository : IPatientRepository
         _context = context;
     }
 
-    public async Task<Patient?> GetPatient(int id)
+    //Post methods
+    public async Task<bool> CreatePatient(int medicineId, Patient patient)
     {
         try
         {
-            
-            var patientFoundById = await _context.Patients.Where( p => p.Id == id ).FirstOrDefaultAsync();
-            if (patientFoundById == null)
-            {
-                return null;
-            }
+            var medicineEntity = await _context.Medicines.Where( x => x.Id == medicineId ).FirstOrDefaultAsync();
 
-            return patientFoundById;
+            var patientMedicine = new PatientMedicine()
+            {
+                Medicine = medicineEntity,
+                Patient = patient
+            };
+            await _context.AddAsync( patientMedicine );
+
+            await _context.AddAsync( patient );
+            return await Save();
+
         }
-        catch(Exception ex)
+        catch (Exception)
         {
             throw;
         }
-        
-
     }
 
-    public async Task<Patient?> GetPatient(string name)
+    public async Task<bool> CheckDuplicate(PatientDTO patient)
     {
         try
         {
-            var patientFoundByString = await _context.Patients.Where(p => p.Equals(name)).FirstOrDefaultAsync();
-            if (patientFoundByString == null)
+            var patients = await _context.Patients.ToListAsync();
+            var patientDuplicate = patients.Where( x => x.Phone == patient.Phone ).FirstOrDefault();
+            if (patientDuplicate != null)
+            {
+                return true;
+            }
+
+            return false;
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
+
+    public async Task<bool> Save()
+    {
+        try
+        {
+            var savedEntity = await _context.SaveChangesAsync();
+            return savedEntity > 0 ? true : false;
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
+    //Get methods
+    public async Task<Patient> GetPatientById(int id)
+    {
+        try
+        {
+
+            var patient = await _context.Patients.Where( p => p.Id == id ).FirstOrDefaultAsync();
+            if (patient == null)
             {
                 return null;
             }
 
-            return patientFoundByString;
+            return patient;
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+
+
+    }
+
+    public async Task<Patient> GetPatientByName(string name)
+    {
+        try
+        {
+            var patient = await _context.Patients.Where( p => p.Name == name ).FirstOrDefaultAsync();
+            if (patient == null)
+            {
+                return null;
+            }
+
+            return patient;
 
         }
-        catch(Exception ex)
+        catch (Exception)
         {
             throw;
         }
@@ -60,23 +119,26 @@ public class PatientRepository : IPatientRepository
     {
         try
         {
-            var patient = await _context.Patients.Where(x => x.Id == id).FirstOrDefaultAsync();
+            var patient = await _context.Patients.Where( x => x.Id == id ).FirstOrDefaultAsync();
             if (patient == null)
             {
                 return null;
             }
 
-            var patientMedicines = patient.PatientMedicines.Select(x => x.Medicine).ToList();
-            if(patientMedicines == null)
+            var patientMedicines = await _context.PatientMedicines
+                .Where( x => x.PatientId == id )
+                .Select( x => x.Medicine )
+                .ToListAsync();
+            if (patientMedicines == null)
             {
                 return null;
             }
 
 
             return patientMedicines;
-            
+
         }
-        catch(Exception ex)
+        catch (Exception)
         {
             throw;
         }
@@ -88,22 +150,24 @@ public class PatientRepository : IPatientRepository
         {
             return await _context.Patients.OrderBy( x => x.Id ).ToListAsync();
         }
-        catch(Exception ex)
+        catch (Exception)
         {
-            throw; 
+            throw;
         }
-        
+
     }
 
     public async Task<bool> PatientExists(int id)
     {
         try
         {
-            return await _context.Patients.AnyAsync(x => x.Id == id);
+            return await _context.Patients.AnyAsync( x => x.Id == id );
         }
-        catch(Exception ex)
+        catch (Exception)
         {
-            throw; 
+            throw;
         }
     }
+
+    
 }

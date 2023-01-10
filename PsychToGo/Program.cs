@@ -11,6 +11,7 @@ var builder = WebApplication.CreateBuilder( args );
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies() );
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
+builder.Services.AddScoped<IMedicineCategoryRepository, MedicineCategoryRepository>();
 builder.Services.AddScoped<IPsychologistRepository, PsychologistsRepository>();
 builder.Services.AddScoped<IMedicineRepository, MedicineRepository>();
 builder.Services.AddScoped<IPsychiatristRepository, PsychiatristRepository>();
