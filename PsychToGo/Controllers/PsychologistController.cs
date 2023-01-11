@@ -22,7 +22,7 @@ public class PsychologistController : Controller
 
 
 
-	[HttpGet]
+	[HttpGet( "list" )]
 	[ProducesResponseType(200,Type = typeof(ICollection<Psychologist>))]
 	public async Task<IActionResult> GetAllPsychologists()
 	{
@@ -58,6 +58,39 @@ public class PsychologistController : Controller
 		}
 
 		return Ok(_mapper.Map<PsychologistDTO>(psychologist));
+	}
+
+
+	[HttpPost( "create" )]
+	[ProducesResponseType(204)]
+	[ProducesResponseType(400)]
+	public async Task<IActionResult> CreatePsychologist([FromBody] PsychologistDTO newPsychologist)
+	{
+		if(newPsychologist == null)
+		{
+			return BadRequest(ModelState);
+		}
+
+		if(await _psychologistRepository.CheckDuplicate(newPsychologist))
+		{
+			ModelState.AddModelError( "", "Psychologist already exists." );
+			return StatusCode(422,ModelState);
+		}
+
+		if(!ModelState.IsValid)
+		{
+			return BadRequest();
+		}
+
+		var psychologist = _mapper.Map<Psychologist>(newPsychologist);
+		if(! await _psychologistRepository.CreatePsychologist(psychologist))
+		{
+			ModelState.AddModelError( "", "Something went wrong while saving psychologist." );
+			return StatusCode(500,ModelState);
+		}
+
+		return Ok( "Successfully created psychologist" );
+
 	}
 
 }

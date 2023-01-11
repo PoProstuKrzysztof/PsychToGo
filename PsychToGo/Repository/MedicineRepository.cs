@@ -14,25 +14,49 @@ public class MedicineRepository : IMedicineRepository
         _context= context;
     }
 
-    public Task<bool> CheckDuplicate(MedicineDTO medicine)
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task<bool> CreateMedicine(int patientId, Medicine medicine)
+    //Post
+    public async Task<bool> Save()
     {
         try
         {
-            var medicineEntity = await _context.Medicines.Where( x => x.Id == medicine.Id ).FirstOrDefaultAsync();
+            var entitySaved = await _context.SaveChangesAsync();
+            return entitySaved > 0 ? true : false;
+        }
+        catch(Exception)
+        {
+            throw;
+        }
+    }
 
-            //var patientMedicine = new PatientMedicine()
-            //{
-            //    Medicine = medicineEntity,
-            //    Patient = patient
-            //};
-            //await _context.AddAsync( patientMedicine );
+    public async Task<bool> CheckDuplicate( MedicineDTO medicine)
+    {
+        try
+        {
+            var medicines = await _context.Medicines.ToListAsync();
+            var medicineDuplicate = medicines
+                .Where( x => x.Name.TrimEnd().ToLower() == medicine.Name.TrimEnd().ToLower() )
+                .FirstOrDefault();
 
-            //await _context.AddAsync( patient );
+            if (medicineDuplicate != null)
+            {
+                return true;
+            }
+
+            return false;
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
+    public async Task<bool> CreateMedicine(int categoryId, Medicine medicine)
+    {
+        try
+        {
+            
+            await _context.AddAsync( medicine );
+         
             return await Save();
 
         }
@@ -42,6 +66,7 @@ public class MedicineRepository : IMedicineRepository
         }
     }
 
+    //Get
     public Task<Medicine> GetMedicine(int id)
     {
         throw new NotImplementedException();
@@ -75,8 +100,5 @@ public class MedicineRepository : IMedicineRepository
         throw new NotImplementedException();
     }
 
-    public Task<bool> Save()
-    {
-        throw new NotImplementedException();
-    }
+
 }

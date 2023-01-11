@@ -107,6 +107,23 @@ public class MedicineCategoryRepository : IMedicineCategoryRepository
         }
     }
 
+    public async Task<MedicineCategory> GetMedicineCategoryById(int categoryId)
+    {
+        try
+        {
+            if (categoryId == null)
+            {
+                return null;
+            }
+
+            return await _context.MedicinesCategories.Where( x => x.Id == categoryId ).FirstOrDefaultAsync();
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
     public async Task<ICollection<MedicineCategory>> GetMedicinesCategories()
     {
         try

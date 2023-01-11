@@ -10,6 +10,7 @@ public interface IMedicineCategoryRepository
     Task<MedicineCategory> GetMedicineCategory(string categoryName);
     Task<ICollection<Medicine>> GetMedicineByCategory(string categoryName);
     Task<bool> MedicinneCategoryExist(string categoryName);
+    Task<MedicineCategory> GetMedicineCategoryById(int categoryId);
 
     //Post
     Task<bool> CreateCategory(MedicineCategory category);

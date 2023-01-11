@@ -12,12 +12,15 @@ public class MappingProfiles : Profile
         CreateMap<PatientDTO, Patient>();
 
         CreateMap<Psychologist, PsychologistDTO>();
+        CreateMap<PsychologistDTO,Psychologist>();
         
         CreateMap<Medicine, MedicineDTO>();
+        CreateMap<MedicineDTO,Medicine>();
 
         CreateMap<MedicineCategory, MedicineCategoryDTO>();
         CreateMap<MedicineCategoryDTO,MedicineCategory>();
 
         CreateMap<Psychiatrist, PsychiatristDTO>();
+        CreateMap<PsychiatristDTO,Psychiatrist>();
     }
 }

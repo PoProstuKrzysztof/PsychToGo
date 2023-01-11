@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using PsychToGo.DTO;
 using PsychToGo.Interfaces;
 using PsychToGo.Models;
+using PsychToGo.Repository;
 
 namespace PsychToGo.Controllers;
 
@@ -18,7 +19,7 @@ public class PsychiatristController : Controller
         _mapper = mapper;
     }
 
-    [HttpGet]
+    [HttpGet( "list" )]
     [ProducesResponseType( 200, Type = typeof( ICollection<Psychiatrist> ) )]
     public async Task<IActionResult> GetPsychiatrists()
     {
@@ -94,6 +95,38 @@ public class PsychiatristController : Controller
         {
             throw;
         }
+    }
+
+    [HttpPost( "create" )]
+    [ProducesResponseType( 204 )]
+    [ProducesResponseType( 400 )]
+    public async Task<IActionResult> CreatePsychologist([FromBody] PsychiatristDTO newPsychiatrist)
+    {
+        if (newPsychiatrist == null)
+        {
+            return BadRequest( ModelState );
+        }
+
+        if (await _psychiatristRepository.CheckDuplicate( newPsychiatrist ))
+        {
+            ModelState.AddModelError( "", "Psychiatrist already exists." );
+            return StatusCode( 422, ModelState );
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+
+        var psychiatrist = _mapper.Map<Psychiatrist>( newPsychiatrist );
+        if (!await _psychiatristRepository.CreatePsychiatrist( psychiatrist ))
+        {
+            ModelState.AddModelError( "", "Something went wrong while saving psychiatrist." );
+            return StatusCode( 500, ModelState );
+        }
+
+        return Ok( "Successfully created psychologist" );
+
     }
 
 }

@@ -17,8 +17,9 @@ public class PatientController : Controller
 {
     private readonly IPatientRepository _patientRepository;
     private readonly IPsychologistRepository _psychologistRepository;
-    private readonly IMapper _mapper;
     private readonly IPsychiatristRepository _psychiatristRepository;
+    private readonly IMapper _mapper;
+
 
     public PatientController(IPatientRepository patientRepository, IMapper mapper, IPsychiatristRepository psychiatristRepository, IPsychologistRepository psychologistRepository)
     {
@@ -30,7 +31,7 @@ public class PatientController : Controller
 
 
 
-    [HttpGet]
+    [HttpGet( "list" )]
     [ProducesResponseType( 200, Type = typeof( ICollection<Patient> ) )]
     public async Task<IActionResult> GetAllPatients()
     {
@@ -133,23 +134,23 @@ public class PatientController : Controller
     }
 
 
-    [HttpPost]
+    [HttpPost( "create" )]
     [ProducesResponseType( 204 )]
     [ProducesResponseType( 400 )]
-    public async Task<IActionResult> CreatePatient([FromQuery]int psychologistId, [FromQuery] int psychiatristId, [FromQuery] int medicineId,[FromBody] PatientDTO newPatient)
+    public async Task<IActionResult> CreatePatient([FromQuery] int psychologistId, [FromQuery] int psychiatristId, [FromQuery] int medicineId, [FromBody] PatientDTO newPatient)
     {
-        if(newPatient == null)
+        if (newPatient == null)
         {
             return BadRequest( ModelState );
         }
-       
-        if(await _patientRepository.CheckDuplicate(newPatient))
+
+        if (await _patientRepository.CheckDuplicate( newPatient ))
         {
             ModelState.AddModelError( "", "Patient already exists." );
             return StatusCode( 422, ModelState );
         }
-           
-        if(!ModelState.IsValid)
+
+        if (!ModelState.IsValid)
         {
             return BadRequest();
         }
@@ -160,17 +161,61 @@ public class PatientController : Controller
         patientMap.Psychologist = await _psychologistRepository.GetPsychologist( psychologistId );
 
 
-        if ( ! await _patientRepository.CreatePatient(medicineId, patientMap ))
+        if (!await _patientRepository.CreatePatient( medicineId, patientMap ))
         {
-            ModelState.AddModelError( "","Something went wrong while saving patient.");
-            return StatusCode( 500, ModelState ); 
+            ModelState.AddModelError( "", "Something went wrong while saving patient." );
+            return StatusCode( 500, ModelState );
         }
 
-        return Ok("Successfully created patient");
-            
+        return Ok( "Successfully created patient" );
+
+    }
 
 
-        
+    [HttpPut("{patientId}")]
+    [ProducesResponseType(204)]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> UpdatePatient([FromQuery]int psychiatristId, 
+        [FromQuery] int psychologistId, 
+        [FromQuery] int medicineId, 
+        int patientId, 
+        [FromBody] PatientDTO updatedPatient)
+
+
+
+    {
+        if(updatedPatient == null)
+        {
+            return BadRequest( ModelState );
+
+        }
+        if(patientId != updatedPatient.Id)
+        {
+            return BadRequest( ModelState );
+        }
+
+        if(!await _patientRepository.PatientExists(patientId))
+        {
+            return NotFound();
+        }
+
+        if(!ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+
+        var patient = _mapper.Map<Patient>( updatedPatient );
+        patient.Psychiatrist = await _psychiatristRepository.GetPsychiatrist(psychiatristId);
+        patient.Psychologist = await _psychologistRepository.GetPsychologist(psychologistId);
+
+        if(! await _patientRepository.UpdatePatient( psychologistId, psychiatristId, medicineId, patient ) )
+        {
+            ModelState.AddModelError( "", "Something went wrong updating category" );
+            return StatusCode( 500, ModelState );
+        }
+
+        return NoContent();
     }
 
 }

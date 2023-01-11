@@ -17,7 +17,7 @@ public class MedicineCategoryController : Controller
         _mapper = mapper;
     }
 
-    [HttpGet]
+    [HttpGet( "list" )]
     [ProducesResponseType( 200, Type = typeof( ICollection<MedicineCategory> ) )]
     public async Task<IActionResult> GetMedicinesCategories()
     {
@@ -85,7 +85,7 @@ public class MedicineCategoryController : Controller
         return Ok( _mapper.Map<MedicineCategoryDTO>( medicineCategory ) );
     }
 
-    [HttpPost]
+    [HttpPost("create")]
     [ProducesResponseType( 204 )]
     [ProducesResponseType( 400 )]
     public async Task<IActionResult> CreateCategory([FromBody] MedicineCategoryDTO newCategory)
@@ -95,7 +95,7 @@ public class MedicineCategoryController : Controller
             return BadRequest();
         }
 
-        if(! await _medicineCategoryRepository.CheckDuplicate(newCategory))
+        if(await _medicineCategoryRepository.CheckDuplicate(newCategory))
         {
             ModelState.AddModelError( "", "Category already exists." );
             return StatusCode( 422, ModelState );

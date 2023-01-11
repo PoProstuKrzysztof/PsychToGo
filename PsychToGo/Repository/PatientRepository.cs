@@ -17,7 +17,24 @@ public class PatientRepository : IPatientRepository
         _context = context;
     }
 
-    //Post methods
+    //Post 
+
+    public async Task<bool> UpdatePatient(int psychologistId, int psychiatristId, int medicineId, Patient patient)
+    {
+        try
+        {
+            _context.Update(patient);
+
+            return await Save();
+
+        }
+        catch(Exception)
+        {
+            throw;
+        }
+    }
+
+
     public async Task<bool> CreatePatient(int medicineId, Patient patient)
     {
         try
@@ -46,7 +63,7 @@ public class PatientRepository : IPatientRepository
         try
         {
             var patients = await _context.Patients.ToListAsync();
-            var patientDuplicate = patients.Where( x => x.Phone == patient.Phone ).FirstOrDefault();
+            var patientDuplicate = patients.Where( x => x.Email == patient.Email ).FirstOrDefault();
             if (patientDuplicate != null)
             {
                 return true;
@@ -74,7 +91,7 @@ public class PatientRepository : IPatientRepository
         }
     }
 
-    //Get methods
+    //Get 
     public async Task<Patient> GetPatientById(int id)
     {
         try
@@ -169,5 +186,5 @@ public class PatientRepository : IPatientRepository
         }
     }
 
-    
+  
 }

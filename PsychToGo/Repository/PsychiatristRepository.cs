@@ -15,17 +15,57 @@ public class PsychiatristRepository : IPsychiatristRepository
     {
         _context = context;
     }
+    //Post
 
-    public Task<bool> CheckDuplicate(PsychiatristDTO psychiatrist)
+    public async Task<bool> Save()
     {
-        throw new NotImplementedException();
+        try
+        {
+            var savedEntity = await _context.SaveChangesAsync();
+            return savedEntity > 0 ? true : false;
+        }
+        catch (Exception)
+        {
+            throw;
+        }
     }
 
-    public Task<bool> CreatePsychiatrist(Psychiatrist psychiatrist)
+    public async Task<bool> CheckDuplicate(PsychiatristDTO psychiatrist)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var psychiatrists = await _context.Psychiatrists.ToListAsync();
+            var psychiatristDuplicate = psychiatrists
+                .Where( x => x.Email == psychiatrist.Email )
+                .FirstOrDefault();
+
+            if (psychiatristDuplicate != null)
+            {
+                return true;
+            }
+
+            return false;
+
+        }
+        catch (Exception)
+        {
+            throw;
+        }
     }
 
+    public async Task<bool> CreatePsychiatrist(Psychiatrist psychiatrist)
+    {
+        try
+        {
+            await _context.AddAsync( psychiatrist );
+            return await Save();
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+    //Get
     public async Task<Psychiatrist> GetPsychiatrist(int id)
     {
         try
@@ -92,8 +132,5 @@ public class PsychiatristRepository : IPsychiatristRepository
         
     }
 
-    public Task<bool> Save()
-    {
-        throw new NotImplementedException();
-    }
+ 
 }
