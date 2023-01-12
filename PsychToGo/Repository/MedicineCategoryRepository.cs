@@ -149,5 +149,8 @@ public class MedicineCategoryRepository : IMedicineCategoryRepository
         }
     }
 
-    
+    public Task<bool> UpdateCategory(MedicineCategory patient)
+    {
+        throw new NotImplementedException();
+    }
 }

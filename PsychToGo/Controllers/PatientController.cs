@@ -135,7 +135,7 @@ public class PatientController : Controller
 
 
     [HttpPost( "create" )]
-    [ProducesResponseType( 204 )]
+    [ProducesResponseType( 201 )]
     [ProducesResponseType( 400 )]
     public async Task<IActionResult> CreatePatient([FromQuery] int psychologistId, [FromQuery] int psychiatristId, [FromQuery] int medicineId, [FromBody] PatientDTO newPatient)
     {
@@ -212,6 +212,38 @@ public class PatientController : Controller
         if(! await _patientRepository.UpdatePatient( psychologistId, psychiatristId, medicineId, patient ) )
         {
             ModelState.AddModelError( "", "Something went wrong updating category" );
+            return StatusCode( 500, ModelState );
+        }
+
+        return NoContent();
+    }
+
+
+    [HttpDelete("{patientId}")]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(204)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> DeletePatient(int patientId)
+    {
+        if(! await _patientRepository.PatientExists(patientId))
+        {
+            return NotFound();
+        }
+
+        var patientToDelete = await _patientRepository.GetPatientById(patientId);
+        if( patientToDelete == null )
+        {
+            return NotFound();
+        }
+
+        if(!ModelState.IsValid)
+        {
+            return BadRequest( ModelState );
+        }
+
+        if(! await _patientRepository.DeletePatient(patientToDelete))
+        {
+            ModelState.AddModelError( "", "Something went wrong when deleting patient." );
             return StatusCode( 500, ModelState );
         }
 

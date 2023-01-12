@@ -60,7 +60,7 @@ public class MedicineController : Controller
 
 
     [HttpPost( "create" )]
-    [ProducesResponseType( 204 )]
+    [ProducesResponseType( 201 )]
     [ProducesResponseType( 400 )]
     public async Task<IActionResult> CreateMedicine([FromQuery] int categoryId, [FromBody] MedicineDTO newMedicine)
     {
@@ -90,6 +90,42 @@ public class MedicineController : Controller
 
         return Ok( "Successfully created medicine" );
 
+    }
+
+
+    [HttpPut("{medicineId}")]
+    public async Task<IActionResult> UpdateMedicine(int medicineId, int categoryId ,[FromBody] MedicineDTO updatedMedicine)
+    {
+        if(updatedMedicine == null)
+        {
+            return BadRequest( ModelState );
+        }
+
+        if(medicineId != updatedMedicine.Id )
+        {
+            return BadRequest( ModelState );
+        }
+
+        if (!await _medicineRepository.MedicineExists( medicineId ))
+        {
+            return NotFound();
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+
+        var medicine = _mapper.Map<Medicine>( updatedMedicine );
+        medicine.Category = await _medicineCategoryRepository.GetMedicineCategoryById( categoryId );
+        
+        if(! await _medicineRepository.UpdateMedicine(categoryId, medicine))
+        {
+            ModelState.AddModelError( "", "Something went wrong while updating category" );
+            return StatusCode( 500, ModelState );
+        }
+
+        return NoContent();
     }
 
 }

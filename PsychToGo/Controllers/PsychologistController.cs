@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using PsychToGo.DTO;
 using PsychToGo.Interfaces;
 using PsychToGo.Models;
+using PsychToGo.Repository;
 
 namespace PsychToGo.Controllers;
 
@@ -62,7 +63,7 @@ public class PsychologistController : Controller
 
 
 	[HttpPost( "create" )]
-	[ProducesResponseType(204)]
+	[ProducesResponseType(201)]
 	[ProducesResponseType(400)]
 	public async Task<IActionResult> CreatePsychologist([FromBody] PsychologistDTO newPsychologist)
 	{
@@ -92,5 +93,43 @@ public class PsychologistController : Controller
 		return Ok( "Successfully created psychologist" );
 
 	}
+
+    [HttpPut( "{psychologistId}" )]
+    [ProducesResponseType( 204 )]
+    [ProducesResponseType( 400 )]
+    [ProducesResponseType( 404 )]
+    public async Task<IActionResult> UpdatePsychologist (int psychologistId,[FromBody] PsychologistDTO updatedPsychologist)
+
+    {
+        if (updatedPsychologist == null)
+        {
+            return BadRequest( ModelState );
+
+        }
+        if (psychologistId != updatedPsychologist.Id)
+        {
+            return BadRequest( ModelState );
+		}
+
+        if (!await _psychologistRepository.PsychologistExist( psychologistId ))
+        {
+            return NotFound();
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+
+        var psychologist = _mapper.Map<Psychologist>( updatedPsychologist );       
+
+        if (!await _psychologistRepository.UpdatePsychologist( psychologist ))
+        {
+            ModelState.AddModelError( "", "Something went wrong updating psychologist" );
+            return StatusCode( 500, ModelState );
+        }
+
+        return NoContent();
+    }
 
 }

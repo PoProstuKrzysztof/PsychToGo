@@ -13,8 +13,10 @@ public interface IMedicineRepository
     Task<DateTime> GetMedicineExpireDate(int id);
 
     //Post
-    Task<bool> CreateMedicine(int categoryId, Medicine patient);
+    Task<bool> CreateMedicine(int categoryId, Medicine medicine);
     Task<bool> Save();
     Task<bool> CheckDuplicate(MedicineDTO medicine);
 
+    //Put
+    Task<bool> UpdateMedicine(int categoryId,Medicine medicine);
 }

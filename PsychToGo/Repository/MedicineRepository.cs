@@ -95,10 +95,34 @@ public class MedicineRepository : IMedicineRepository
         
     }
 
-    public Task<bool> MedicineExists(int id)
+    public async Task<bool> MedicineExists(int id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var medicine = await _context.Medicines.Where( x => x.Id == id ).FirstOrDefaultAsync();
+            if(medicine == null)
+            {
+                return false;
+            }
+
+            return true;
+        }
+        catch (Exception)
+        {
+            throw;
+        }
     }
 
-
+    public async Task<bool> UpdateMedicine(int categoryId,Medicine medicine)
+    {
+        try
+        {
+            _context.Update( medicine );
+            return await Save();
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
 }

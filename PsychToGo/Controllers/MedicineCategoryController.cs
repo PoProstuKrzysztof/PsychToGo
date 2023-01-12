@@ -86,7 +86,7 @@ public class MedicineCategoryController : Controller
     }
 
     [HttpPost("create")]
-    [ProducesResponseType( 204 )]
+    [ProducesResponseType( 201 )]
     [ProducesResponseType( 400 )]
     public async Task<IActionResult> CreateCategory([FromBody] MedicineCategoryDTO newCategory)
     {

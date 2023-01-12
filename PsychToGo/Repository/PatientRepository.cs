@@ -17,8 +17,8 @@ public class PatientRepository : IPatientRepository
         _context = context;
     }
 
-    //Post 
-
+    
+    //Put
     public async Task<bool> UpdatePatient(int psychologistId, int psychiatristId, int medicineId, Patient patient)
     {
         try
@@ -34,7 +34,7 @@ public class PatientRepository : IPatientRepository
         }
     }
 
-
+    //Post 
     public async Task<bool> CreatePatient(int medicineId, Patient patient)
     {
         try
@@ -185,6 +185,17 @@ public class PatientRepository : IPatientRepository
             throw;
         }
     }
-
-  
+    //Delete
+    public async Task<bool> DeletePatient(Patient patient)
+    {
+        try
+        {
+             _context.Remove(patient );
+            return await Save();
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
 }

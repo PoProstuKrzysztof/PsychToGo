@@ -143,6 +143,23 @@ public class PsychologistsRepository : IPsychologistRepository
             throw;
         }
     }
+    //Put
+    public async Task<bool> UpdatePsychologist(Psychologist psychologist)
+    {
+        try
+        {
+            _context.Update( psychologist );
+            return await Save();
+        }
+        catch(Exception ) 
+        { 
+            throw;
+        }
 
-
+    }
+    //Delete
+    public Task<bool> DeletePsychologist(Psychologist psychologist)
+    {
+        throw new NotImplementedException();
+    }
 }

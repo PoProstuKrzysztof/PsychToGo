@@ -17,4 +17,10 @@ public interface IPsychologistRepository
     Task<bool> Save();
     Task<bool> CheckDuplicate(PsychologistDTO psychologist);
 
+    //Put
+    Task<bool> UpdatePsychologist(Psychologist psychologist);
+
+    //Delete
+    Task<bool> DeletePsychologist(Psychologist psychologist);
+
 }

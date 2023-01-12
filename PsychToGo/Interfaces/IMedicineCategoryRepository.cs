@@ -16,4 +16,7 @@ public interface IMedicineCategoryRepository
     Task<bool> CreateCategory(MedicineCategory category);
     Task<bool> Save();
     Task<bool> CheckDuplicate(MedicineCategoryDTO medicineCategory);
+
+    //Put
+    Task<bool> UpdateCategory(MedicineCategory patient);
 }

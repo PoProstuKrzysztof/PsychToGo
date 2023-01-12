@@ -98,9 +98,9 @@ public class PsychiatristController : Controller
     }
 
     [HttpPost( "create" )]
-    [ProducesResponseType( 204 )]
+    [ProducesResponseType( 201 )]
     [ProducesResponseType( 400 )]
-    public async Task<IActionResult> CreatePsychologist([FromBody] PsychiatristDTO newPsychiatrist)
+    public async Task<IActionResult> CreatePsychiatrist([FromBody] PsychiatristDTO newPsychiatrist)
     {
         if (newPsychiatrist == null)
         {
@@ -128,5 +128,46 @@ public class PsychiatristController : Controller
         return Ok( "Successfully created psychologist" );
 
     }
+
+    [HttpPut( "{psychiatristId}" )]
+    [ProducesResponseType( 204 )]
+    [ProducesResponseType( 400 )]
+    [ProducesResponseType( 404 )]
+    public async Task<IActionResult> UpdatePsychiatrist(int psychiatristId, [FromBody] PsychiatristDTO updatedPsychiatrist)
+
+    {
+        if (updatedPsychiatrist == null)
+        {
+            return BadRequest( ModelState );
+
+        }
+        if (psychiatristId != updatedPsychiatrist.Id)
+        {
+            return BadRequest( ModelState );
+        }
+
+        if (!await _psychiatristRepository.PsychiatristExist( psychiatristId ))
+        {
+            return NotFound();
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+
+        var psychiatrist = _mapper.Map<Psychiatrist>( updatedPsychiatrist );
+
+        if (!await _psychiatristRepository.UpdatePsychiatrist( psychiatrist ))
+        {
+            ModelState.AddModelError( "", "Something went wrong updating psychiatrist" );
+            return StatusCode( 500, ModelState );
+        }
+
+        return Ok();
+    }
+
+
+
 
 }

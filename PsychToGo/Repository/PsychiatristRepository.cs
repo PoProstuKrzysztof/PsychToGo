@@ -132,5 +132,16 @@ public class PsychiatristRepository : IPsychiatristRepository
         
     }
 
- 
+    public async Task<bool> UpdatePsychiatrist(Psychiatrist psychiatrist)
+    {
+        try
+        {
+            _context.Update( psychiatrist );
+            return await Save();
+        }
+        catch(Exception )
+        {
+            throw;
+        }
+    }
 }

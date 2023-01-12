@@ -15,4 +15,7 @@ public interface IPsychiatristRepository
     Task<bool> CreatePsychiatrist(Psychiatrist psychiatrist);
     Task<bool> Save();
     Task<bool> CheckDuplicate(PsychiatristDTO psychiatrist);
+
+    //Put
+    Task<bool> UpdatePsychiatrist( Psychiatrist psychiatrist);
 }
