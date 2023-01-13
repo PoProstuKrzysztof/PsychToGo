@@ -87,23 +87,17 @@ public class PsychologistsRepository : IPsychologistRepository
         }
     }
 
-    public async Task<Psychologist> GetPsychologist(string name)
-    {
-        throw new NotImplementedException();
-    }
 
     public async Task<ICollection<Patient>> GetPsychologistPatients(int id)
     {
         try
         {
-            var findPsychologist = await _context.Psychologists.Where(x => x.Id == id).FirstOrDefaultAsync();
-            if(findPsychologist == null)
-            {
-                return null;
-            }
 
 
-            var psychologistPatients =  findPsychologist.Patients.ToList();
+            var psychologistPatients =  await _context.Patients
+                .Where(x => x.PsychologistId == id)
+                .Select(p => p )
+                .ToListAsync();
             if(psychologistPatients == null)
             {
                 return null;
@@ -158,8 +152,16 @@ public class PsychologistsRepository : IPsychologistRepository
 
     }
     //Delete
-    public Task<bool> DeletePsychologist(Psychologist psychologist)
+    public async Task<bool> DeletePsychologist(Psychologist psychologist)
     {
-        throw new NotImplementedException();
+        try
+        {
+            _context.Remove( psychologist );
+            return await Save();
+        }
+        catch (Exception)
+        {
+            throw;
+        }
     }
 }

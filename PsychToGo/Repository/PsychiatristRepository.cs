@@ -144,4 +144,17 @@ public class PsychiatristRepository : IPsychiatristRepository
             throw;
         }
     }
+    //Delete
+    public async Task<bool> DeletePsychiatrist(Psychiatrist psychiatrist)
+    {
+        try
+        {
+            _context.Remove( psychiatrist );
+            return await Save();
+        }
+        catch(Exception ) 
+        {
+            throw;
+        }
+    }
 }

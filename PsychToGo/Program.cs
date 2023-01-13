@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder( args );
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddScoped<DbContext, AppDbContext>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies() );
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
 builder.Services.AddScoped<IMedicineCategoryRepository, MedicineCategoryRepository>();

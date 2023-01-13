@@ -18,4 +18,7 @@ public interface IPsychiatristRepository
 
     //Put
     Task<bool> UpdatePsychiatrist( Psychiatrist psychiatrist);
+
+    //Delete
+    Task<bool> DeletePsychiatrist(Psychiatrist psychiatrist);
 }

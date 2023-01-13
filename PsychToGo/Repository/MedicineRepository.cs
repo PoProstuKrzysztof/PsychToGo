@@ -67,19 +67,57 @@ public class MedicineRepository : IMedicineRepository
     }
 
     //Get
-    public Task<Medicine> GetMedicine(int id)
+    public async Task<Medicine> GetMedicine(int id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            return await _context.Medicines.Where(x => x.Id == id ).FirstOrDefaultAsync(); 
+        }
+        catch(Exception)
+        {
+            throw;
+        }
     }
 
-    public Task<DateTime> GetMedicineExpireDate(int id)
+    public async Task<string> GetMedicineExpireDate(int medicineId)
     {
-        throw new NotImplementedException();
+        try
+        {
+
+            var expireDate = await _context.Medicines
+                .Where(x => x.Id == medicineId)
+                .Select(x => x.ExpireDate)
+                .FirstOrDefaultAsync();
+            if (expireDate == null)
+            {
+                return null;
+            }
+
+            var expireDateFormat = expireDate.ToString( "yyyy-MM-dd" );
+            return expireDateFormat;
+        }
+        catch (Exception)
+        {
+            throw;
+        }
     }
 
-    public Task<int> GetMedicineInStock(int id)
+    public async Task<int> GetMedicineInStock(int medicineId)
     {
-        throw new NotImplementedException();
+        try
+        {
+
+
+
+            return await _context.Medicines
+                .Where( x => x.Id == medicineId )
+                .Select( m => m.InStock )
+                .FirstOrDefaultAsync();
+        }
+        catch(Exception)
+        {
+            throw;
+        }
     }
 
     public async Task<ICollection<Medicine>> GetMedicines()
@@ -112,12 +150,28 @@ public class MedicineRepository : IMedicineRepository
             throw;
         }
     }
-
+    //Put
     public async Task<bool> UpdateMedicine(int categoryId,Medicine medicine)
     {
         try
         {
+            _context.Entry( medicine ).State = EntityState.Detached;
+            _context.ChangeTracker.Clear();
             _context.Update( medicine );
+            
+            return await Save();
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
+    public async Task<bool> DeleteMedicine(Medicine medicine)
+    {
+        try
+        {
+            _context.Remove( medicine );
             return await Save();
         }
         catch (Exception)

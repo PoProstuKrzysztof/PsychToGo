@@ -10,7 +10,7 @@ public interface IMedicineRepository
     Task<Medicine> GetMedicine(int id);
     Task<bool> MedicineExists(int id);
     Task<int> GetMedicineInStock(int id);
-    Task<DateTime> GetMedicineExpireDate(int id);
+    Task<string> GetMedicineExpireDate(int id);
 
     //Post
     Task<bool> CreateMedicine(int categoryId, Medicine medicine);
@@ -19,4 +19,7 @@ public interface IMedicineRepository
 
     //Put
     Task<bool> UpdateMedicine(int categoryId,Medicine medicine);
+
+    //Delete
+    Task<bool> DeleteMedicine(Medicine medicine);
 }

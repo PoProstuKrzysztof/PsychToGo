@@ -34,6 +34,57 @@ public class MedicineController : Controller
         return Ok(_mapper.Map<List<MedicineDTO>>( medicines ));
     }
 
+
+    [HttpGet("{medicineId}/inStock")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
+    public async Task<IActionResult> GetMedicineInStock(int medicineId)
+    {
+        if(!await _medicineRepository.MedicineExists(medicineId))
+        {
+            return NotFound();
+        }
+
+        if(!ModelState.IsValid)
+        {
+            return BadRequest( ModelState );
+        }
+
+        var inStock = await _medicineRepository.GetMedicineInStock( medicineId );
+        if(inStock == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(inStock);
+
+    }
+
+    [HttpGet("{medicineId}/ExpireDate")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType( 400)]
+    public async Task<IActionResult> GetMedicineExpireDate(int medicineId)
+    {
+        if(!await _medicineRepository.MedicineExists(medicineId))
+        {
+            return NotFound();
+        }
+
+        if(!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        var medicineExpireDate = await _medicineRepository.GetMedicineExpireDate( medicineId );
+        if(medicineExpireDate == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(medicineExpireDate);
+
+    }
+
     [HttpGet("{id}")]
     [ProducesResponseType(200,Type = typeof(ICollection<Medicine>))]
     [ProducesResponseType(400)]
@@ -117,11 +168,43 @@ public class MedicineController : Controller
         }
 
         var medicine = _mapper.Map<Medicine>( updatedMedicine );
+
         medicine.Category = await _medicineCategoryRepository.GetMedicineCategoryById( categoryId );
         
         if(! await _medicineRepository.UpdateMedicine(categoryId, medicine))
         {
             ModelState.AddModelError( "", "Something went wrong while updating category" );
+            return StatusCode( 500, ModelState );
+        }
+
+        return NoContent();
+    }
+
+    [HttpDelete( "{medicineId}" )]
+    [ProducesResponseType( 400 )]
+    [ProducesResponseType( 204 )]
+    [ProducesResponseType( 404 )]
+    public async Task<IActionResult> DeleteMedicine(int medicineId)
+    {
+        if (!await _medicineRepository.MedicineExists( medicineId ))
+        {
+            return NotFound();
+        }
+
+        var medicineToDelete = await _medicineRepository.GetMedicine( medicineId );
+        if (medicineToDelete == null)
+        {
+            return NotFound();
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return BadRequest( ModelState );
+        }
+
+        if (!await _medicineRepository.DeleteMedicine( medicineToDelete ))
+        {
+            ModelState.AddModelError( "", "Something went wrong when deleting medicine." );
             return StatusCode( 500, ModelState );
         }
 

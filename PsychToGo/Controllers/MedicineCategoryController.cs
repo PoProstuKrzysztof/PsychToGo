@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using PsychToGo.DTO;
 using PsychToGo.Interfaces;
 using PsychToGo.Models;
+using PsychToGo.Repository;
 
 namespace PsychToGo.Controllers;
 [Route( "api/[controller]" )]
@@ -114,6 +115,76 @@ public class MedicineCategoryController : Controller
         }
 
         return Ok( "Successfully created category" );
+    }
+
+    [HttpPut( "{medicineCategoryId}" )]
+    [ProducesResponseType( 204 )]
+    [ProducesResponseType( 400 )]
+    [ProducesResponseType( 404 )]
+    public async Task<IActionResult> UpdateMedicineCategory(int medicineCategoryId,[FromBody] MedicineCategoryDTO updatedMedicineCategory)
+
+    {
+        if (updatedMedicineCategory == null)
+        {
+            return BadRequest( ModelState );
+
+        }
+        if (medicineCategoryId != updatedMedicineCategory.Id)
+        {
+            return BadRequest( ModelState );
+        }
+
+        if (!await _medicineCategoryRepository.MedicineCategoryExistById(medicineCategoryId))
+        {
+            return NotFound();
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+
+        var medicineCategory = _mapper.Map<MedicineCategory>( updatedMedicineCategory );
+
+        if (!await _medicineCategoryRepository.UpdateCategory(medicineCategory))
+        {
+            ModelState.AddModelError( "", "Something went wrong updating medicineCategory" );
+            return StatusCode( 500, ModelState );
+        }
+
+        return NoContent();
+    }
+
+
+    [HttpDelete( "{medicineCategoryId}" )]
+    [ProducesResponseType( 400 )]
+    [ProducesResponseType( 204 )]
+    [ProducesResponseType( 404 )]
+    public async Task<IActionResult> DeleteMedicineCategory(int medicineCategoryId)
+    {
+        if (!await _medicineCategoryRepository.MedicineCategoryExistById( medicineCategoryId ))
+        {
+            return NotFound();
+        }
+
+        var medicineCategoryToDelete = await _medicineCategoryRepository.GetMedicineCategoryById( medicineCategoryId );
+        if (medicineCategoryToDelete == null)
+        {
+            return NotFound();
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return BadRequest( ModelState );
+        }
+
+        if (!await _medicineCategoryRepository.DeleteCategory( medicineCategoryToDelete ))
+        {
+            ModelState.AddModelError( "", "Something went wrong when deleting medicine category." );
+            return StatusCode( 500, ModelState );
+        }
+
+        return NoContent();
     }
 
 }

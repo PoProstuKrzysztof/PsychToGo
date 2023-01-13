@@ -21,7 +21,7 @@ public class PsychologistController : Controller
 		_mapper= mapper;
 	}
 
-
+	//Get
 
 	[HttpGet( "list" )]
 	[ProducesResponseType(200,Type = typeof(ICollection<Psychologist>))]
@@ -61,7 +61,29 @@ public class PsychologistController : Controller
 		return Ok(_mapper.Map<PsychologistDTO>(psychologist));
 	}
 
+	[HttpGet( "{psychologistId}/patients" )]
+	[ProducesResponseType(200)]
+	[ProducesResponseType(404)]
+	public async Task<IActionResult> GetPsychologistPatients(int psychologistId)
+	{
+		if(!await _psychologistRepository.PsychologistExist(psychologistId))
+		{
+			return NotFound();
+		}
 
+		if(!ModelState.IsValid)
+		{
+			return BadRequest(ModelState);
+		}
+
+		var psychologistPatients = await _psychologistRepository.GetPsychologistPatients(psychologistId);
+		if(psychologistPatients == null)
+		{
+			return NotFound();
+		}
+		return Ok( _mapper.Map<List<PatientDTO>>( psychologistPatients ) );
+	}
+	//Post
 	[HttpPost( "create" )]
 	[ProducesResponseType(201)]
 	[ProducesResponseType(400)]
@@ -94,6 +116,7 @@ public class PsychologistController : Controller
 
 	}
 
+	//Put
     [HttpPut( "{psychologistId}" )]
     [ProducesResponseType( 204 )]
     [ProducesResponseType( 400 )]
@@ -131,5 +154,39 @@ public class PsychologistController : Controller
 
         return NoContent();
     }
+
+
+	//Delte
+    [HttpDelete( "{psychologistId}" )]
+    [ProducesResponseType( 400 )]
+    [ProducesResponseType( 204 )]
+    [ProducesResponseType( 404 )]
+    public async Task<IActionResult> DeletePsychologist(int psychologistId)
+    {
+        if (!await _psychologistRepository.PsychologistExist( psychologistId ))
+        {
+            return NotFound();
+        }
+
+        var psychologistToDelete = await _psychologistRepository.GetPsychologist( psychologistId );
+        if (psychologistToDelete == null)
+        {
+            return NotFound();
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return BadRequest( ModelState );
+        }
+
+        if (!await _psychologistRepository.DeletePsychologist( psychologistToDelete ))
+        {
+            ModelState.AddModelError( "", "Something went wrong when deleting psychologist." );
+            return StatusCode( 500, ModelState );
+        }
+
+        return NoContent();
+    }
+
 
 }

@@ -10,6 +10,7 @@ public interface IMedicineCategoryRepository
     Task<MedicineCategory> GetMedicineCategory(string categoryName);
     Task<ICollection<Medicine>> GetMedicineByCategory(string categoryName);
     Task<bool> MedicinneCategoryExist(string categoryName);
+    Task<bool> MedicineCategoryExistById(int categoryId);
     Task<MedicineCategory> GetMedicineCategoryById(int categoryId);
 
     //Post
@@ -18,5 +19,8 @@ public interface IMedicineCategoryRepository
     Task<bool> CheckDuplicate(MedicineCategoryDTO medicineCategory);
 
     //Put
-    Task<bool> UpdateCategory(MedicineCategory patient);
+    Task<bool> UpdateCategory(MedicineCategory medicineCategory);
+
+    //Delete
+    Task<bool> DeleteCategory(MedicineCategory medicineCategory);
 }

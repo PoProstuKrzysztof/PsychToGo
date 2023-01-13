@@ -7,8 +7,7 @@ public interface IPsychologistRepository
 {
     //Get
     Task<ICollection<Psychologist>> GetPsychologists();
-    Task<Psychologist> GetPsychologist(int id);
-    Task<Psychologist> GetPsychologist(string name);
+    Task<Psychologist> GetPsychologist(int id);  
     Task<bool> PsychologistExist(int id);
     Task<ICollection<Patient>> GetPsychologistPatients(int id);
 

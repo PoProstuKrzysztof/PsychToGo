@@ -21,8 +21,8 @@ public class MedicineCategoryRepository : IMedicineCategoryRepository
         try
         {
             var medicines = await _context.MedicinesCategories.ToListAsync();
-            var medicineCategoryDuplicate =  medicines
-                .Where( x => x.Name.TrimEnd().ToLower() == medicineCategory.Name.TrimEnd().ToLower())
+            var medicineCategoryDuplicate = medicines
+                .Where( x => x.Name.TrimEnd().ToLower() == medicineCategory.Name.TrimEnd().ToLower() )
                 .FirstOrDefault();
 
             if (medicineCategoryDuplicate != null)
@@ -38,10 +38,10 @@ public class MedicineCategoryRepository : IMedicineCategoryRepository
         }
     }
 
-    public  async Task<bool> CreateCategory( MedicineCategory category)
+    public async Task<bool> CreateCategory(MedicineCategory category)
     {
         try
-        {           
+        {
             await _context.AddAsync( category );
             return await Save();
 
@@ -69,21 +69,21 @@ public class MedicineCategoryRepository : IMedicineCategoryRepository
     {
         try
         {
-           var category =  await _context.MedicinesCategories.Where( s => s.Name == categoryName.ToLower() ).FirstOrDefaultAsync();
+            var category = await _context.MedicinesCategories.Where( s => s.Name == categoryName.ToLower() ).FirstOrDefaultAsync();
             if (category == null)
             {
                 return null;
             }
 
-            var medicines =await _context.Medicines.Where( x => x.Category == category ).Select(m => m).ToListAsync();
-            if(medicines == null)
+            var medicines = await _context.Medicines.Where( x => x.Category == category ).Select( m => m ).ToListAsync();
+            if (medicines == null)
             {
                 return null;
             }
             return medicines;
 
         }
-        catch (Exception) 
+        catch (Exception)
         {
             throw;
         }
@@ -130,18 +130,30 @@ public class MedicineCategoryRepository : IMedicineCategoryRepository
         {
             return await _context.MedicinesCategories.OrderBy( x => x.Name ).ToListAsync();
         }
-        catch(Exception)
+        catch (Exception)
         {
             throw;
         }
-        
+
     }
 
     public async Task<bool> MedicinneCategoryExist(string categoryName)
     {
         try
         {
-            return await _context.MedicinesCategories.AnyAsync(x => x.Name == categoryName);
+            return await _context.MedicinesCategories.AnyAsync( x => x.Name == categoryName );
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
+    public async Task<bool> MedicineCategoryExistById(int categoryId)
+    {
+        try
+        {
+            return await _context.MedicinesCategories.AnyAsync(x => x.Id == categoryId );
         }
         catch(Exception)
         {
@@ -149,8 +161,29 @@ public class MedicineCategoryRepository : IMedicineCategoryRepository
         }
     }
 
-    public Task<bool> UpdateCategory(MedicineCategory patient)
+    public async Task<bool> UpdateCategory(MedicineCategory medicineCategory)
     {
-        throw new NotImplementedException();
+        try
+        {
+            _context.Update( medicineCategory );
+            return await Save();
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
+    public async Task<bool> DeleteCategory(MedicineCategory medicineCategory)
+    {
+        try
+        {
+            _context.Remove( medicineCategory );
+            return await Save();
+        }
+        catch(Exception)
+        {
+            throw;
+        }
     }
 }

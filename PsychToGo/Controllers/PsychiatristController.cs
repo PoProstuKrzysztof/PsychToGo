@@ -66,19 +66,19 @@ public class PsychiatristController : Controller
     }
 
 
-    [HttpGet("{id}/patients")]
+    [HttpGet( "{psychiatristId}/patients" )]
     [ProducesResponseType(200,Type = typeof(ICollection<Patient>))]
     [ProducesResponseType(400)]
-    public async Task<IActionResult> GetPsychiatrisPatients(int id)
+    public async Task<IActionResult> GetPsychiatrisPatients(int psychiatristId)
     {
         try
         {
-            if(! await _psychiatristRepository.PsychiatristExist(id))
+            if(! await _psychiatristRepository.PsychiatristExist( psychiatristId ))
             {
                 return NotFound();
             }
 
-            var psychatirstPatients = await _psychiatristRepository.GetPsychiatristPatients( id );
+            var psychatirstPatients = await _psychiatristRepository.GetPsychiatristPatients( psychiatristId );
             if (psychatirstPatients == null)
             {
                 return NotFound();
@@ -164,7 +164,40 @@ public class PsychiatristController : Controller
             return StatusCode( 500, ModelState );
         }
 
-        return Ok();
+        return NotFound();
+    }
+
+
+
+    [HttpDelete( "{psychiatristId}" )]
+    [ProducesResponseType( 400 )]
+    [ProducesResponseType( 204 )]
+    [ProducesResponseType( 404 )]
+    public async Task<IActionResult> DeletePsychatrist(int psychiatristId)
+    {
+        if (!await _psychiatristRepository.PsychiatristExist( psychiatristId ))
+        {
+            return NotFound();
+        }
+
+        var psychatristToDelete = await _psychiatristRepository.GetPsychiatrist( psychiatristId );
+        if (psychatristToDelete == null)
+        {
+            return NotFound();
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return BadRequest( ModelState );
+        }
+
+        if (!await _psychiatristRepository.DeletePsychiatrist( psychatristToDelete ))
+        {
+            ModelState.AddModelError( "", "Something went wrong when deleting psychiatrist." );
+            return StatusCode( 500, ModelState );
+        }
+
+        return NoContent();
     }
 
 
