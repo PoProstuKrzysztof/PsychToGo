@@ -31,7 +31,7 @@ public class PatientController : Controller
 
 
 
-    [HttpGet( "list" )]
+    [HttpGet( "patients" )]
     [ProducesResponseType( 200, Type = typeof( ICollection<Patient> ) )]
     public async Task<IActionResult> GetAllPatients()
     {
