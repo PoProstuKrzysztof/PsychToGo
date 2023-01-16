@@ -81,7 +81,7 @@ public class PsychologistsRepository : IPsychologistRepository
             return findPsychologist;
 
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             throw;
         }
@@ -106,7 +106,7 @@ public class PsychologistsRepository : IPsychologistRepository
             return psychologistPatients;
 
         }
-        catch(Exception ex)
+        catch(Exception)
         {
             throw;
         }
@@ -118,7 +118,7 @@ public class PsychologistsRepository : IPsychologistRepository
         {
             return await _context.Psychologists.OrderBy(x => x.Id).ToListAsync();
         }
-        catch(Exception e)
+        catch(Exception)
         {
             throw;
         }
@@ -132,7 +132,7 @@ public class PsychologistsRepository : IPsychologistRepository
             return await _context.Psychologists.AnyAsync( x => x.Id == id );
 
         }
-        catch (Exception ex)
+        catch (Exception )
         {
             throw;
         }

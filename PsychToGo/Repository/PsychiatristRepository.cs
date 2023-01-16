@@ -112,7 +112,7 @@ public class PsychiatristRepository : IPsychiatristRepository
         {
             return await _context.Psychiatrists.OrderBy(x => x.Id).ToListAsync();
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             throw;
         }

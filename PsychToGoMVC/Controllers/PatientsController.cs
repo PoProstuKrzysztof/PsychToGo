@@ -7,7 +7,7 @@ using System.Text.Json.Nodes;
 namespace PsychToGoMVC.Controllers;
 public class PatientsController : Controller
 {
-    Uri baseAdress = new Uri( "https://localhost:7291/api" );
+    Uri baseAdress = new Uri( "https://localhost:7291/api/Patient" );
     HttpClient client = new HttpClient();
 
     public PatientsController()
@@ -19,11 +19,16 @@ public class PatientsController : Controller
     public IActionResult Index()
     {
         List<PatientViewModel> patients = new List<PatientViewModel>();
-        HttpResponseMessage resposne = client.GetAsync( client.BaseAddress + "/Patient/patients" ).Result;
-        if(resposne.IsSuccessStatusCode)
+        HttpResponseMessage response = client.GetAsync( client.BaseAddress + "/patients" ).Result;
+        if(response.IsSuccessStatusCode)
         {
-            string data = resposne.Content.ReadAsStringAsync().Result;
+            string data = response.Content.ReadAsStringAsync().Result;
             patients =  JsonConvert.DeserializeObject<List<PatientViewModel>>(data);
+        }
+        else
+        {
+            patients = Enumerable.Empty<PatientViewModel>().ToList();
+            ModelState.AddModelError( "", "Something went wrong, try again later" );
         }
 
         return View(patients);
@@ -37,11 +42,16 @@ public class PatientsController : Controller
 
 
     [HttpPost]
-    public IActionResult CreatePatient(PatientViewModel pvm)
+    public async Task<IActionResult> CreatePatient(int psychiatristId, int medicineId , int psychologistId,PatientViewModel pvm)
     {
-        string data = JsonConvert.SerializeObject(pvm);
+
+        pvm.PsychiatristId= psychiatristId;
+        pvm.PsychologistId = psychologistId;
+        pvm.MedicineId= medicineId;
+        string data = JsonConvert.SerializeObject( pvm );
+        
         StringContent content = new StringContent(data, Encoding.UTF8,"application/json" );
-        HttpResponseMessage response = client.PostAsync( client.BaseAddress + "/Patient/create",content ).Result;
+        HttpResponseMessage response = client.PostAsync( client.BaseAddress + "/create",content ).Result;
         if(response.IsSuccessStatusCode)
         {
             return RedirectToAction( "Index" );

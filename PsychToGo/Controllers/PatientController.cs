@@ -137,7 +137,7 @@ public class PatientController : Controller
     [HttpPost( "create" )]
     [ProducesResponseType( 201 )]
     [ProducesResponseType( 400 )]
-    public async Task<IActionResult> CreatePatient([FromQuery] int psychologistId, [FromQuery] int psychiatristId, [FromQuery] int medicineId, [FromBody] PatientDTO newPatient)
+    public async Task<IActionResult> CreatePatient( int psychologistId,  int psychiatristId,int medicineId, [FromBody] PatientDTO newPatient)
     {
         if (newPatient == null)
         {

@@ -1,18 +1,22 @@
-﻿@model PsychToGoMVC.Models.PatientViewModel
+﻿@model PsychToGoMVC.Models.PsychiatristViewModel
 
 @{
-    ViewData["Title"] = "CreatePatient";
+    ViewData["Title"] = "CreatePsychiatrist";
 }
 
-<h1>CreatePatient</h1>
+<h1>CreatePsychiatrist</h1>
 
-
+<h4>PsychiatristViewModel</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="CreatePatient">
-            <div asp-validation-summary="All" class="text-danger"></div>
-                                                          
+        <form asp-action="CreatePsychiatrist">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                
+                <input asp-for="Id" hidden class="form-control" />
+                
+            </div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
@@ -25,45 +29,33 @@
             </div>
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" type="email" />
+                <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Phone" class="control-label"></label>
-                <input asp-for="Phone" class="form-control" type="tel" />
+                <input asp-for="Phone" class="form-control" />
                 <span asp-validation-for="Phone" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="DateOfBirth" class="control-label"></label>
-                <input asp-for="DateOfBirth" class="form-control" type="date" />
+                <input asp-for="DateOfBirth" class="form-control" />
                 <span asp-validation-for="DateOfBirth" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control"  />
+                <input asp-for="Address" class="form-control" />
                 <span asp-validation-for="Address" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MedicineId" class="control-label"></label>
-                <input asp-for="MedicineId" class="form-control" />
-                
-            </div>
-            <div class="form-group">
-                <label asp-for="PsychiatristId" class="control-label"></label>
-                <input asp-for="PsychiatristId" class="form-control" />
-                
-            </div>
-            <div class="form-group">
-                <label asp-for="PsychologistId" class="control-label"></label>
-                <input asp-for="PsychologistId" class="form-control" />
-                
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
-            
         </form>
     </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

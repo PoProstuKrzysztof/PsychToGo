@@ -51,11 +51,7 @@ public class MedicineController : Controller
         }
 
         var inStock = await _medicineRepository.GetMedicineInStock( medicineId );
-        if(inStock == null)
-        {
-            return NotFound();
-        }
-
+    
         return Ok(inStock);
 
     }
