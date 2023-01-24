@@ -7,16 +7,21 @@ public class PatientViewModel
 {
 
     public int Id { get; set; }
+    
     [Required(ErrorMessage = "You have to enter valid name!")]
     public string Name { get; set; } = string.Empty;
+   
     [Required( ErrorMessage = "You have to enter valid last name!" )]
     public string LastName { get; set; } = string.Empty;
-    [Required( ErrorMessage = "You have to enter valid e-mail!" )]
-    [DataType(DataType.EmailAddress)]
+    
+    [Required( ErrorMessage = "The e-mail adress is required" )]
+    [EmailAddress(ErrorMessage ="Invalid email address")]
     public string Email { get; set; } = string.Empty;
-    [DataType(DataType.PhoneNumber)]
+    
+    [Phone(ErrorMessage = "Invalid phone number")]
     public string Phone { get; set; } = string.Empty;
-    [Required(ErrorMessage ="You have to enter valid birth date!")]
+  
+    [Required(ErrorMessage ="You have to enter valid birth date!")]   
     [DataType( DataType.Date )]   
     public DateTime DateOfBirth { get; set; }
     public string Address { get; set; } = string.Empty;

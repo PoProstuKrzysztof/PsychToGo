@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using PsychToGo.Models;
 using PsychToGoMVC.Models;
 using System.Text;
 using System.Text.Json.Nodes;
@@ -42,20 +43,29 @@ public class PatientsController : Controller
 
 
     [HttpPost]
-    public async Task<IActionResult> CreatePatient(int psychiatristId, int medicineId , int psychologistId,PatientViewModel pvm)
+    public async Task<IActionResult> CreatePatient([FromForm] int medicineId,PatientViewModel pvm)
     {
-
-        pvm.PsychiatristId= psychiatristId;
-        pvm.PsychologistId = psychologistId;
-        pvm.MedicineId= medicineId;
-        string data = JsonConvert.SerializeObject( pvm );
+        Patient newPatient = new Patient()
+        {
+            Name = pvm.Name,
+            LastName = pvm.LastName,
+            Email = pvm.Email,
+            Address = pvm.Address,
+            DateOfBirth = pvm.DateOfBirth,
+            Phone = pvm.Phone,
+            PsychiatristId = pvm.PsychiatristId,
+            PsychologistId = pvm.PsychologistId,
+            
+        };
+        string data = JsonConvert.SerializeObject( newPatient );
+       
         
         StringContent content = new StringContent(data, Encoding.UTF8,"application/json" );
-        HttpResponseMessage response = client.PostAsync( client.BaseAddress + "/create",content ).Result;
+        HttpResponseMessage response = client.PostAsync( client.BaseAddress + $"/create?psychologistId={pvm.PsychologistId}&psychiatristId={pvm.PsychiatristId}&medicineId={pvm.MedicineId}", content ).Result;
         if(response.IsSuccessStatusCode)
         {
             return RedirectToAction( "Index" );
         }
-        return View();
+        return View( pvm);
     }
 }

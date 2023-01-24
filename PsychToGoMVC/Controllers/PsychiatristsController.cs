@@ -48,15 +48,12 @@ public class PsychiatristsController : Controller
         StringContent content = new StringContent( data, Encoding.UTF8, "application/json" );
         HttpResponseMessage response = client.PostAsync( client.BaseAddress + "/create", content ).Result;
 
-        if(!ModelState.IsValid)
-        {
-            return View();
-        }
+        
 
         if (response.IsSuccessStatusCode)
         {
             return RedirectToAction( "Index" );
         }
-        return View();
+        return View(pvm);
     }
 }

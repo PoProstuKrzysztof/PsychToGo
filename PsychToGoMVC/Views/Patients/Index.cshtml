@@ -4,12 +4,12 @@
     ViewData["Title"] = "Patients";
 }
 
-<h1>Index</h1>
+<h1 >Patients</h1>
 
 <p>
-    <a asp-action="CreatePatient">Create New</a>
+     <a  class="btn btn-outline-primary "asp-action="CreatePatient">Create New</a>
 </p>
-<table class="table">
+<table class="table table-hover border shadow-lg ">
     <thead>
         <tr>
             
@@ -31,35 +31,36 @@
             <th>
                 @Html.DisplayNameFor(model => model.Address)
             </th>
-            <th></th>
+            <th>
+                Operations
+            </th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var patient in Model) {
         <tr>
             
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                    @Html.DisplayFor(modelItem => patient.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.LastName)
+                    @Html.DisplayFor(modelItem => patient.LastName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Email)
+                    @Html.DisplayFor(modelItem => patient.Email)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Phone)
+                    @Html.DisplayFor(modelItem => patient.Phone)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DateOfBirth)
+                    @patient.DateOfBirth.ToString("yyyy-MM-dd")
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Address)
+                    @Html.DisplayFor(modelItem => patient.Address)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-               
-                @Html.ActionLink("Delete", "Delete", new {  id=item.Id })
+                <a class="btn btn-warning btn-sm" asp-action="Edit" asp-controller="Patients" asp-route-id="@patient.Id">Edit</a>
+                    <a class="btn btn-danger btn-sm" asp-action="Delete" asp-controller="Patients" asp-route-id="@patient.Id">Delete</a>
             </td>
         </tr>
 }

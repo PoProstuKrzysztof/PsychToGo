@@ -39,7 +39,9 @@ public class PatientRepository : IPatientRepository
     {
         try
         {
-            var medicineEntity = await _context.Medicines.Where( x => x.Id == medicineId ).FirstOrDefaultAsync();
+            var medicineEntity = await _context.Medicines
+                .Where( x => x.Id == medicineId )
+                .FirstOrDefaultAsync();
 
             var patientMedicine = new PatientMedicine()
             {
