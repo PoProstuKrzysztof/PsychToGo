@@ -43,6 +43,7 @@ public class PatientsController : Controller
 
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> CreatePatient([FromForm] int medicineId,PatientViewModel pvm)
     {
         Patient newPatient = new Patient()
@@ -57,15 +58,41 @@ public class PatientsController : Controller
             PsychologistId = pvm.PsychologistId,
             
         };
+
         string data = JsonConvert.SerializeObject( newPatient );
        
         
         StringContent content = new StringContent(data, Encoding.UTF8,"application/json" );
-        HttpResponseMessage response = client.PostAsync( client.BaseAddress + $"/create?psychologistId={pvm.PsychologistId}&psychiatristId={pvm.PsychiatristId}&medicineId={pvm.MedicineId}", content ).Result;
+        HttpResponseMessage response = client.
+            PostAsync( client.BaseAddress + $"/create?psychologistId={pvm.PsychologistId}&psychiatristId={pvm.PsychiatristId}&medicineId={pvm.MedicineId}", content ).Result;
+        
         if(response.IsSuccessStatusCode)
         {
             return RedirectToAction( "Index" );
         }
         return View( pvm);
+    }
+
+
+
+    [HttpDelete]
+    public async Task<IActionResult> DeletePatient([FromRoute]int patientId)
+    {
+       
+        HttpResponseMessage response =  client.DeleteAsync( client.BaseAddress + "patientId" ).Result;
+        if(response.IsSuccessStatusCode)
+        {
+            return RedirectToAction( "Index" );
+        }
+
+        return View(response.StatusCode);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> EditPatient([FromRoute] int patientId)
+    {
+        PatientViewModel patient = await client.GetFromJsonAsync<PatientViewModel>( $"/{patientId}" );
+
+        return View(patient);
     }
 }

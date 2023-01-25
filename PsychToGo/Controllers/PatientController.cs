@@ -137,7 +137,7 @@ public class PatientController : Controller
     [HttpPost( "create" )]
     [ProducesResponseType( 201 )]
     [ProducesResponseType( 400 )]
-    public async Task<IActionResult> CreatePatient( int psychologistId,  int psychiatristId,int medicineId, [FromBody] PatientDTO newPatient)
+    public async Task<IActionResult> CreatePatient(int psychologistId, int psychiatristId, int medicineId, [FromBody] PatientDTO newPatient)
     {
         if (newPatient == null)
         {
@@ -172,44 +172,45 @@ public class PatientController : Controller
     }
 
 
-    [HttpPut("{patientId}")]
-    [ProducesResponseType(204)]
-    [ProducesResponseType(400)]
-    [ProducesResponseType(404)]
-    public async Task<IActionResult> UpdatePatient([FromQuery]int psychiatristId, 
-        [FromQuery] int psychologistId, 
-        [FromQuery] int medicineId, 
-        int patientId, 
+    [HttpPut( "{patientId}" )]
+    [ProducesResponseType( 204 )]
+    [ProducesResponseType( 400 )]
+    [ProducesResponseType( 404 )]
+    public async Task<IActionResult> UpdatePatient(
+        [FromQuery] int psychiatristId,
+        [FromQuery] int psychologistId,
+        [FromQuery] int medicineId,
+        int patientId,
         [FromBody] PatientDTO updatedPatient)
 
 
 
     {
-        if(updatedPatient == null)
+        if (updatedPatient == null)
         {
             return BadRequest( ModelState );
 
         }
-        if(patientId != updatedPatient.Id)
+        if (patientId != updatedPatient.Id)
         {
             return BadRequest( ModelState );
         }
 
-        if(!await _patientRepository.PatientExists(patientId))
+        if (!await _patientRepository.PatientExists( patientId ))
         {
             return NotFound();
         }
 
-        if(!ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
             return BadRequest();
         }
 
         var patient = _mapper.Map<Patient>( updatedPatient );
-        patient.Psychiatrist = await _psychiatristRepository.GetPsychiatrist(psychiatristId);
-        patient.Psychologist = await _psychologistRepository.GetPsychologist(psychologistId);
+        patient.Psychiatrist = await _psychiatristRepository.GetPsychiatrist( psychiatristId );
+        patient.Psychologist = await _psychologistRepository.GetPsychologist( psychologistId );
 
-        if(! await _patientRepository.UpdatePatient( psychologistId, psychiatristId, medicineId, patient ) )
+        if (!await _patientRepository.UpdatePatient( psychologistId, psychiatristId, medicineId, patient ))
         {
             ModelState.AddModelError( "", "Something went wrong updating category" );
             return StatusCode( 500, ModelState );
@@ -219,29 +220,29 @@ public class PatientController : Controller
     }
 
 
-    [HttpDelete("{patientId}")]
-    [ProducesResponseType(400)]
-    [ProducesResponseType(204)]
-    [ProducesResponseType(404)]
+    [HttpDelete( "{patientId}" )]
+    [ProducesResponseType( 400 )]
+    [ProducesResponseType( 204 )]
+    [ProducesResponseType( 404 )]
     public async Task<IActionResult> DeletePatient(int patientId)
     {
-        if(! await _patientRepository.PatientExists(patientId))
+        if (!await _patientRepository.PatientExists( patientId ))
         {
             return NotFound();
         }
 
-        var patientToDelete = await _patientRepository.GetPatientById(patientId);
-        if( patientToDelete == null )
+        var patientToDelete = await _patientRepository.GetPatientById( patientId );
+        if (patientToDelete == null)
         {
             return NotFound();
         }
 
-        if(!ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
             return BadRequest( ModelState );
         }
 
-        if(! await _patientRepository.DeletePatient(patientToDelete))
+        if (!await _patientRepository.DeletePatient( patientToDelete ))
         {
             ModelState.AddModelError( "", "Something went wrong when deleting patient." );
             return StatusCode( 500, ModelState );

@@ -15,4 +15,8 @@
     <ProjectReference Include="..\PsychToGo\PsychToGo.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Medicines\" />
+  </ItemGroup>
+
 </Project>
