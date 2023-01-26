@@ -8,10 +8,10 @@ public class PatientViewModel
 
     public int Id { get; set; }
     
-    [Required(ErrorMessage = "You have to enter valid name!")]
+    [Required]
     public string Name { get; set; } = string.Empty;
    
-    [Required( ErrorMessage = "You have to enter valid last name!" )]
+    [Required]
     public string LastName { get; set; } = string.Empty;
     
     [Required( ErrorMessage = "The e-mail adress is required" )]
@@ -21,15 +21,21 @@ public class PatientViewModel
 
     
     [Phone(ErrorMessage = "Invalid phone number")]
+    [StringLength(12, MinimumLength = 9, ErrorMessage = "Phone number is too short!")]
     public string Phone { get; set; } = string.Empty;
   
-    [Required(ErrorMessage ="You have to enter valid birth date!")]   
-    [DataType( DataType.Date )]   
+    [Required]   
+    [DataType( DataType.Date )]
     public DateTime DateOfBirth { get; set; }
+    [Required]
+    [StringLength(30, MinimumLength = 4)]
     public string Address { get; set; } = string.Empty;
 
+    [Required]
     public virtual int PsychologistId { get; set; }
+    
     public virtual int MedicineId { get; set; }
+
     public virtual int PsychiatristId { get; set; }
 }
 

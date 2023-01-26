@@ -5,51 +5,59 @@
     ViewData["Title"] = "Edit patient";
 }
 
-<h1>Edit @Model.Name @Model.LastName</h1>
+<h1>Edit <b>@Model.Name @Model.LastName</b></h1>
 <hr />
 
 <div class="row">
     <div class="col-md-4 ">
         <form method="post" asp-antiforgery="true">
-            <div class="form-floating mb-3 mt-3">
+            <input asp-for="Id" type="hidden" />
+            <div>
                 <label asp-for="Name" class="col-form-label"></label>
-                <input asp-for="Name" class="form-control" placeholder="@Model.Name" />
+                <input asp-for="Name" class="form-control" value="@Model.Name" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="form-floating mb-3 mt-3">
+            <div>
                 <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
+                <input asp-for="LastName" class="form-control" value="@Model.LastName"/>
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
-            <div class="form-floating mb-3 mt-3">
+            <div>
                 <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" type="email" />
+                <input asp-for="Email" class="form-control" type="email" value="@Model.Email" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
-            <div class="form-floating mb-3 mt-3">
+            <div>
                 <label asp-for="Phone" class="control-label"></label>
-                <input asp-for="Phone" class="form-control" type="tel" />
+                <input asp-for="Phone" class="form-control" type="tel" value="@Model.Phone" />
                 <span asp-validation-for="Phone" class="text-danger"></span>
             </div>
-            <div class="form-floating mb-3 mt-3">
+            <div>
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" value="@Model.Address" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div>
                 <label asp-for="DateOfBirth" class="control-label"></label>
-                <input asp-for="DateOfBirth" class="form-control" type="date" />
+                <input asp-for="DateOfBirth" class="form-control" type="date" value="@Model.DateOfBirth.ToString("yyyy-MM-dd")"/>
                 <span asp-validation-for="DateOfBirth" class="text-danger"></span>
             </div>
             <div>
                 <label asp-for="PsychologistId" class="control-label"></label>
-                <input asp-for="PsychologistId" class="form-control" />
+                <input asp-for="PsychologistId" class="form-control" value="@Model.PsychologistId" />
 
             </div>
-            <div class="form-floating mb-3 mt-3">
+            <div>
                 <label asp-for="MedicineId" class="control-label"></label>
-                <input asp-for="MedicineId" class="form-control" />
+                <input asp-for="MedicineId" class="form-control" value="@Model.MedicineId"/>
             </div>
-            <div class="form-floating mb-3 mt-3">
+            <div>
                 <label asp-for="PsychiatristId" class="control-label"></label>
-                <input asp-for="PsychiatristId" class="form-control" />
+                <input asp-for="PsychiatristId" class="form-control" value="@Model.PsychiatristId" />
             </div>
-
+            <div>
+                <button type="submit" class="btn btn-outline-warning mt-2">Edit</button>
+            </div>
         </form>
     </div>
 </div>

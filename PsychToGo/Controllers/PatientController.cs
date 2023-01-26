@@ -31,6 +31,35 @@ public class PatientController : Controller
 
 
 
+    [HttpGet("{id}/psychiatrist")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType( 404 )]
+    public async Task<IActionResult> GetPatientPsychiatristId(int id)
+    {
+        var psychiatristId = await _patientRepository.GetPatientPsychiatristId( id );
+        if(psychiatristId == 0)
+        {
+            return NotFound();
+        }
+
+        return Ok(psychiatristId);
+    }
+
+    [HttpGet( "{id}/psychologist" )]
+    [ProducesResponseType( 200 )]
+    [ProducesResponseType( 404 )]
+    public async Task<IActionResult> GetPatientPsychologistId(int id)
+    {
+        var psychologistId = await _patientRepository.GetPatientPsychologistId( id );
+        if (psychologistId == 0)
+        {
+            return NotFound();
+        }
+
+        return Ok( psychologistId );
+    }
+
+
     [HttpGet( "patients" )]
     [ProducesResponseType( 200, Type = typeof( ICollection<Patient> ) )]
     public async Task<IActionResult> GetAllPatients()

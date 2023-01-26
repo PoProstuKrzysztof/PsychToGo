@@ -200,6 +200,58 @@ public class PatientRepository : IPatientRepository
             throw;
         }
     }
+
+    public async Task<int> GetPatientPsychologistId(int id)
+    {
+        try
+        {
+
+            var patient = await GetPatientById( id );
+            if (!await PatientExists( patient.Id ))
+            {
+                return 0;
+            }
+
+            var psychologistId = patient.PsychiatristId; 
+            if(psychologistId == null)
+            {
+                return 0;
+            }
+
+            return psychologistId;
+            
+        }
+        catch(Exception)
+        {
+            throw;
+        }
+    }
+
+
+    public async Task<int> GetPatientPsychiatristId(int id)
+    {
+        try
+        {
+            var patient = await GetPatientById( id );
+            if(!await PatientExists(patient.Id))
+            {
+                return 0;
+            }
+            var psychiatristId = patient.PsychiatristId;
+            
+            if (psychiatristId == null)
+            {
+                return 0;
+            }
+
+            return psychiatristId;
+
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
 }
 
 

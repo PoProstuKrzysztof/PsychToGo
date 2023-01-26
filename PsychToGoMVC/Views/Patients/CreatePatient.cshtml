@@ -4,66 +4,79 @@
     ViewData["Title"] = "CreatePatient";
 }
 
-<h1>CreatePatient</h1>
+<h1>Create patient</h1>
 
 
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="CreatePatient"asp-antiforgery="true">                                                                     
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
+    <div class="col-md-3">
+        <form asp-action="CreatePatient" asp-antiforgery="true">
+
+            <legend>Patient</legend>
+            <div class="form-floating mb-3 mt-3">
+                <input asp-for="Name" class="form-control" placeholder="Enter name" name="Name" type="text" />
+                <label asp-for="Name" class="control-label">Name</label>
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
+            <div class="form-floating mb-3 mt-3">
+                <input asp-for="LastName" class="form-control" placeholder="Enter last name" name="Last name" type="text" />
+                <label asp-for="LastName" class="control-label">Last name</label>
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" type="email" />
+            <div class="form-floating mb-3 mt-3">
+                <input asp-for="Email" class="form-control" placeholder="Enter e-mail" name="E-mail" type="email" />
+                <label asp-for="Email" class="control-label">E-mail</label>
                 <span asp-validation-for="Email" class="text-danger"></span>
+
             </div>
-            <div class="form-group">
-                <label asp-for="Phone" class="control-label"></label>
-                <input asp-for="Phone" class="form-control" type="tel" />
+            <div class="form-floating mb-3 mt-3">
+                <input asp-for="Phone" class="form-control" placeholder="Enter phone number" name="Phone number" type="tel" />
+                <label asp-for="Phone" class="control-label">Phone</label>
                 <span asp-validation-for="Phone" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="DateOfBirth" class="control-label"></label>
-                <input asp-for="DateOfBirth" class="form-control" type="date" />
+            <div class="form-floating mb-3 mt-3">
+
+                <input asp-for="DateOfBirth" min="1960-01-01" value="1960-01-01" placeholder="Enter date of birth" class="form-control" name="Date of birth" type="date" />
+                <label asp-for="DateOfBirth" class="control-label">Date of birth</label>
                 <span asp-validation-for="DateOfBirth" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control"  />
+            <div class="form-floating mb-3 mt-3">
+
+                <input asp-for="Address" class="form-control" type="text" placeholder="Enter address" name="Address" />
+                <label asp-for="Address" class="control-label">Address</label>
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-floating mb-3 mt-3">
+
+                <input asp-for="MedicineId" class="form-control" placeholder="Enter medicine id" name="MedicineId" type="number" />
                 <label asp-for="MedicineId" class="control-label"></label>
-                <input asp-for="MedicineId" class="form-control" />
-                
+                <span asp-validation-for="MedicineId" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-floating mb-3 mt-3">
+                <input asp-for="PsychiatristId" class="form-control" placeholder="Enter psychiatrist id" name="PsychiatristId" type="number" />
                 <label asp-for="PsychiatristId" class="control-label"></label>
-                <input asp-for="PsychiatristId" class="form-control" />
-                
+
+                <span asp-validation-for="PsychiatristId" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-floating mb-3 mt-3">
+                <input asp-for="PsychiatristId" class="form-control" placeholder="Enter psychologist id" name="PsychologistId" type="number" />
                 <label asp-for="PsychologistId" class="control-label"></label>
-                <input asp-for="PsychologistId" class="form-control" />
-                
+
+                <span asp-validation-for="PsychologistId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary mt-1" />
+            <div class="form-floating mb-3 mt-3">
+
+                <button asp-action="CreatePatient" class="btn btn-outline-primary mt-1">Create</button>
             </div>
-            
+
         </form>
+
+
     </div>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync( "_ValidationScriptsPartial" );
+    }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using PsychToGo.DTO;
 using PsychToGo.Models;
 using PsychToGoMVC.Models;
 using System.Text;
@@ -75,11 +76,11 @@ public class PatientsController : Controller
 
 
 
-    [HttpDelete]
-    public async Task<IActionResult> DeletePatient([FromRoute]int patientId)
+    [HttpGet]
+    public async Task<IActionResult> DeletePatient([FromRoute]int id)
     {
        
-        HttpResponseMessage response =  client.DeleteAsync( client.BaseAddress + "patientId" ).Result;
+        HttpResponseMessage response =  client.DeleteAsync( client.BaseAddress + $"/{id}" ).Result;
         if(response.IsSuccessStatusCode)
         {
             return RedirectToAction( "Index" );
@@ -89,10 +90,70 @@ public class PatientsController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> EditPatient([FromRoute] int patientId)
+    public async Task<IActionResult> EditPatient([FromRoute] int id)
     {
-        PatientViewModel patient = await client.GetFromJsonAsync<PatientViewModel>( $"/{patientId}" );
+        Patient patient = await client.GetFromJsonAsync<Patient>( client.BaseAddress + $"/{id}" );
+        
+        List<Medicine> medicine = await client.GetFromJsonAsync<List<Medicine>>( client.BaseAddress + $"/{id}/medicines" );
+        
+        int psychiatristId = await client.GetFromJsonAsync<int>( client.BaseAddress + $"/{id}/psychiatrist" );
+        
+        int psychologistId = await client.GetFromJsonAsync<int>( client.BaseAddress + $"/{id}/psychologist" );
 
-        return View(patient);
+
+        PatientViewModel parsedPatient = new PatientViewModel()
+        {
+            Name = patient.Name,
+            LastName = patient.LastName,
+            Email = patient.Email,
+            Address = patient.Address,
+            DateOfBirth = patient.DateOfBirth,
+            Phone = patient.Phone,
+            PsychiatristId = psychiatristId,
+            PsychologistId = psychologistId,
+            MedicineId = medicine.First().Id
+        };
+
+        if(patient == null)
+        {
+            RedirectToAction( "Index" );
+        }
+       
+        return View( parsedPatient );
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> EditPatient(PatientViewModel pvm)
+    {
+        var psychiatristId = pvm.PsychiatristId;
+        var psychologistId = pvm.PsychologistId;
+        var medicineId = pvm.MedicineId;
+
+
+        Patient updatedPatient = new Patient()
+        {
+            Id = pvm.Id,
+            Name = pvm.Name,
+            LastName = pvm.LastName,
+            Email = pvm.Email,
+            Address = pvm.Address,
+            DateOfBirth = pvm.DateOfBirth,
+            Phone = pvm.Phone,
+            PsychologistId = psychiatristId,
+            PsychiatristId = psychologistId
+        };
+
+        string data = JsonConvert.SerializeObject( updatedPatient );
+
+
+        StringContent content = new StringContent( data, Encoding.UTF8, "application/json" );
+        HttpResponseMessage response = client.
+            PutAsync( client.BaseAddress + $"/{pvm.Id}?psychologistId={pvm.PsychologistId}&psychiatristId={pvm.PsychiatristId}&medicineId={pvm.MedicineId}", content ).Result;
+
+        if (response.IsSuccessStatusCode)
+        {
+            return RedirectToAction( "Index" );
+        }
+        return View( pvm );
     }
 }
