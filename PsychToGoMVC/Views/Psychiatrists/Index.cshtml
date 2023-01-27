@@ -1,15 +1,15 @@
 ﻿@model IEnumerable<PsychToGoMVC.Models.PsychiatristViewModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Psychiatrists";
 }
 
-<h1>Index</h1>
+<h1>Psychiatrist</h1>
 
 <p>
-    <a asp-action="CreatePsychiatrist">Create New</a>
+    <a class="btn btn-outline-primary" asp-action="CreatePsychiatrist">Create New</a>
 </p>
-<table class="table">
+<table class="table table-hover border shadow-lg">
     <thead>
         <tr>
             
@@ -35,29 +35,29 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var psychiatrist in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                    @Html.DisplayFor(modelItem => psychiatrist.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.LastName)
+                    @Html.DisplayFor(modelItem => psychiatrist.LastName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Email)
+                    @Html.DisplayFor(modelItem => psychiatrist.Email)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Phone)
+                    @Html.DisplayFor(modelItem => psychiatrist.Phone)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DateOfBirth)
+                    @psychiatrist.DateOfBirth.ToString("yyyy-MM-dd")
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Address)
+                    @Html.DisplayFor(modelItem => psychiatrist.Address)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new {  id=item.Id }) |              
-                @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+                    <a class="btn btn-warning btn-sm" asp-action="EditPsychiatrist" asp-route-id="@psychiatrist.Id">Edit</a>
+                    <a class="btn btn-danger btn-sm" asp-action="DeletePsychiatrist" asp-route-id="@psychiatrist.Id">Delete</a>
             </td>
         </tr>
 }

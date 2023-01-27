@@ -42,6 +42,7 @@ public class PsychiatristsController : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> CreatePsychiatrist(PsychiatristViewModel pvm )
     {
         string data = JsonConvert.SerializeObject( pvm );
