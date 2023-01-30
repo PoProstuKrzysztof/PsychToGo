@@ -1,7 +1,12 @@
+using PsychToGoMVC.Services;
+using PsychToGoMVC.Services.Interfaces;
+
 var builder = WebApplication.CreateBuilder( args );
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IPatientService,PatientService>();
+
 
 var app = builder.Build();
 
@@ -22,6 +27,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Patients}/{action=Index}/{id?}" );
+    pattern: "{controller=Patient}/{action=Index}/{id?}" );
 
 app.Run();

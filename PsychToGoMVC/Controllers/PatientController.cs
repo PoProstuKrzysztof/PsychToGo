@@ -3,34 +3,40 @@ using Newtonsoft.Json;
 using PsychToGo.DTO;
 using PsychToGo.Models;
 using PsychToGoMVC.Models;
+using PsychToGoMVC.Services.Interfaces;
 using System.Text;
 using System.Text.Json.Nodes;
 
 namespace PsychToGoMVC.Controllers;
-public class PatientsController : Controller
+public class PatientController : Controller
 {
+    private readonly IPatientService _patientService;
+
     Uri baseAdress = new Uri( "https://localhost:7291/api/Patient" );
     HttpClient client = new HttpClient();
 
-    public PatientsController()
+    public PatientController(IPatientService patientService)
     {
+        _patientService = patientService;
         client = new HttpClient();
         client.BaseAddress = baseAdress;
     }
 
+    
     public IActionResult Index()
     {
         List<PatientViewModel> patients = new List<PatientViewModel>();
         HttpResponseMessage response = client.GetAsync( client.BaseAddress + "/patients" ).Result;
         if(response.IsSuccessStatusCode)
         {
+            
             string data = response.Content.ReadAsStringAsync().Result;
             patients =  JsonConvert.DeserializeObject<List<PatientViewModel>>(data);
         }
         else
         {
             patients = Enumerable.Empty<PatientViewModel>().ToList();
-            ModelState.AddModelError( "", "Something went wrong, try again later" );
+            
         }
 
         return View(patients);
@@ -45,20 +51,10 @@ public class PatientsController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> CreatePatient([FromForm] int medicineId,PatientViewModel pvm)
+    public IActionResult CreatePatient([FromForm] int medicineId,PatientViewModel pvm)
     {
-        Patient newPatient = new Patient()
-        {
-            Name = pvm.Name,
-            LastName = pvm.LastName,
-            Email = pvm.Email,
-            Address = pvm.Address,
-            DateOfBirth = pvm.DateOfBirth,
-            Phone = pvm.Phone,
-            PsychiatristId = pvm.PsychiatristId,
-            PsychologistId = pvm.PsychologistId,
-            
-        };
+
+       Patient? newPatient =   _patientService.CreatePatientInstance(pvm);
 
         string data = JsonConvert.SerializeObject( newPatient );
        
@@ -77,7 +73,7 @@ public class PatientsController : Controller
 
 
     [HttpGet]
-    public async Task<IActionResult> DeletePatient([FromRoute]int id)
+    public IActionResult DeletePatient([FromRoute]int id)
     {
        
         HttpResponseMessage response =  client.DeleteAsync( client.BaseAddress + $"/{id}" ).Result;
@@ -92,62 +88,29 @@ public class PatientsController : Controller
     [HttpGet]
     public async Task<IActionResult> EditPatient([FromRoute] int id)
     {
-        Patient patient = await client.GetFromJsonAsync<Patient>( client.BaseAddress + $"/{id}" );
-        
-        List<Medicine> medicine = await client.GetFromJsonAsync<List<Medicine>>( client.BaseAddress + $"/{id}/medicines" );
-        
-        int psychiatristId = await client.GetFromJsonAsync<int>( client.BaseAddress + $"/{id}/psychiatrist" );
-        
-        int psychologistId = await client.GetFromJsonAsync<int>( client.BaseAddress + $"/{id}/psychologist" );
 
+        PatientViewModel editedPatient = await _patientService.CreateParsedPatientInstance( id );
 
-        PatientViewModel parsedPatient = new PatientViewModel()
-        {
-            Name = patient.Name,
-            LastName = patient.LastName,
-            Email = patient.Email,
-            Address = patient.Address,
-            DateOfBirth = patient.DateOfBirth,
-            Phone = patient.Phone,
-            PsychiatristId = psychiatristId,
-            PsychologistId = psychologistId,
-            MedicineId = medicine.First().Id
-        };
-
-        if(patient == null)
+        if(editedPatient == null)
         {
             RedirectToAction( "Index" );
         }
        
-        return View( parsedPatient );
+        return View( editedPatient );
     }
 
     [HttpPost]
-    public async Task<IActionResult> EditPatient(PatientViewModel pvm)
+    [ValidateAntiForgeryToken]
+    public IActionResult EditPatient(PatientViewModel pvm)
     {
-        var psychiatristId = pvm.PsychiatristId;
-        var psychologistId = pvm.PsychologistId;
-        var medicineId = pvm.MedicineId;
-
-
-        Patient updatedPatient = new Patient()
-        {
-            Id = pvm.Id,
-            Name = pvm.Name,
-            LastName = pvm.LastName,
-            Email = pvm.Email,
-            Address = pvm.Address,
-            DateOfBirth = pvm.DateOfBirth,
-            Phone = pvm.Phone,
-            PsychologistId = psychiatristId,
-            PsychiatristId = psychologistId
-        };
-
+    
+        Patient? updatedPatient = _patientService.CreatePatientInstance( pvm );
+       
         string data = JsonConvert.SerializeObject( updatedPatient );
 
 
         StringContent content = new StringContent( data, Encoding.UTF8, "application/json" );
-        HttpResponseMessage response = client.
+        HttpResponseMessage response =  client.
             PutAsync( client.BaseAddress + $"/{pvm.Id}?psychologistId={pvm.PsychologistId}&psychiatristId={pvm.PsychiatristId}&medicineId={pvm.MedicineId}", content ).Result;
 
         if (response.IsSuccessStatusCode)

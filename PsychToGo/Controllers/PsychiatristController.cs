@@ -164,7 +164,7 @@ public class PsychiatristController : Controller
             return StatusCode( 500, ModelState );
         }
 
-        return NotFound();
+        return NoContent();
     }
 
 
