@@ -33,4 +33,6 @@ public class MedicineDTO
     
     [Required( ErrorMessage = "You have to enter valid in stock value" )]
     public int InStock { get; set; }
+    
+    public int CategoryId { get; set; }
 }

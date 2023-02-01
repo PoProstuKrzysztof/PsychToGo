@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PsychToGo.DTO;
+using System.Text;
 
 namespace PsychToGoMVC.Controllers;
 public class MedicineController : Controller
@@ -29,5 +30,27 @@ public class MedicineController : Controller
         }
 
         return View(medicines );
+    }
+
+
+    [HttpGet]
+    public async Task<IActionResult> CreateMedicine()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> CreateMedicine(MedicineDTO mdo)
+    {
+        string data = JsonConvert.SerializeObject( mdo );
+        StringContent content = new StringContent( data, Encoding.UTF8, "application/json" );
+        HttpResponseMessage response = client.PostAsync(client.BaseAddress + $"/create?medicineId={mdo.CategoryId}",content).Result;
+
+        if(response.IsSuccessStatusCode )
+        {
+            RedirectToAction( "Index" );
+        }
+        return View(mdo);
     }
 }

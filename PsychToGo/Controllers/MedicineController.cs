@@ -82,7 +82,7 @@ public class MedicineController : Controller
     }
 
     [HttpGet("{id}")]
-    [ProducesResponseType(200,Type = typeof(ICollection<Medicine>))]
+    [ProducesResponseType(200,Type = typeof(Medicine))]
     [ProducesResponseType(400)]
     public async Task<IActionResult> GetMedicineById(int id)
     {
@@ -129,7 +129,7 @@ public class MedicineController : Controller
 
         var medicine = _mapper.Map<Medicine>( newMedicine );
         medicine.Category = await _medicineCategoryRepository.GetMedicineCategoryById( categoryId );
-        if (!await _medicineRepository.CreateMedicine(categoryId, medicine ))
+        if (!await _medicineRepository.CreateMedicine(newMedicine.CategoryId, medicine ))
         {
             ModelState.AddModelError( "", "Something went wrong while saving medicine." );
             return StatusCode( 500, ModelState );
