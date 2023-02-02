@@ -82,7 +82,7 @@ public class PatientController : Controller
             return RedirectToAction( "Index" );
         }
 
-        return View(response.StatusCode);
+        return BadRequest();
     }
 
     [HttpGet]
@@ -93,7 +93,7 @@ public class PatientController : Controller
 
         if(editedPatient == null)
         {
-            RedirectToAction( "Index" );
+           return RedirectToAction( "Index" );
         }
        
         return View( editedPatient );

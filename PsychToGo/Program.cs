@@ -9,13 +9,13 @@ var builder = WebApplication.CreateBuilder( args );
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddScoped<DbContext, AppDbContext>();
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies() );
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
 builder.Services.AddScoped<IMedicineRepository, MedicineRepository>();
 builder.Services.AddScoped<IMedicineCategoryRepository, MedicineCategoryRepository>();
 builder.Services.AddScoped<IPsychologistRepository, PsychologistsRepository>();
 builder.Services.AddScoped<IPsychiatristRepository, PsychiatristRepository>();
+builder.Services.AddTransient<DbContext, AppDbContext>();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies() );
 builder.Services.AddTransient<DataSeed>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

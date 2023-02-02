@@ -66,8 +66,8 @@
                     @Html.DisplayFor(modelItem => medicines.InStock)
                 </td>
                 <td>
-                    <a class="btn btn-warning btn-sm" asp-action="EditPsychiatrist" asp-route-id="@medicines.Id">Edit</a>
-                    <a class="btn btn-danger btn-sm" asp-action="DeletePsychiatrist" asp-route-id="@medicines.Id">Delete</a>
+                    <a class="btn btn-warning btn-sm" asp-action="EditMedicine" asp-route-id="@medicines.Id">Edit</a>
+                    <a class="btn btn-danger btn-sm" asp-action="DeleteMedicine" asp-route-id="@medicines.Id">Delete</a>
                 </td>
             </tr>
         }

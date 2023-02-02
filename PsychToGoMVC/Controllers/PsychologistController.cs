@@ -67,7 +67,7 @@ public class PsychologistController : Controller
             return RedirectToAction( "Index" );
         }
 
-        return View( response.StatusCode );
+        return BadRequest();
     }
 
     [HttpGet]

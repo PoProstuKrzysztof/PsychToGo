@@ -71,7 +71,7 @@ public class PsychiatristController : Controller
             return RedirectToAction( "Index" );
         }
 
-        return View( response.StatusCode );
+        return BadRequest();
     }
 
     [HttpGet] 

@@ -1,3 +1,5 @@
+using PsychToGo.Interfaces;
+using PsychToGo.Repository;
 using PsychToGoMVC.Services;
 using PsychToGoMVC.Services.Interfaces;
 
@@ -6,6 +8,8 @@ var builder = WebApplication.CreateBuilder( args );
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IPatientService,PatientService>();
+
+
 
 
 var app = builder.Build();

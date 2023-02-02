@@ -7,7 +7,7 @@ namespace PsychToGoMVC.Controllers;
 public class MedicineController : Controller
 {
     Uri baseAdress = new Uri( "https://localhost:7291/api/Medicine" );
-    HttpClient client;
+    HttpClient client ;
 
     public MedicineController()
     {
@@ -34,7 +34,7 @@ public class MedicineController : Controller
 
 
     [HttpGet]
-    public async Task<IActionResult> CreateMedicine()
+    public IActionResult CreateMedicine()
     {
         return View();
     }
@@ -49,8 +49,20 @@ public class MedicineController : Controller
 
         if(response.IsSuccessStatusCode )
         {
-            RedirectToAction( "Index" );
+           return RedirectToAction( "Index" );
         }
         return View(mdo);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> DeleteMedicine([FromRoute]int id)
+    {
+        HttpResponseMessage response = client.DeleteAsync( client.BaseAddress + $"/{id}" ).Result;
+        if(response.IsSuccessStatusCode)
+        {
+           return RedirectToAction( "Index" );
+        }
+
+        return BadRequest();
     }
 }
