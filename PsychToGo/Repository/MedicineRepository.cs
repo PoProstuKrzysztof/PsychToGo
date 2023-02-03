@@ -88,7 +88,7 @@ public class MedicineRepository : IMedicineRepository
                 .Where(x => x.Id == medicineId)
                 .Select(x => x.ExpireDate)
                 .FirstOrDefaultAsync();
-            if (expireDate == null)
+            if (expireDate.Equals(null))
             {
                 return null;
             }

@@ -9,13 +9,13 @@ using System.Text;
 namespace PsychToGoMVC.Controllers;
 public class PsychiatristController : Controller
 {
-    
+
     Uri baseAdress = new Uri( "https://localhost:7291/api/Psychiatrist" );
     HttpClient client;
 
     public PsychiatristController()
     {
-        
+
         client = new HttpClient();
         client.BaseAddress = baseAdress;
     }
@@ -32,19 +32,20 @@ public class PsychiatristController : Controller
         else
         {
             psychiatrists = Enumerable.Empty<PsychiatristDTO>().ToList();
-            
+
         }
 
-        return View( psychiatrists );      
+        return View( psychiatrists );
     }
 
     [HttpGet]
+    
     public IActionResult CreatePsychiatrist()
     {
         return View();
     }
 
-    [HttpPost]
+    [HttpPost]    
     [ValidateAntiForgeryToken]
     public IActionResult CreatePsychiatrist(PsychiatristDTO pvm )
     {

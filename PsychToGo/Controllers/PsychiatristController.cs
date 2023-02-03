@@ -42,9 +42,9 @@ public class PsychiatristController : Controller
 
 
     [HttpGet( "{id}" )]
-    [ProducesResponseType( 200, Type = typeof( Psychiatrist ) )]
+    [ProducesResponseType( 200, Type = typeof( PsychiatristDTO ) )]
     [ProducesResponseType( 400 )]
-    public async Task<IActionResult> GetPsychiatrist(int id)
+    public async Task<IActionResult> GetPsychiatristById(int id)
     {
         if (!await _psychiatristRepository.PsychiatristExist( id ))
         {
@@ -125,7 +125,7 @@ public class PsychiatristController : Controller
             return StatusCode( 500, ModelState );
         }
 
-        return Ok( "Successfully created psychologist" );
+        return Ok( "Successfully created psychiatrist" );
 
     }
 

@@ -42,7 +42,8 @@ public class PatientController : Controller
         return View(patients);
     }
 
-    [HttpGet]
+    [HttpGet("Patient/create")]
+    
     public IActionResult CreatePatient()
     {
         return View();
@@ -54,7 +55,7 @@ public class PatientController : Controller
     public IActionResult CreatePatient([FromForm] int medicineId,PatientViewModel pvm)
     {
 
-       Patient? newPatient =   _patientService.CreatePatientInstance(pvm);
+       Patient? newPatient = _patientService.CreatePatientInstance(pvm);
 
         string data = JsonConvert.SerializeObject( newPatient );
        

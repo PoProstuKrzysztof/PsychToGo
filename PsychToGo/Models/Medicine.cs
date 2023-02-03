@@ -17,5 +17,5 @@ public class Medicine
     
     public MedicineCategory Category { get; set; }
     
-    public virtual ICollection<PatientMedicine> PatientMedicines { get; set; }
+    public virtual ICollection<PatientMedicine?> PatientMedicines { get; set; }
 }

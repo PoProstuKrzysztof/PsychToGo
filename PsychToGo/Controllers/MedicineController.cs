@@ -82,7 +82,7 @@ public class MedicineController : Controller
     }
 
     [HttpGet("{id}")]
-    [ProducesResponseType(200,Type = typeof(MedicineDTO))]
+    [ProducesResponseType(200,Type = typeof( ICollection<MedicineDTO> ) )]
     [ProducesResponseType(400)]
     public async Task<IActionResult> GetMedicineById(int id)
     {

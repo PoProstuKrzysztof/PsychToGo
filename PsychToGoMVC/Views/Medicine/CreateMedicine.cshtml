@@ -19,19 +19,15 @@
                 <label asp-for="Name" class="control-label">Name</label>
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
+
             <div class="form-floating mb-3 mt-3">
-                <textarea asp-for="Description" rows="4" class="form-control " placeholder="Enter last name" type="text" required />
-                <label asp-for="Description" class="control-label">Last name</label>
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-floating mb-3 mt-3">
-                <input asp-for="ProductionDate" max="@DateTime.Now" class="form-control" placeholder="Enter production date" type="date" required />
+                <input asp-for="ProductionDate" max="@DateTime.Today.ToString("yyyy-MM-dd")" class="form-control" placeholder="Enter production date" type="date" required />
                 <label asp-for="ProductionDate" class="control-label">Production date</label>
                 <span asp-validation-for="ProductionDate" class="text-danger"></span>
 
             </div>
             <div class="form-floating mb-3 mt-3">
-                <input asp-for="ExpireDate" min="@DateTime.Now" class="form-control" placeholder="Enter expire date" type="date" required />
+                <input asp-for="ExpireDate" min="@DateTime.Today.ToString("yyyy-MM-dd") + 1" class="form-control" placeholder="Enter expire date" type="date" required />
                 <label asp-for="ExpireDate" class="control-label">Expire date</label>
                 <span asp-validation-for="ExpireDate" class="text-danger"></span>
             </div>
@@ -41,33 +37,33 @@
                 <label asp-for="DailyDose" class="control-label">Daily dose </label>
                 <span asp-validation-for="DailyDose" class="text-danger"></span>
             </div>
+
             <div class="form-floating mb-3 mt-3">
 
-                <textarea asp-for="Ingredients" class="form-control" type="text" placeholder="Enter ingredients"  required />
+                <input asp-for="InStock" placeholder="Enter in stock value" class="form-control" type="number" required />
+                <label asp-for="InStock" class="control-label">In stock </label>
+                <span asp-validation-for="InStock" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3 mt-3">
+
+                <input asp-for="CategoryId" placeholder="Enter in category id" class="form-control" type="number" required />
+                <label asp-for="CategoryId" class="control-label">Category </label>
+
+            </div>
+            <div class="form-control mb-3 mt-3">
+                <label asp-for="Description" class="control-label">Description</label>
+                <textarea asp-for="Description" rows="4" class="form-control " placeholder="Enter description" required></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-control mb-3 mt-3">
                 <label asp-for="Ingredients" class="control-label">Ingredients</label>
+                <textarea asp-for="Ingredients" rows="4" class="form-control" type="text" placeholder="Enter ingredients" required></textarea>
+
                 <span asp-validation-for="Ingredients" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3 mt-3">
 
-                <input asp-for="InStock" placeholder="Enter in stock value" class="form-control" type="number" required />
-                <label asp-for="InStock" class="control-label">In stock </label>
-                <span asp-validation-for="InStock" class="text-danger"></span>
-            </div>
-            <div class="form-floating mb-3 mt-3">
-
-                <input asp-for="InStock" placeholder="Enter in stock value" class="form-control" type="number" required />
-                <label asp-for="InStock" class="control-label">In stock </label>
-                <span asp-validation-for="InStock" class="text-danger"></span>
-            </div>
-             <div class="form-floating mb-3 mt-3">
-
-                <input asp-for="CategoryId" placeholder="Enter in category id" class="form-control" type="number" required />
-                <label asp-for="CategoryId" class="control-label">Category </label>
-                
-            </div>
-            <div class="form-floating mb-3 mt-3">
-
-                <button asp-action="CreatePatient" class="btn btn-outline-primary mt-1">Create</button>
+                <button asp-action="CreateMedicine" class="btn btn-outline-primary mt-1">Create</button>
             </div>
 
         </form>

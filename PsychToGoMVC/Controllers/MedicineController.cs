@@ -41,7 +41,7 @@ public class MedicineController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> CreateMedicine(MedicineDTO mdo)
+    public IActionResult CreateMedicine(MedicineDTO mdo)
     {
         string data = JsonConvert.SerializeObject( mdo );
         StringContent content = new StringContent( data, Encoding.UTF8, "application/json" );
@@ -55,9 +55,9 @@ public class MedicineController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> DeleteMedicine([FromRoute]int id)
+    public IActionResult DeleteMedicine([FromRoute]int id)
     {
-        HttpResponseMessage response = client.DeleteAsync( client.BaseAddress + $"/{id}" ).Result;
+        HttpResponseMessage response =  client.DeleteAsync( client.BaseAddress + $"/{id}" ).Result;
         if(response.IsSuccessStatusCode)
         {
            return RedirectToAction( "Index" );
