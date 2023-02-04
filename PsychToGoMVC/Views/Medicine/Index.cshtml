@@ -10,7 +10,7 @@
 <h1>Medicines</h1>
 <hr />
 <p>
-    <a class="btn btn-outline-primary" asp-action="CreateMedicine">Create New</a>
+    <a class="btn btn-outline-primary" asp-action="CreateMedicineMVC">Create New</a>
 </p>
 <table class="table table-hover border shadow-lg">
     <thead>
@@ -65,7 +65,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => medicines.InStock)
                 </td>
-                <td>
+                <td class="btn-group">
                     <a class="btn btn-warning btn-sm" asp-action="EditMedicine" asp-route-id="@medicines.Id">Edit</a>
                     <a class="btn btn-danger btn-sm" asp-action="DeleteMedicine" asp-route-id="@medicines.Id">Delete</a>
                 </td>

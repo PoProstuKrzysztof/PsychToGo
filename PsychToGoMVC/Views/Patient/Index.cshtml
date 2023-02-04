@@ -7,7 +7,7 @@
 <h1>Patients</h1>
 <hr />
 <p>
-    <a class="btn btn-outline-primary" asp-action="CreatePatient">Create New</a>
+    <a class="btn btn-outline-primary" asp-action="CreatePatientMVC">Create New</a>
 </p>
 <table class="table table-hover border shadow-lg ">
     <thead>
@@ -59,7 +59,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => patient.Address)
                 </td>
-                <td>
+                <td class="btn-group">
                     <a class="btn btn-warning btn-sm" asp-action="EditPatient"  asp-route-id="@patient.Id">Edit</a>
                     <a class="btn btn-danger btn-sm" asp-action="DeletePatient" asp-route-id="@patient.Id">Delete</a>
                 </td>

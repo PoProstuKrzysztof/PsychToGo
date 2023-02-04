@@ -82,7 +82,7 @@ public class MedicineController : Controller
     }
 
     [HttpGet("{id}")]
-    [ProducesResponseType(200,Type = typeof( ICollection<MedicineDTO> ) )]
+    [ProducesResponseType(200,Type = typeof( MedicineDTO ) )]
     [ProducesResponseType(400)]
     public async Task<IActionResult> GetMedicineById(int id)
     {
@@ -141,7 +141,7 @@ public class MedicineController : Controller
 
 
     [HttpPut("{medicineId}")]
-    public async Task<IActionResult> UpdateMedicine(int medicineId, int categoryId ,[FromBody] MedicineDTO updatedMedicine)
+    public async Task<IActionResult> UpdateMedicine(int medicineId,[FromBody] MedicineDTO updatedMedicine)
     {
         if(updatedMedicine == null)
         {
@@ -165,9 +165,9 @@ public class MedicineController : Controller
 
         var medicine = _mapper.Map<Medicine>( updatedMedicine );
 
-        medicine.Category = await _medicineCategoryRepository.GetMedicineCategoryById( categoryId );
+        medicine.Category = await _medicineCategoryRepository.GetMedicineCategoryById( updatedMedicine.CategoryId );
         
-        if(! await _medicineRepository.UpdateMedicine(categoryId, medicine))
+        if(! await _medicineRepository.UpdateMedicine(updatedMedicine.CategoryId, medicine))
         {
             ModelState.AddModelError( "", "Something went wrong while updating category" );
             return StatusCode( 500, ModelState );

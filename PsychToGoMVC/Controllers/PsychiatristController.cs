@@ -11,7 +11,7 @@ public class PsychiatristController : Controller
 {
 
     Uri baseAdress = new Uri( "https://localhost:7291/api/Psychiatrist" );
-    HttpClient client;
+    HttpClient client = new HttpClient();
 
     public PsychiatristController()
     {
@@ -40,14 +40,14 @@ public class PsychiatristController : Controller
 
     [HttpGet]
     
-    public IActionResult CreatePsychiatrist()
+    public IActionResult CreatePsychiatristMVC()
     {
         return View();
     }
 
     [HttpPost]    
     [ValidateAntiForgeryToken]
-    public IActionResult CreatePsychiatrist(PsychiatristDTO pvm )
+    public IActionResult CreatePsychiatristMVC(PsychiatristDTO pvm )
     {
         string data = JsonConvert.SerializeObject( pvm );
         StringContent content = new StringContent( data, Encoding.UTF8, "application/json" );
@@ -82,7 +82,7 @@ public class PsychiatristController : Controller
 
         if (psychiatrist == null)
         {
-            RedirectToAction("Index");
+            return NotFound();
         }
 
         return View( psychiatrist );

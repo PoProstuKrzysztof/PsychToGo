@@ -8,7 +8,7 @@ namespace PsychToGoMVC.Controllers;
 public class PsychologistController : Controller
 {
     Uri baseAdress = new Uri( "https://localhost:7291/api/Psychologist" );
-    HttpClient client;
+    HttpClient client = new HttpClient();
 
     public PsychologistController()
     {
@@ -35,14 +35,14 @@ public class PsychologistController : Controller
     }
 
     [HttpGet]
-    public IActionResult CreatePsychologist()
+    public IActionResult CreatePsychologistMVC()
     {
         return View();
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult CreatePsychologist(PsychologistDTO pvm)
+    public IActionResult CreatePsychologistMVC(PsychologistDTO pvm)
     {
         string data = JsonConvert.SerializeObject( pvm );
         StringContent content = new StringContent( data, Encoding.UTF8, "application/json" );

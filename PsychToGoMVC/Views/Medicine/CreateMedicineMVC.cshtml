@@ -11,7 +11,7 @@
 <hr />
 <div class="row">
     <div class="col-md-3">
-        <form method="post" asp-action="CreateMedicine" asp-antiforgery="true" class="was-validated">
+        <form method="post"  asp-antiforgery="true" class="was-validated">
             <div asp-validation-summary="All" class="text-danger"></div>
             <input asp-for="Id" hidden />
             <div class="form-floating mb-3 mt-3">
@@ -61,9 +61,10 @@
 
                 <span asp-validation-for="Ingredients" class="text-danger"></span>
             </div>
-            <div class="form-floating mb-3 mt-3">
+            <div class="btn-group mb-2 mt-2">
 
-                <button asp-action="CreateMedicine" class="btn btn-outline-primary mt-1">Create</button>
+                <button asp-action="CreateMedicineMVC" class="btn btn-outline-primary mt-1">Create</button>
+                <a class="btn btn-outline-primary mt-1" asp-action="Index">Back</a>
             </div>
 
         </form>
@@ -72,9 +73,7 @@
     </div>
 </div>
 
-<div>
-    <a class="btn btn-outline-primary mt-1" asp-action="Index">Back</a>
-</div>
+
 
 @section Scripts {
     @{

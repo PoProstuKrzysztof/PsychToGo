@@ -44,7 +44,7 @@ public class PatientController : Controller
 
     [HttpGet("Patient/create")]
     
-    public IActionResult CreatePatient()
+    public IActionResult CreatePatientMVC()
     {
         return View();
     }
@@ -52,7 +52,7 @@ public class PatientController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult CreatePatient([FromForm] int medicineId,PatientViewModel pvm)
+    public IActionResult CreatePatientMVC([FromForm] int medicineId,PatientViewModel pvm)
     {
 
        Patient? newPatient = _patientService.CreatePatientInstance(pvm);

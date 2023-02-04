@@ -1,7 +1,7 @@
 ﻿@model PsychToGoMVC.Models.PatientViewModel
 
 @{
-    ViewData["Title"] = "CreatePatient";
+    ViewData["Title"] = "Create Patient";
 }
 
 <h1>Create patient</h1>
@@ -9,8 +9,8 @@
 
 <hr />
 <div class="row">
-    <div class="col-md-3">
-        <form method="post" asp-action="CreatePatient"  asp-antiforgery="true" class="was-validated" >
+    <div class="col-md-4">
+        <form method="post" asp-antiforgery="true" class="was-validated">
             <div asp-validation-summary="All" class="text-danger"></div>
             <legend>Patient</legend>
             <div class="form-floating mb-3 mt-3">
@@ -65,9 +65,10 @@
                 <span asp-validation-for="PsychiatristId" class="text-danger"></span>
             </div>
             
-            <div class="form-floating mb-3 mt-3">
+            <div class="btn-group mb-2 mt-2">
 
-                <button asp-action="CreatePatient" class="btn btn-outline-primary mt-1">Create</button>
+                <button asp-action="CreatePatientMVC" class="btn btn-outline-primary">Create</button>
+                <a class="btn btn-outline-primary " asp-action="Index">Back</a>
             </div>
 
         </form>
@@ -77,7 +78,7 @@
 </div>
 
 <div>
-    <a class="btn btn-outline-primary mt-1" asp-action="Index">Back</a>
+    
 </div>
 
 @section Scripts {

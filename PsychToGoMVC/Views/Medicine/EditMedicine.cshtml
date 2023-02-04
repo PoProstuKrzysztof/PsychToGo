@@ -1,0 +1,63 @@
+﻿@using PsychToGo.DTO;
+
+@model MedicineDTO
+
+@{
+    ViewData["Title"] = "Edit medicine";
+}
+
+<h1>Edit <b>@Model.Name </b></h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-4 ">
+        <form method="post" asp-antiforgery="true"  >
+            <input asp-for="Id" type="hidden" />
+            <div  >
+                <label asp-for="Name" class="col-form-label"></label>
+                <input asp-for="Name" class="form-control" value="@Model.Name" required />
+               
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Description" class="control-label">Description</label>
+                <textarea asp-for="Description" rows="4" class="form-control" value="@Model.Description" required ></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="ProductionDate" class="control-label">Production date</label>
+                <input asp-for="ProductionDate" max="@DateTime.Today.ToString("yyyy-MM-dd")" class="form-control" type="date" value="@Model.ProductionDate.ToString("yyyy-MM-dd")" required />
+                <span asp-validation-for="ProductionDate" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="ExpireDate" class="control-label">Expire date</label>
+                <input asp-for="ExpireDate" min="@DateTime.Today.ToString("yyyy-MM-dd")" class="form-control" type="date" value="@Model.ExpireDate.ToString("yyyy-MM-dd")" required />
+                <span asp-validation-for="ExpireDate" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="DailyDose" class="control-label"></label>
+                <input asp-for="DailyDose" class="form-control" type="number" value="@Model.DailyDose" required />
+                <span asp-validation-for="DailyDose" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="InStock" class="control-label"></label>
+                <input asp-for="InStock" class="form-control" type="number" value="@Model.InStock" required />
+                <span asp-validation-for="InStock" class="text-danger"></span>
+            </div>            
+            <div >              
+                <label asp-for="CategoryId" class="control-label">Category</label>
+                <input asp-for="CategoryId" class="form-control" type="number" required />
+            </div>
+            <div >
+                <label asp-for="Ingredients" class="control-label">Ingredients</label>
+                <textarea asp-for="Ingredients" rows="4" class="form-control" type="text"  value="@Model.Ingredients" required></textarea>
+                <span asp-validation-for="Ingredients" class="text-danger"></span>
+            </div>
+            <div class="btn-group mb-2 mt-2">
+
+                <button asp-action="EditMedicine" class="btn btn-outline-warning">Edit</button>
+                <a class="btn btn-outline-primary" asp-action="Index">Back</a>
+            </div>
+        </form>
+    </div>
+</div>
