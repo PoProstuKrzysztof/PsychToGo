@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PsychToGo.DTO;
 using PsychToGo.Interfaces;
@@ -20,6 +21,7 @@ public class PsychiatristController : Controller
     }
 
     [HttpGet( "list" )]
+    [Authorize( Roles = "admin" )]
     [ProducesResponseType( 200, Type = typeof( ICollection<Psychiatrist> ) )]
     public async Task<IActionResult> GetPsychiatrists()
     {
@@ -42,6 +44,7 @@ public class PsychiatristController : Controller
 
 
     [HttpGet( "{id}" )]
+    [Authorize( Roles = "admin" )]
     [ProducesResponseType( 200, Type = typeof( PsychiatristDTO ) )]
     [ProducesResponseType( 400 )]
     public async Task<IActionResult> GetPsychiatristById(int id)
@@ -67,6 +70,7 @@ public class PsychiatristController : Controller
 
 
     [HttpGet( "{psychiatristId}/patients" )]
+    [Authorize( Roles = "admin" )]
     [ProducesResponseType(200,Type = typeof(ICollection<Patient>))]
     [ProducesResponseType(400)]
     public async Task<IActionResult> GetPsychiatrisPatients(int psychiatristId)
@@ -98,6 +102,7 @@ public class PsychiatristController : Controller
     }
 
     [HttpPost( "create" )]
+    [Authorize(Roles = "admin" )]
     [ProducesResponseType( 201 )]
     [ProducesResponseType( 400 )]
     public async Task<IActionResult> CreatePsychiatrist([FromBody] PsychiatristDTO newPsychiatrist)

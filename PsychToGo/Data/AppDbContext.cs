@@ -9,6 +9,7 @@ public class AppDbContext : DbContext
     {
     }
 
+    public DbSet<LocalUser> LocalUsers { get; set; }
     public DbSet<Patient> Patients { get; set; }
     public DbSet<Psychiatrist> Psychiatrists { get; set; }
     public DbSet<Psychologist> Psychologists { get; set; }

@@ -10,7 +10,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PsychToGoMVC", "PsychToGoMV
 		{7F864998-A50E-415B-BAB7-68CE9515673A} = {7F864998-A50E-415B-BAB7-68CE9515673A}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PsychToGoAPI.Tests", "PsychToGoAPI.Tests\PsychToGoAPI.Tests.csproj", "{8793B4E9-E7A1-4400-8528-560989255FEC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PsychToGoAPI.Tests", "PsychToGoAPI.Tests\PsychToGoAPI.Tests.csproj", "{8793B4E9-E7A1-4400-8528-560989255FEC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PsychToGoMVC.Models.PatientViewModel>
+﻿@model IQueryable<PsychToGoMVC.Models.PatientViewModel>
 
 @{
     ViewData["Title"] = "Patients";
@@ -14,22 +14,22 @@
         <tr>
 
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Model.Select(m => m.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LastName)
+                @Model.Select(m => m.LastName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Email)
+                @Model.Select(m => m.Email)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Phone)
+                @Model.Select(m => m.Phone)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DateOfBirth)
+                @Model.Select(m => m.DateOfBirth)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Address)
+                @Model.Select(m => m.Address)
             </th>
             <th>
                 Operations
