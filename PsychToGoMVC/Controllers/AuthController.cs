@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PsychToGo.DTO;
+using PsychToGo.Models.Identity;
 using PsychToGoMVC.DTO;
 using PsychToGoMVC.Services.Interfaces;
 using System.Security.Claims;
@@ -11,9 +13,11 @@ namespace PsychToGoMVC.Controllers;
 public class AuthController : Controller
 {
   private readonly IAuthService _authService;
+    private readonly UserManager<AppUser> _userManager;
 
-    public AuthController(IAuthService authService)
+    public AuthController(IAuthService authService, UserManager<AppUser> manager)
     {
+        _userManager= manager;
         _authService = authService;
     }
 
@@ -33,10 +37,10 @@ public class AuthController : Controller
         {
            
             LoginResponseDTO model = JsonConvert.DeserializeObject<LoginResponseDTO>( response );
-
+            
             var identity = new ClaimsIdentity( CookieAuthenticationDefaults.AuthenticationScheme );
             identity.AddClaim(new Claim(ClaimTypes.Name, model.User.UserName));
-            identity.AddClaim( new Claim( ClaimTypes.Role, model.User.Role ) );
+            identity.AddClaim( new Claim( ClaimTypes.Role, model.Role ));
 
             var principal = new ClaimsPrincipal( identity );
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal );

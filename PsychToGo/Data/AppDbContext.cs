@@ -11,8 +11,7 @@ public class AppDbContext : IdentityDbContext<AppUser>
     {
     }
 
-    public DbSet<AppUser> ApplicationUsers { get; set; }
-    public DbSet<LocalUser> LocalUsers { get; set; }
+    public DbSet<AppUser> ApplicationUsers { get; set; }   
     public DbSet<Patient> Patients { get; set; }
     public DbSet<Psychiatrist> Psychiatrists { get; set; }
     public DbSet<Psychologist> Psychologists { get; set; }
@@ -22,7 +21,7 @@ public class AppDbContext : IdentityDbContext<AppUser>
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        
+        base.OnModelCreating( builder );
 
         builder.Entity<PatientMedicine>()
             .HasKey( pm => new { pm.PatientId, pm.MedicineId } );

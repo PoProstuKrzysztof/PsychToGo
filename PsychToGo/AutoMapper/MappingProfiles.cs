@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using PsychToGo.DTO;
 using PsychToGo.Models;
+using PsychToGo.Models.Identity;
 
 namespace PsychToGo.AutoMapper;
 
@@ -22,5 +23,7 @@ public class MappingProfiles : Profile
 
         CreateMap<Psychiatrist, PsychiatristDTO>();
         CreateMap<PsychiatristDTO,Psychiatrist>();
+
+        CreateMap<AppUser,UserDTO>().ReverseMap();
     }
 }

@@ -6,7 +6,7 @@ namespace PsychToGo.DTO;
 public class MedicineDTO
 {
     [HiddenInput]
-    public Guid Id { get; set; }
+    public int Id { get; set; }
     
     [Required(ErrorMessage ="You have to enter valid name of the product")]
     [StringLength(40, MinimumLength = 3, ErrorMessage = "Medicine name too short")]

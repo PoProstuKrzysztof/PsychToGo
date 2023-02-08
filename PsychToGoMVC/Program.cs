@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PsychToGo.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using PsychToGoMVC.Controllers;
+using PsychToGo.Models.Identity;
 
 var builder = WebApplication.CreateBuilder( args );
 var connectionString = builder.Configuration.GetConnectionString("AppDbContextConnection") ?? throw new InvalidOperationException("Connection string 'AppDbContextConnection' not found.");
@@ -18,6 +20,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IPatientService,PatientService>();
 builder.Services.AddScoped<IAuthService,AuthService>();
 builder.Services.AddSingleton<IHttpContextAccessor,HttpContextAccessor>();
+
+
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddAuthentication( CookieAuthenticationDefaults.AuthenticationScheme )
     .AddCookie( options =>
@@ -31,6 +35,12 @@ builder.Services.AddAuthentication( CookieAuthenticationDefaults.AuthenticationS
         options.SlidingExpiration = true;
     } );
 
+
+
+builder.Services.AddIdentity<AppUser, IdentityRole>()
+    .AddEntityFrameworkStores<AppDbContext>()
+    .AddRoles<IdentityRole>()
+    .AddDefaultTokenProviders();
 
 builder.Services.AddSession( options =>
 {

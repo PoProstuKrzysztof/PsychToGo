@@ -1,5 +1,8 @@
-﻿namespace PsychToGo.Models.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 
-public class AppUser
+namespace PsychToGo.Models.Identity;
+
+public class AppUser : IdentityUser
 {
+    public string Name { get; set; }
 }

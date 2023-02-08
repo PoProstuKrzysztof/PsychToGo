@@ -6,6 +6,7 @@ using Microsoft.OpenApi.Models;
 using PsychToGo;
 using PsychToGo.Data;
 using PsychToGo.Interfaces;
+using PsychToGo.Models.Identity;
 using PsychToGo.Repository;
 using System.Text;
 
@@ -13,19 +14,27 @@ var builder = WebApplication.CreateBuilder( args );
 
 // Add services to the container.
 
+
 builder.Services.AddControllers();
+
 builder.Services.AddScoped<IPsychologistRepository, PsychologistsRepository>();
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
 builder.Services.AddScoped<IMedicineRepository, MedicineRepository>();
 builder.Services.AddScoped<IMedicineCategoryRepository, MedicineCategoryRepository>();
 builder.Services.AddScoped<IPsychiatristRepository, PsychiatristRepository>();
-builder.Services.AddScoped<DbContext, AppDbContext>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+
+builder.Services.AddScoped<DbContext, AppDbContext>();
 builder.Services.AddAutoMapper( AppDomain.CurrentDomain.GetAssemblies() );
 builder.Services.AddTransient<DataSeed>();
 
-builder.Services.AddIdentity<IdentityUser,IdentityRole>()
-    .AddEntityFrameworkStores<AppDbContext>;
+
+
+builder.Services.AddIdentity<AppUser,IdentityRole>()
+    .AddEntityFrameworkStores<AppDbContext>()
+    .AddRoles<IdentityRole>()
+    .AddDefaultTokenProviders();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen( options =>

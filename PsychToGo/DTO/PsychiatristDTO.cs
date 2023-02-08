@@ -6,7 +6,7 @@ namespace PsychToGo.DTO;
 public class PsychiatristDTO
 {
     [HiddenInput]
-    public Guid Id { get; set; }
+    public int Id { get; set; }
 
     [Required( ErrorMessage = "You have to enter valid name!" )]
     public string Name { get; set; } = string.Empty;
