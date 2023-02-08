@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PsychToGo.DTO;
 using PsychToGoMVC.Models;
@@ -19,7 +20,7 @@ public class PsychiatristController : Controller
         client = new HttpClient();
         client.BaseAddress = baseAdress;
     }
-
+    [Authorize]
     public IActionResult Index()
     {
         List<PsychiatristDTO> psychiatrists = new List<PsychiatristDTO>();

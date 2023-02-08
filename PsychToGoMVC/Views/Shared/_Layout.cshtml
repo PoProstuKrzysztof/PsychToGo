@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@inject IHttpContextAccessor httpAccessor
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -12,7 +14,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand"  asp-controller="Home" asp-action="Index">PsychToGo</a>
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">PsychToGo</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -20,20 +22,40 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark"  asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark"  asp-controller="Patient" asp-action="Index">Patients</a>
+                            <a class="nav-link text-dark" asp-controller="Patient" asp-action="Index">Patients</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark"  asp-controller="Psychiatrist" asp-action="Index">Psychiatrists</a>
+                            <a class="nav-link text-dark" asp-controller="Psychiatrist" asp-action="Index">Psychiatrists</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark"  asp-controller="Psychologist" asp-action="Index">Psychologists</a>
+                            <a class="nav-link text-dark" asp-controller="Psychologist" asp-action="Index">Psychologists</a>
                         </li>
-                         <li class="nav-item">
-                           <a class="nav-link text-dark"  asp-controller="Medicine" asp-action="Index">Medicines</a>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Medicine" asp-action="Index">Medicines</a>
                         </li>
+
+                        
+                        @if (httpAccessor.HttpContext.Session.GetString( "JWTToken" ) != null &&
+                        httpAccessor.HttpContext.Session.GetString("JWTToken").ToString().Length > 0)
+                        {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Auth" asp-action="Logout">Logout</a>
+                        </li>
+                        }
+                        else
+                        {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Auth" asp-action="Login">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Auth" asp-action="Register">Register</a>
+                        </li>
+                        }
+
+
                     </ul>
                 </div>
             </div>

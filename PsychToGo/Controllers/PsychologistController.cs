@@ -24,8 +24,10 @@ public class PsychologistController : Controller
 	//Get
 
 	[HttpGet( "list" )]
-	[ProducesResponseType(200,Type = typeof(ICollection<Psychologist>))]
-	public async Task<IActionResult> GetAllPsychologists()
+	[ProducesResponseType(StatusCodes.Status200OK,Type = typeof(ICollection<Psychologist>))]
+    [ProducesResponseType( StatusCodes.Status400BadRequest )]
+    [ProducesResponseType( StatusCodes.Status404NotFound )]
+    public async Task<IActionResult> GetAllPsychologists()
 	{
 		var psychologists =await _psychologistRepository.GetPsychologists();
 		if(!ModelState.IsValid)
@@ -38,8 +40,9 @@ public class PsychologistController : Controller
 
 
 	[HttpGet("{id}")]
-	[ProducesResponseType(200, Type = typeof(Psychologist))]
-    [ProducesResponseType( 400)]
+	[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Psychologist))]
+    [ProducesResponseType( StatusCodes.Status400BadRequest )]
+    [ProducesResponseType( StatusCodes.Status404NotFound )]
     public async Task<IActionResult> GetPsychologist(int id)
 	{
 		if(! await _psychologistRepository.PsychologistExist(id))
@@ -55,16 +58,17 @@ public class PsychologistController : Controller
 
 		if(!ModelState.IsValid)
 		{
-			return BadRequest();
+			return BadRequest(ModelState);
 		}
 
 		return Ok(_mapper.Map<PsychologistDTO>(psychologist));
 	}
 
 	[HttpGet( "{psychologistId}/patients" )]
-	[ProducesResponseType(200)]
-	[ProducesResponseType(404)]
-	public async Task<IActionResult> GetPsychologistPatients(int psychologistId)
+	[ProducesResponseType(StatusCodes.Status200OK )]
+    [ProducesResponseType( StatusCodes.Status400BadRequest )]
+    [ProducesResponseType( StatusCodes.Status404NotFound )]
+    public async Task<IActionResult> GetPsychologistPatients(int psychologistId)
 	{
 		if(!await _psychologistRepository.PsychologistExist(psychologistId))
 		{
@@ -85,9 +89,9 @@ public class PsychologistController : Controller
 	}
 	//Post
 	[HttpPost( "create" )]
-	[ProducesResponseType(201)]
-	[ProducesResponseType(400)]
-	public async Task<IActionResult> CreatePsychologist([FromBody] PsychologistDTO newPsychologist)
+    [ProducesResponseType( StatusCodes.Status400BadRequest )]
+    [ProducesResponseType( StatusCodes.Status201Created )]
+    public async Task<IActionResult> CreatePsychologist([FromBody] PsychologistDTO newPsychologist)
 	{
 		if(newPsychologist == null)
 		{
@@ -102,31 +106,31 @@ public class PsychologistController : Controller
 
 		if(!ModelState.IsValid)
 		{
-			return BadRequest();
+			return BadRequest(ModelState);
 		}
 
 		var psychologist = _mapper.Map<Psychologist>(newPsychologist);
 		if(! await _psychologistRepository.CreatePsychologist(psychologist))
 		{
-			ModelState.AddModelError( "", "Something went wrong while saving psychologist." );
+			ModelState.AddModelError( "Error", "Something went wrong while saving psychologist." );
 			return StatusCode(500,ModelState);
 		}
 
-		return Ok( "Successfully created psychologist" );
+		return Created( "Successfully created psychologist",psychologist );
 
 	}
 
 	//Put
     [HttpPut( "{psychologistId}" )]
-    [ProducesResponseType( 204 )]
-    [ProducesResponseType( 400 )]
-    [ProducesResponseType( 404 )]
+    [ProducesResponseType( StatusCodes.Status204NoContent )]
+    [ProducesResponseType( StatusCodes.Status400BadRequest )]
+    [ProducesResponseType( StatusCodes.Status404NotFound )]
     public async Task<IActionResult> UpdatePsychologist (int psychologistId,[FromBody] PsychologistDTO updatedPsychologist)
 
     {
         if (updatedPsychologist == null)
         {
-            return BadRequest( ModelState );
+            return NotFound();
 
         }
         if (psychologistId != updatedPsychologist.Id)
@@ -141,14 +145,14 @@ public class PsychologistController : Controller
 
         if (!ModelState.IsValid)
         {
-            return BadRequest();
+            return BadRequest(ModelState);
         }
 
         var psychologist = _mapper.Map<Psychologist>( updatedPsychologist );       
 
         if (!await _psychologistRepository.UpdatePsychologist( psychologist ))
         {
-            ModelState.AddModelError( "", "Something went wrong updating psychologist" );
+            ModelState.AddModelError( "Error", "Something went wrong updating psychologist" );
             return StatusCode( 500, ModelState );
         }
 
@@ -158,9 +162,9 @@ public class PsychologistController : Controller
 
 	//Delte
     [HttpDelete( "{psychologistId}" )]
-    [ProducesResponseType( 400 )]
-    [ProducesResponseType( 204 )]
-    [ProducesResponseType( 404 )]
+    [ProducesResponseType( StatusCodes.Status204NoContent )]
+    [ProducesResponseType( StatusCodes.Status400BadRequest )]
+    [ProducesResponseType( StatusCodes.Status404NotFound )]
     public async Task<IActionResult> DeletePsychologist(int psychologistId)
     {
         if (!await _psychologistRepository.PsychologistExist( psychologistId ))
@@ -181,7 +185,7 @@ public class PsychologistController : Controller
 
         if (!await _psychologistRepository.DeletePsychologist( psychologistToDelete ))
         {
-            ModelState.AddModelError( "", "Something went wrong when deleting psychologist." );
+            ModelState.AddModelError( "Error", "Something went wrong when deleting psychologist." );
             return StatusCode( 500, ModelState );
         }
 

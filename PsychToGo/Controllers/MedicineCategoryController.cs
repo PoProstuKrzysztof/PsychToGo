@@ -19,7 +19,8 @@ public class MedicineCategoryController : Controller
     }
 
     [HttpGet( "list" )]
-    [ProducesResponseType( 200, Type = typeof( ICollection<MedicineCategory> ) )]
+    [ProducesResponseType( StatusCodes.Status200OK, Type = typeof( ICollection<MedicineCategory> ) )]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetMedicinesCategories()
     {
         var medicinesCategories = await _medicineCategoryRepository.GetMedicinesCategories();
@@ -31,15 +32,16 @@ public class MedicineCategoryController : Controller
 
         if (!ModelState.IsValid)
         {
-            return BadRequest();
+            return BadRequest(ModelState );
         }
 
         return Ok( _mapper.Map<List<MedicineCategoryDTO>>( medicinesCategories ) );
     }
 
     [HttpGet( "medicines/{categoryName}" )]
-    [ProducesResponseType( 200, Type = typeof( ICollection<Medicine> ) )]
-    [ProducesResponseType( 400 )]
+    [ProducesResponseType( StatusCodes.Status200OK, Type = typeof( ICollection<Medicine> ) )]
+    [ProducesResponseType( StatusCodes.Status400BadRequest )]
+    [ProducesResponseType( StatusCodes.Status404NotFound )]
     public async Task<IActionResult> GetMedicinesByCategory(string categoryName)
     {
         if (!await _medicineCategoryRepository.MedicinneCategoryExist( categoryName ))
@@ -55,7 +57,7 @@ public class MedicineCategoryController : Controller
 
         if (!ModelState.IsValid)
         {
-            return BadRequest();
+            return BadRequest(ModelState ) ;
         }
 
         return Ok( _mapper.Map<List<MedicineDTO>>( medicines ) );
@@ -63,7 +65,9 @@ public class MedicineCategoryController : Controller
     }
 
     [HttpGet( "{categoryName}" )]
-    [ProducesResponseType( 200, Type = typeof( MedicineCategory ) )]
+    [ProducesResponseType( StatusCodes.Status200OK, Type = typeof( MedicineCategory ) )]
+    [ProducesResponseType(StatusCodes.Status400BadRequest )]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetMedicineCategory(string categoryName)
     {
         if (!await _medicineCategoryRepository.MedicinneCategoryExist( categoryName ))
@@ -80,15 +84,15 @@ public class MedicineCategoryController : Controller
 
         if (!ModelState.IsValid)
         {
-            return BadRequest();
+            return BadRequest(ModelState );
         }
 
         return Ok( _mapper.Map<MedicineCategoryDTO>( medicineCategory ) );
     }
 
     [HttpPost("create")]
-    [ProducesResponseType( 201 )]
-    [ProducesResponseType( 400 )]
+    [ProducesResponseType( StatusCodes.Status201Created )]
+    [ProducesResponseType( StatusCodes.Status400BadRequest )]
     public async Task<IActionResult> CreateCategory([FromBody] MedicineCategoryDTO newCategory)
     {
         if(newCategory == null)
@@ -98,19 +102,19 @@ public class MedicineCategoryController : Controller
 
         if(await _medicineCategoryRepository.CheckDuplicate(newCategory))
         {
-            ModelState.AddModelError( "", "Category already exists." );
+            ModelState.AddModelError( "Error", "Category already exists." );
             return StatusCode( 422, ModelState );
         }
 
         if(!ModelState.IsValid)
         {
-            return BadRequest();
+            return BadRequest(ModelState );
         }
 
         var categoryMap = _mapper.Map<MedicineCategory>( newCategory );
         if(! await _medicineCategoryRepository.CreateCategory(categoryMap))
         {
-            ModelState.AddModelError( "", "Something went wrong while saving category." );
+            ModelState.AddModelError( "Error", "Something went wrong while saving category." );
               return StatusCode(500,ModelState );
         }
 
@@ -118,9 +122,9 @@ public class MedicineCategoryController : Controller
     }
 
     [HttpPut( "{medicineCategoryId}" )]
-    [ProducesResponseType( 204 )]
-    [ProducesResponseType( 400 )]
-    [ProducesResponseType( 404 )]
+    [ProducesResponseType( StatusCodes.Status204NoContent )]
+    [ProducesResponseType( StatusCodes.Status400BadRequest )]
+    [ProducesResponseType( StatusCodes.Status404NotFound )]
     public async Task<IActionResult> UpdateMedicineCategory(int medicineCategoryId,[FromBody] MedicineCategoryDTO updatedMedicineCategory)
 
     {
@@ -141,14 +145,14 @@ public class MedicineCategoryController : Controller
 
         if (!ModelState.IsValid)
         {
-            return BadRequest();
+            return BadRequest(ModelState );
         }
 
         var medicineCategory = _mapper.Map<MedicineCategory>( updatedMedicineCategory );
 
         if (!await _medicineCategoryRepository.UpdateCategory(medicineCategory))
         {
-            ModelState.AddModelError( "", "Something went wrong updating medicineCategory" );
+            ModelState.AddModelError( "Error", "Something went wrong updating medicineCategory" );
             return StatusCode( 500, ModelState );
         }
 
@@ -157,9 +161,9 @@ public class MedicineCategoryController : Controller
 
 
     [HttpDelete( "{medicineCategoryId}" )]
-    [ProducesResponseType( 400 )]
-    [ProducesResponseType( 204 )]
-    [ProducesResponseType( 404 )]
+    [ProducesResponseType( StatusCodes.Status204NoContent )]
+    [ProducesResponseType( StatusCodes.Status400BadRequest )]
+    [ProducesResponseType( StatusCodes.Status404NotFound )]
     public async Task<IActionResult> DeleteMedicineCategory(int medicineCategoryId)
     {
         if (!await _medicineCategoryRepository.MedicineCategoryExistById( medicineCategoryId ))
@@ -180,7 +184,7 @@ public class MedicineCategoryController : Controller
 
         if (!await _medicineCategoryRepository.DeleteCategory( medicineCategoryToDelete ))
         {
-            ModelState.AddModelError( "", "Something went wrong when deleting medicine category." );
+            ModelState.AddModelError( "Error", "Something went wrong when deleting medicine category." );
             return StatusCode( 500, ModelState );
         }
 

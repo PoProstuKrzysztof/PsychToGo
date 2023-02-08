@@ -22,7 +22,7 @@ public class MedicineController : Controller
     }
 
     [HttpGet( "list" )]
-    [ProducesResponseType(200,Type = typeof(ICollection<Medicine>))]
+    [ProducesResponseType(StatusCodes.Status200OK,Type = typeof(ICollection<Medicine>))]
     public async Task<IActionResult> GetMedicines()
     {
         var medicines = await _medicineRepository.GetMedicines();
@@ -36,7 +36,7 @@ public class MedicineController : Controller
 
 
     [HttpGet("{medicineId}/inStock")]
-    [ProducesResponseType(200)]
+    [ProducesResponseType( StatusCodes.Status200OK )]
     [ProducesResponseType(400)]
     public async Task<IActionResult> GetMedicineInStock(int medicineId)
     {
@@ -57,7 +57,7 @@ public class MedicineController : Controller
     }
 
     [HttpGet("{medicineId}/ExpireDate")]
-    [ProducesResponseType(200)]
+    [ProducesResponseType(StatusCodes.Status200OK )]
     [ProducesResponseType( 400)]
     public async Task<IActionResult> GetMedicineExpireDate(int medicineId)
     {
@@ -82,7 +82,7 @@ public class MedicineController : Controller
     }
 
     [HttpGet("{id}")]
-    [ProducesResponseType(200,Type = typeof( MedicineDTO ) )]
+    [ProducesResponseType(StatusCodes.Status200OK,Type = typeof( MedicineDTO ) )]
     [ProducesResponseType(400)]
     public async Task<IActionResult> GetMedicineById(int id)
     {
@@ -107,8 +107,8 @@ public class MedicineController : Controller
 
 
     [HttpPost( "create" )]
-    [ProducesResponseType( 201 )]
-    [ProducesResponseType( 400 )]
+    [ProducesResponseType( StatusCodes.Status201Created )]
+    [ProducesResponseType( StatusCodes.Status400BadRequest )]
     public async Task<IActionResult> CreateMedicine([FromBody] MedicineDTO newMedicine)
     {
         if (newMedicine == null)
@@ -131,16 +131,19 @@ public class MedicineController : Controller
         medicine.Category = await _medicineCategoryRepository.GetMedicineCategoryById( newMedicine.CategoryId );
         if (!await _medicineRepository.CreateMedicine(newMedicine.CategoryId, medicine ))
         {
-            ModelState.AddModelError( "", "Something went wrong while saving medicine." );
+            ModelState.AddModelError( "Error", "Something went wrong while saving medicine." );
             return StatusCode( 500, ModelState );
         }
 
-        return Ok( "Successfully created medicine" );
+        return Created( "Successfully created medicine",medicine );
 
     }
 
 
     [HttpPut("{medicineId}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType( StatusCodes.Status400BadRequest )]
     public async Task<IActionResult> UpdateMedicine(int medicineId,[FromBody] MedicineDTO updatedMedicine)
     {
         if(updatedMedicine == null)
@@ -169,7 +172,7 @@ public class MedicineController : Controller
         
         if(! await _medicineRepository.UpdateMedicine(updatedMedicine.CategoryId, medicine))
         {
-            ModelState.AddModelError( "", "Something went wrong while updating category" );
+            ModelState.AddModelError( "Error", "Something went wrong while updating category" );
             return StatusCode( 500, ModelState );
         }
 
@@ -177,9 +180,9 @@ public class MedicineController : Controller
     }
 
     [HttpDelete( "{medicineId}" )]
-    [ProducesResponseType( 400 )]
-    [ProducesResponseType( 204 )]
-    [ProducesResponseType( 404 )]
+    [ProducesResponseType( StatusCodes.Status204NoContent )]
+    [ProducesResponseType( StatusCodes.Status400BadRequest )]
+    [ProducesResponseType( StatusCodes.Status404NotFound )]
     public async Task<IActionResult> DeleteMedicine(int medicineId)
     {
         if (!await _medicineRepository.MedicineExists( medicineId ))
@@ -200,7 +203,7 @@ public class MedicineController : Controller
 
         if (!await _medicineRepository.DeleteMedicine( medicineToDelete ))
         {
-            ModelState.AddModelError( "", "Something went wrong when deleting medicine." );
+            ModelState.AddModelError( "Error", "Something went wrong when deleting medicine." );
             return StatusCode( 500, ModelState );
         }
 

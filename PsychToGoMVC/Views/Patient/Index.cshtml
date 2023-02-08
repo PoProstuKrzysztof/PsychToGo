@@ -1,4 +1,4 @@
-﻿@model IQueryable<PsychToGoMVC.Models.PatientViewModel>
+﻿@model IEnumerable<PsychToGoMVC.Models.PatientViewModel>
 
 @{
     ViewData["Title"] = "Patients";
@@ -14,22 +14,22 @@
         <tr>
 
             <th>
-                @Model.Select(m => m.Name)
+                @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Model.Select(m => m.LastName)
+                @Html.DisplayNameFor(model => model.LastName)
             </th>
             <th>
-                @Model.Select(m => m.Email)
+                @Html.DisplayNameFor(model => model.Email)
             </th>
             <th>
-                @Model.Select(m => m.Phone)
+                @Html.DisplayNameFor(model => model.Phone)
             </th>
             <th>
-                @Model.Select(m => m.DateOfBirth)
+                @Html.DisplayNameFor(model => model.DateOfBirth)
             </th>
             <th>
-                @Model.Select(m => m.Address)
+                @Html.DisplayNameFor(model => model.Address)
             </th>
             <th>
                 Operations
@@ -60,7 +60,7 @@
                     @Html.DisplayFor(modelItem => patient.Address)
                 </td>
                 <td class="btn-group">
-                    <a class="btn btn-warning btn-sm" asp-action="EditPatient"  asp-route-id="@patient.Id">Edit</a>
+                    <a class="btn btn-warning btn-sm" asp-action="EditPatient" asp-route-id="@patient.Id">Edit</a>
                     <a class="btn btn-danger btn-sm" asp-action="DeletePatient" asp-route-id="@patient.Id">Delete</a>
                 </td>
             </tr>

@@ -37,10 +37,10 @@ public class PatientViewModel
 
     [Required(ErrorMessage = "You have to choose psychologist")]
     public virtual int PsychologistId { get; set; }
-    [Required( ErrorMessage = "You have to choose medicines" )]
-    public virtual int MedicineId { get; set; }
     
-    [Required( ErrorMessage = "You have to choose psychiatrist" )]
-    public virtual int PsychiatristId { get; set; }
+    public virtual int? MedicineId { get; set; }
+    
+    
+    public virtual int? PsychiatristId { get; set; }
 }
 

@@ -1,14 +1,17 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using PsychToGo.Models;
+using PsychToGo.Models.Identity;
 
 namespace PsychToGo.Data;
 
-public class AppDbContext : DbContext
+public class AppDbContext : IdentityDbContext<AppUser>
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base( options )
     {
     }
 
+    public DbSet<AppUser> ApplicationUsers { get; set; }
     public DbSet<LocalUser> LocalUsers { get; set; }
     public DbSet<Patient> Patients { get; set; }
     public DbSet<Psychiatrist> Psychiatrists { get; set; }

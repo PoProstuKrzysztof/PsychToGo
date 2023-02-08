@@ -18,6 +18,8 @@ public class UsersController : Controller
     }
 
     [HttpPost("login")]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType( StatusCodes.Status200OK )]
     public async Task<IActionResult> Login([FromBody] LoginRequestDTO loginRequest)
     {
         var loginResponse = await _repository.Login(loginRequest);
@@ -30,6 +32,8 @@ public class UsersController : Controller
     }
 
     [HttpPost( "register" )]
+    [ProducesResponseType( StatusCodes.Status400BadRequest )]
+    [ProducesResponseType( StatusCodes.Status200OK )]
     public async Task<IActionResult> Register([FromBody] RegistrationRequestDTO registrationRequest)
     {
         bool userNameUnique = _repository.IsUniqueUser(registrationRequest.UserName);
