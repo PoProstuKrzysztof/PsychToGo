@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -16,7 +17,14 @@ var builder = WebApplication.CreateBuilder( args );
 // Add services to the container.
 
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.CacheProfiles.Add( "Cache60",
+        new CacheProfile()
+        {
+            Duration = 60
+        } );
+} );
 
 builder.Services.AddScoped<IPsychologistRepository, PsychologistsRepository>();
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
