@@ -7,6 +7,7 @@ using PsychToGo.DTO;
 using PsychToGo.Models.Identity;
 using PsychToGoMVC.DTO;
 using PsychToGoMVC.Services.Interfaces;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace PsychToGoMVC.Controllers;
@@ -37,10 +38,12 @@ public class AuthController : Controller
         {
            
             LoginResponseDTO model = JsonConvert.DeserializeObject<LoginResponseDTO>( response );
-            
+            var handler = new JwtSecurityTokenHandler();
+            var jwt = handler.ReadJwtToken(model.Token);
+
             var identity = new ClaimsIdentity( CookieAuthenticationDefaults.AuthenticationScheme );
-            identity.AddClaim(new Claim(ClaimTypes.Name, model.User.UserName));
-            identity.AddClaim( new Claim( ClaimTypes.Role, model.Role ));
+            identity.AddClaim(new Claim(ClaimTypes.Name, jwt.Claims.FirstOrDefault(u => u.Type =="name").Value));
+            identity.AddClaim( new Claim( ClaimTypes.Role, jwt.Claims.FirstOrDefault(u => u.Type == "role").Value));
 
             var principal = new ClaimsPrincipal( identity );
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal );

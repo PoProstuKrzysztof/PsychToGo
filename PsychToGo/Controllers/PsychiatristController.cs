@@ -21,7 +21,7 @@ public class PsychiatristController : Controller
     }
 
     [HttpGet( "list" )]
-    
+    [ResponseCache( CacheProfileName = "Cache60" )]
     [ProducesResponseType( StatusCodes.Status200OK, Type = typeof( ICollection<Psychiatrist> ) )]
     [ProducesResponseType( StatusCodes.Status400BadRequest )]
     [ProducesResponseType( StatusCodes.Status404NotFound )]

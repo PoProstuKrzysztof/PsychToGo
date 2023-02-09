@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -35,6 +36,19 @@ builder.Services.AddIdentity<AppUser,IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddRoles<IdentityRole>()
     .AddDefaultTokenProviders();
+
+builder.Services.AddAuthentication( CookieAuthenticationDefaults.AuthenticationScheme )
+    .AddCookie( options =>
+    {
+        options.Cookie.HttpOnly = true;
+        options.AccessDeniedPath = "/Auth/AccessDenied";
+        options.LoginPath = "/Auth/Login";
+
+        options.ExpireTimeSpan = TimeSpan.FromMinutes( 15 );
+
+        options.SlidingExpiration = true;
+    } );
+
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen( options =>

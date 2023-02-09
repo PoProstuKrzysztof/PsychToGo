@@ -22,7 +22,9 @@ public class MedicineController : Controller
     }
 
     [HttpGet( "list" )]
+    [ResponseCache( CacheProfileName = "Cache60" )]
     [ProducesResponseType(StatusCodes.Status200OK,Type = typeof(ICollection<Medicine>))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetMedicines()
     {
         var medicines = await _medicineRepository.GetMedicines();
@@ -36,8 +38,10 @@ public class MedicineController : Controller
 
 
     [HttpGet("{medicineId}/inStock")]
+    [ResponseCache( CacheProfileName = "Cache60" )]
     [ProducesResponseType( StatusCodes.Status200OK )]
-    [ProducesResponseType(400)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType( StatusCodes.Status404NotFound )]
     public async Task<IActionResult> GetMedicineInStock(int medicineId)
     {
         if(!await _medicineRepository.MedicineExists(medicineId))
@@ -58,7 +62,8 @@ public class MedicineController : Controller
 
     [HttpGet("{medicineId}/ExpireDate")]
     [ProducesResponseType(StatusCodes.Status200OK )]
-    [ProducesResponseType( 400)]
+    [ProducesResponseType( StatusCodes.Status400BadRequest )]
+    [ProducesResponseType( StatusCodes.Status404NotFound )]
     public async Task<IActionResult> GetMedicineExpireDate(int medicineId)
     {
         if(!await _medicineRepository.MedicineExists(medicineId))
@@ -83,7 +88,8 @@ public class MedicineController : Controller
 
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK,Type = typeof( MedicineDTO ) )]
-    [ProducesResponseType(400)]
+    [ProducesResponseType( StatusCodes.Status400BadRequest )]
+    [ProducesResponseType( StatusCodes.Status404NotFound )]
     public async Task<IActionResult> GetMedicineById(int id)
     {
         if(! await _medicineRepository.MedicineExists(id))
@@ -113,7 +119,7 @@ public class MedicineController : Controller
     {
         if (newMedicine == null)
         {
-            return BadRequest( ModelState );
+            return NotFound();
         }
 
         if (await _medicineRepository.CheckDuplicate( newMedicine ))
@@ -124,7 +130,7 @@ public class MedicineController : Controller
 
         if (!ModelState.IsValid)
         {
-            return BadRequest();
+            return BadRequest(ModelState);
         }
 
         var medicine = _mapper.Map<Medicine>( newMedicine );
@@ -148,7 +154,7 @@ public class MedicineController : Controller
     {
         if(updatedMedicine == null)
         {
-            return BadRequest( ModelState );
+            return NotFound();
         }
 
         if(medicineId != updatedMedicine.Id )

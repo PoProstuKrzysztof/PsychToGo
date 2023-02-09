@@ -20,7 +20,7 @@ public class PsychiatristController : Controller
         client = new HttpClient();
         client.BaseAddress = baseAdress;
     }
-    [Authorize]
+    
     public IActionResult Index()
     {
         List<PsychiatristDTO> psychiatrists = new List<PsychiatristDTO>();
@@ -40,13 +40,14 @@ public class PsychiatristController : Controller
     }
 
     [HttpGet]
-    
+    [Authorize(Roles = "admin")]
     public IActionResult CreatePsychiatristMVC()
     {
         return View();
     }
 
-    [HttpPost]    
+    [HttpPost]
+    [Authorize( Roles = "admin" )]
     [ValidateAntiForgeryToken]
     public IActionResult CreatePsychiatristMVC(PsychiatristDTO pvm )
     {
@@ -65,6 +66,7 @@ public class PsychiatristController : Controller
 
 
     [HttpGet]
+    [Authorize( Roles = "admin" )]
     public IActionResult DeletePsychiatrist([FromRoute] int id)
     {
         HttpResponseMessage response = client.DeleteAsync( client.BaseAddress + $"/{id}" ).Result;
@@ -76,7 +78,8 @@ public class PsychiatristController : Controller
         return BadRequest();
     }
 
-    [HttpGet] 
+    [HttpGet]
+    [Authorize( Roles = "admin" )]
     public async Task<IActionResult> EditPsychiatrist([FromRoute] int id)
     {
         PsychiatristDTO psychiatrist = await client.GetFromJsonAsync<PsychiatristDTO>( client.BaseAddress + $"/{id}" );
@@ -90,6 +93,7 @@ public class PsychiatristController : Controller
     }
 
     [HttpPost]
+    [Authorize( Roles = "admin" )]
     [ValidateAntiForgeryToken]
     public IActionResult EditPsychiatrist(PsychiatristDTO psychiatrist)
     {

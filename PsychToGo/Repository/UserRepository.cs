@@ -68,7 +68,7 @@ public class UserRepository : IUserRepository
         {
             Subject = new ClaimsIdentity( new Claim[]
             {
-                new Claim( ClaimTypes.Name, user.Id.ToString() ),
+                new Claim( ClaimTypes.Name, user.UserName.ToString() ),
                 //Adding roles to user, for now its first role that iterator encounters
                 new Claim( ClaimTypes.Role, roles.FirstOrDefault() )
             } ),
@@ -80,8 +80,8 @@ public class UserRepository : IUserRepository
         LoginResponseDTO loginResponse = new LoginResponseDTO()
         {
             Token = tokenHandler.WriteToken( token ),
-            User = _mapper.Map<UserDTO>( user ),
-            Role = roles.FirstOrDefault()
+            User = _mapper.Map<UserDTO>( user )
+            
         };
 
         return loginResponse;

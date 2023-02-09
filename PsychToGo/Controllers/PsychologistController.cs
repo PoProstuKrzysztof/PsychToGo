@@ -24,7 +24,8 @@ public class PsychologistController : Controller
 	//Get
 
 	[HttpGet( "list" )]
-	[ProducesResponseType(StatusCodes.Status200OK,Type = typeof(ICollection<Psychologist>))]
+    [ResponseCache( CacheProfileName = "Cache60" )]
+    [ProducesResponseType(StatusCodes.Status200OK,Type = typeof(ICollection<Psychologist>))]
     [ProducesResponseType( StatusCodes.Status400BadRequest )]
     [ProducesResponseType( StatusCodes.Status404NotFound )]
     public async Task<IActionResult> GetAllPsychologists()

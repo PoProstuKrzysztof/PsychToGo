@@ -13,6 +13,7 @@ namespace PsychToGo.Controllers;
 
 [Route( "api/[controller]" )]
 [ApiController]
+
 public class PatientController : Controller
 {
     private readonly IPatientRepository _patientRepository;
@@ -62,6 +63,7 @@ public class PatientController : Controller
 
 
     [HttpGet( "patients" )]
+    [ResponseCache( CacheProfileName = "Cache60" )]
     [ProducesResponseType( StatusCodes.Status200OK, Type = typeof( ICollection<Patient> ) )]
     [ProducesResponseType( StatusCodes.Status400BadRequest )]
     [ProducesResponseType( StatusCodes.Status404NotFound )]

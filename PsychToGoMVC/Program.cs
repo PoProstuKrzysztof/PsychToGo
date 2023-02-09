@@ -23,17 +23,7 @@ builder.Services.AddSingleton<IHttpContextAccessor,HttpContextAccessor>();
 
 
 builder.Services.AddDistributedMemoryCache();
-builder.Services.AddAuthentication( CookieAuthenticationDefaults.AuthenticationScheme )
-    .AddCookie( options =>
-    {
-        options.Cookie.HttpOnly = true;
-        options.AccessDeniedPath = "/Auth/AccessDenied";
-        options.LoginPath= "/Auth/Login";
-        
-        options.ExpireTimeSpan = TimeSpan.FromMinutes( 15 );
 
-        options.SlidingExpiration = true;
-    } );
 
 
 
