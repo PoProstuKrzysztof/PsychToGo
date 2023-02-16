@@ -50,6 +50,8 @@ public class PatientController : Controller
         var newPatient = new PatientViewModel();
         newPatient.Psychologists = await _patientService.PsychologistsList();
         newPatient.Psychiatrists = await _patientService.PsychiatristsList();
+        newPatient.MedicinesId = await _patientService.MedicinesList();
+        newPatient.MedicinesId = new List<int>();
         return View(newPatient);
     }
 

@@ -41,7 +41,7 @@ public class PatientViewModel
     public virtual int PsychologistId { get; set; }
     public ICollection<PsychologistDTO> Psychologists { get; set; }
     
-    public virtual int MedicineId { get; set; }
+    public List<int> MedicinesId { get; set; }
     public ICollection<MedicineDTO> Medicines { get; set; }
 
     public virtual int PsychiatristId { get; set; }

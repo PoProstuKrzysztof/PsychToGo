@@ -24,7 +24,7 @@ public class PatientService : IPatientService
 
         Patient? findPatient = await client.GetFromJsonAsync<Patient>( client.BaseAddress + $"/{id}" );
 
-        List<Medicine>? medicine = await client.GetFromJsonAsync<List<Medicine>>( client.BaseAddress + $"/{id}/medicines" );
+        List<Medicine>? medicines = await client.GetFromJsonAsync<List<Medicine>>( client.BaseAddress + $"/{id}/medicines" );
 
         int psychiatristId = await client.GetFromJsonAsync<int>( client.BaseAddress + $"/{id}/psychiatrist" );
 
@@ -40,7 +40,7 @@ public class PatientService : IPatientService
             Phone = findPatient.Phone,
             PsychiatristId = psychiatristId,
             PsychologistId = psychologistId,
-            MedicineId = medicine.First().Id
+            MedicinesId = medicines
         };
 
         return parsedPatient;

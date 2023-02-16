@@ -13,5 +13,6 @@ public interface IPatientService
 
     Task<ICollection<PsychologistDTO>> PsychologistsList();
     Task<ICollection<PsychiatristDTO>> PsychiatristsList();
+    Task<ICollection<MedicineDTO>> MedicinesList();
 
 }
