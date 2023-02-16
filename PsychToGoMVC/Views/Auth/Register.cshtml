@@ -17,25 +17,32 @@
         </div>
         <div class="row">
             <div class="col-6 offset-3 pb-3" >
-                <input asp-for="UserName" type="text" class="form-control" placeholder="Username..." />
+                <input asp-for="UserName" type="text" class="form-control" placeholder="E-mail..." />
+                <span asp-validation-for="UserName" class="text-danger"></span>
             </div>
              <div class="col-6 offset-3 pb-3" >
                 <input asp-for="Name" type="text" class="form-control" placeholder="Name..." />
+                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="col-6 offset-3 pb-3">
                 <input asp-for="Password" type="password" class="form-control" placeholder="Password..." />
+                <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="col-6 offset-3 pb-3">
-                <button type="submit" class="btn-success form-control" value="Submit">Register</button>
+                <button type="submit" class="btn btn-success form-control" value="Submit">Register</button>
             </div>
         </div>
     </div>
    
-   
-   
-   
+  
   
 </form>
+
+
+<div class="container text-center">
+    <b>Already registered?</b>
+    <a asp-action="Login" asp-controller="Auth" class="link-dark">Login</a>
+</div>
 
 @section Scripts {
     @{

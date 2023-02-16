@@ -1,6 +1,5 @@
 ﻿
 using PsychToGo.DTO;
-using PsychToGoMVC.DTO;
 
 namespace PsychToGoMVC.Services.Interfaces;
 

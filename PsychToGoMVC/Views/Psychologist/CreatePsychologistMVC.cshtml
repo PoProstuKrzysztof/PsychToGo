@@ -4,11 +4,11 @@
     ViewData["Title"] = "Create psychologist";
 }
 
-<h1>Create psychologist</h1>
+<h1 class="text-center text-black">Create Psychologist</h1>
 
 <hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="row ">
+    <div class="col-md-3 ">
         <form method="post" asp-antiforgery="true" class="was-validated">
             <div asp-validation-summary="All" class="text-danger"></div>            
             <div class="form-floating mb-3 mt-3">
@@ -44,9 +44,9 @@
                 <label asp-for="Address" class="control-label">Address</label>
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
-            <div class="btn-group mb-2 mt-2">
-                <button asp-action="CreatePsychologistMVC" class="btn btn-outline-primary mt-1">Create</button>
-                <a class="btn btn-outline-primary" asp-action="Index">Back</a>
+            <div class="mb-2 mt-2">
+                <button class="btn btn-outline-primary"  asp-action="CreatePsychologistMVC">Create</button>
+                <button class="btn btn-outline-primary" asp-action="Index">Back</button>
             </div>
         </form>
     </div>

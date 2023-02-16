@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PsychToGo.DTO;
@@ -40,7 +41,7 @@ public class PsychiatristController : Controller
     }
 
     [HttpGet]
-    [Authorize(Roles = "admin")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public IActionResult CreatePsychiatristMVC()
     {
         return View();

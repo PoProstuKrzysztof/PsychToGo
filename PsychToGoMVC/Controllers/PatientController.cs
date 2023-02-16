@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PsychToGo.DTO;
 using PsychToGo.Models;
@@ -22,7 +23,7 @@ public class PatientController : Controller
         client.BaseAddress = baseAdress;
     }
 
-    
+    [Authorize(Roles = "admin")]
     public IActionResult Index()
     {
         List<PatientViewModel> patients = new List<PatientViewModel>();

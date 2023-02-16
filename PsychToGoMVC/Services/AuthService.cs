@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
 using Newtonsoft.Json;
 using PsychToGo.DTO;
-using PsychToGoMVC.DTO;
 using PsychToGoMVC.Services.Interfaces;
 using System.Text;
 

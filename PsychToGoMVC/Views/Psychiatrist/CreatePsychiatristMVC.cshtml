@@ -4,7 +4,7 @@
     ViewData["Title"] = "Create psychiatrist";
 }
 
-<h1>Create psychiatrist</h1>
+<h1 class="text-center text-black">Create Psychiatrist</h1>
 
 <hr />
 <div class="row">
@@ -45,7 +45,7 @@
                 <label asp-for="Address" class="control-label">Address</label>
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
-            <div class="btn-group mb-2 mt-2">
+            <div class="mb-2 mt-2">
 
                 <button asp-action="CreatePsychiatristMVC" class="btn btn-outline-primary ">Create</button>
                 <a class="btn btn-outline-primary" asp-action="Index">Back</a>

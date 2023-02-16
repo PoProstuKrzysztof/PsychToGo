@@ -24,6 +24,7 @@ public class PatientViewModel
 
     [Required]
     [Phone(ErrorMessage = "Invalid phone number")]
+    [RegularExpression("^[0-9]*$", ErrorMessage ="Wrong phone number")]
     [StringLength(12, MinimumLength = 9, ErrorMessage = "Phone number is too short!")]
     public string Phone { get; set; } = string.Empty;
   

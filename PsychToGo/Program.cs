@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,10 +14,9 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder( args );
 
-// Add services to the container.
 
-
-builder.Services.AddControllers(options =>
+//CACHING
+builder.Services.AddControllers( options =>
 {
     options.CacheProfiles.Add( "Cache60",
         new CacheProfile()
@@ -34,28 +33,15 @@ builder.Services.AddScoped<IPsychiatristRepository, PsychiatristRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 
-builder.Services.AddScoped<DbContext, AppDbContext>();
-builder.Services.AddAutoMapper( AppDomain.CurrentDomain.GetAssemblies() );
-builder.Services.AddTransient<DataSeed>();
-
-
-
-builder.Services.AddIdentity<AppUser,IdentityRole>()
+builder.Services.AddIdentity<AppUser, IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddRoles<IdentityRole>()
     .AddDefaultTokenProviders();
 
-builder.Services.AddAuthentication( CookieAuthenticationDefaults.AuthenticationScheme )
-    .AddCookie( options =>
-    {
-        options.Cookie.HttpOnly = true;
-        options.AccessDeniedPath = "/Auth/AccessDenied";
-        options.LoginPath = "/Auth/Login";
+builder.Services.AddScoped<DbContext, AppDbContext>();
+builder.Services.AddAutoMapper( AppDomain.CurrentDomain.GetAssemblies() );
+builder.Services.AddTransient<DataSeed>();
 
-        options.ExpireTimeSpan = TimeSpan.FromMinutes( 15 );
-
-        options.SlidingExpiration = true;
-    } );
 
 
 builder.Services.AddEndpointsApiExplorer();
@@ -74,7 +60,7 @@ builder.Services.AddSwaggerGen( options =>
 
     options.AddSecurityRequirement( new OpenApiSecurityRequirement()
     {
-        { 
+        {
             new OpenApiSecurityScheme
             {
                 Reference = new OpenApiReference
@@ -88,23 +74,25 @@ builder.Services.AddSwaggerGen( options =>
             },
             new List<string>()
         }
-        
-    });
+
+    } );
 
 } );
 
 var key = builder.Configuration.GetValue<string>( "ApiSettings:Secret" );
 
-builder.Services.AddAuthentication( j =>
+
+
+builder.Services.AddAuthentication( options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+} )
+    .AddJwtBearer( JWTOptions =>
     {
-        j.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        j.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    } )
-    .AddJwtBearer( x =>
-    {
-        x.RequireHttpsMetadata = false;
-        x.SaveToken = true;
-        x.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+        JWTOptions.RequireHttpsMetadata = false;
+        JWTOptions.SaveToken = true;
+        JWTOptions.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey( Encoding.ASCII.GetBytes( key ) ),
@@ -112,6 +100,9 @@ builder.Services.AddAuthentication( j =>
             ValidateAudience = false
         };
     } );
+
+
+
 
 builder.Services.AddDbContext<AppDbContext>( options =>
 {

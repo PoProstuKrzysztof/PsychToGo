@@ -4,7 +4,8 @@
     ViewData["Title"] = "Psychologists";
 }
 
-<h1>Psychologists</h1>
+<div class="container border p-5">
+   <h1 class="text-primary">Psychologists</h1>
 <hr />
 <p>
     <a class="btn btn-outline-primary" asp-action="CreatePsychologistMVC">Create New</a>
@@ -58,7 +59,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => psychologist.Address)
                 </td>
-                <td class="btn-group">
+                <td >
                     <a class="btn btn-warning btn-sm" asp-action="EditPsychologist" asp-route-id="@psychologist.Id">Edit</a>
                     <a class="btn btn-danger btn-sm" asp-action="DeletePsychologist" asp-route-id="@psychologist.Id">Delete</a>
                 </td>
@@ -66,3 +67,5 @@
         }
     </tbody>
 </table>
+
+</div>

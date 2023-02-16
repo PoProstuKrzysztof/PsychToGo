@@ -1,36 +1,37 @@
-using PsychToGo.Interfaces;
-using PsychToGo.Repository;
 using PsychToGoMVC.Services;
 using PsychToGoMVC.Services.Interfaces;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PsychToGo.Data;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using PsychToGoMVC.Controllers;
+using Microsoft.AspNetCore.Identity;
 using PsychToGo.Models.Identity;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder( args );
-var connectionString = builder.Configuration.GetConnectionString("AppDbContextConnection") ?? throw new InvalidOperationException("Connection string 'AppDbContextConnection' not found.");
+var connectionString = builder.Configuration.GetConnectionString( "AppDbContextConnection" ) ?? throw new InvalidOperationException( "Connection string 'AppDbContextConnection' not found." );
 
-builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<AppDbContext>( options => options.UseSqlServer( connectionString ) );
 
 
-// Add services to the container.
+//Identity 
 builder.Services.AddControllersWithViews();
-builder.Services.AddScoped<IPatientService,PatientService>();
-builder.Services.AddScoped<IAuthService,AuthService>();
-builder.Services.AddSingleton<IHttpContextAccessor,HttpContextAccessor>();
+builder.Services.AddScoped<IPatientService, PatientService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
 
 
 builder.Services.AddDistributedMemoryCache();
+builder.Services.AddAuthentication( CookieAuthenticationDefaults.AuthenticationScheme )
+    .AddCookie( options =>
+    {
+        options.Cookie.HttpOnly = true;
+        options.AccessDeniedPath = "/Auth/AccessDenied";
+        options.LoginPath = "/Auth/Login";
 
+        options.ExpireTimeSpan = TimeSpan.FromMinutes( 15 );
 
-
-
-builder.Services.AddIdentity<AppUser, IdentityRole>()
-    .AddEntityFrameworkStores<AppDbContext>()
-    .AddRoles<IdentityRole>()
-    .AddDefaultTokenProviders();
+        options.SlidingExpiration = true;
+    } );
 
 builder.Services.AddSession( options =>
 {
@@ -61,7 +62,7 @@ app.UseSession();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Psychiatrist}/{action=Index}/{id?}" );
+    pattern: "{controller=Home}/{action=Index}/{id?}" );
 
 
 app.Run();
