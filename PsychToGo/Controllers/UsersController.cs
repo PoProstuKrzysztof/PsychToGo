@@ -1,7 +1,9 @@
 ﻿using Azure.Core;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using PsychToGo.DTO;
 using PsychToGo.Interfaces;
+using PsychToGo.Models.Identity;
 
 namespace PsychToGo.Controllers;
 [Route("api/UsersAuthorize")]
@@ -49,6 +51,7 @@ public class UsersController : Controller
         }
 
         return Ok( "Succesfully register" );
-    }   
-
+    }
+    
+    
 }

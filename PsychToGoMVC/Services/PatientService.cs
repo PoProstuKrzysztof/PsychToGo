@@ -1,4 +1,5 @@
-﻿using PsychToGo.Models;
+﻿using PsychToGo.DTO;
+using PsychToGo.Models;
 using PsychToGoMVC.Models;
 using PsychToGoMVC.Services.Interfaces;
 
@@ -6,13 +7,16 @@ namespace PsychToGoMVC.Services;
 
 public class PatientService : IPatientService
 {
-    Uri baseAdress = new Uri( "https://localhost:7291/api/Patient" );
+    Uri baseAddress = new Uri( "https://localhost:7291/api/Patient" );
+    Uri psychiatristAddress = new Uri( "https://localhost:7291/api/Psychiatrist" );
+    Uri psychologistAddress = new Uri( "https://localhost:7291/api/Psychologist" );
     HttpClient client = new HttpClient();
 
     public PatientService()
     {
         client = new HttpClient();
-        client.BaseAddress = baseAdress;
+        client.BaseAddress = baseAddress;
+        
     }
 
     public async Task<PatientViewModel> CreateParsedPatientInstance(int id)
@@ -59,5 +63,17 @@ public class PatientService : IPatientService
         };
 
         return newPatient;
+    }
+
+    public async Task<ICollection<PsychiatristDTO>> PsychiatristsList()
+    {
+        var psychiatrists = await client.GetFromJsonAsync<ICollection<PsychiatristDTO>>( psychiatristAddress + $"/list" );
+        return psychiatrists;
+    }
+
+    public async Task<ICollection<PsychologistDTO>> PsychologistsList()
+    {
+        var psychologists = await client.GetFromJsonAsync<ICollection<PsychologistDTO>>( psychologistAddress + $"/list" );
+        return psychologists;
     }
 }

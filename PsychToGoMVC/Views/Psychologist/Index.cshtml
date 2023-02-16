@@ -2,70 +2,85 @@
 
 @{
     ViewData["Title"] = "Psychologists";
+    ViewBag.CurrentUrl = "~/Psychologist/Index";
 }
 
 <div class="container border p-5">
-   <h1 class="text-primary">Psychologists</h1>
-<hr />
-<p>
-    <a class="btn btn-outline-primary" asp-action="CreatePsychologistMVC">Create New</a>
-</p>
-<table class="table table-hover border shadow-lg">
-    <thead>
-        <tr>
-
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LastName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Phone)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateOfBirth)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Address)
-            </th>
-            <th>
-                Operations
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var psychologist in Model)
-        {
+    <h1 class="text-primary">Psychologists</h1>
+    <hr />
+    @if (User.IsInRole( "admin" ))
+    {
+        <p>
+            <a class="btn btn-outline-primary" asp-action="CreatePsychologistMVC">Create New</a>
+        </p>
+    }
+    <table class="table table-hover border shadow-lg">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => psychologist.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => psychologist.LastName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => psychologist.Email)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => psychologist.Phone)
-                </td>
-                <td>
-                    @psychologist.DateOfBirth.ToString("yyyy-MM-dd")
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => psychologist.Address)
-                </td>
-                <td >
-                    <a class="btn btn-warning btn-sm" asp-action="EditPsychologist" asp-route-id="@psychologist.Id">Edit</a>
-                    <a class="btn btn-danger btn-sm" asp-action="DeletePsychologist" asp-route-id="@psychologist.Id">Delete</a>
-                </td>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LastName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Email)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Phone)
+                </th>
+                @if (User.IsInRole( "admin" ))
+                {
+                    <th>
+                        @Html.DisplayNameFor(model => model.DateOfBirth)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Address)
+                    </th>
+
+                    <th>
+                        Operations
+                    </th>
+                }
+
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var psychologist in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => psychologist.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => psychologist.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => psychologist.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => psychologist.Phone)
+                    </td>
+                    @if (User.IsInRole( "admin" ))
+                    {
+                        <td>
+                            @psychologist.DateOfBirth.ToString("yyyy-MM-dd")
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => psychologist.Address)
+                        </td>
+
+                        <td>
+                            <a class="btn btn-warning btn-sm" asp-action="EditPsychologist" asp-route-id="@psychologist.Id">Edit</a>
+                            <a class="btn btn-danger btn-sm" asp-action="DeletePsychologist" asp-route-id="@psychologist.Id">Delete</a>
+                        </td>
+                    }
+
+
+                </tr>
+            }
+        </tbody>
+    </table>
 
 </div>

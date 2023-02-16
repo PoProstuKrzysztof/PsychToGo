@@ -57,6 +57,9 @@ public class PsychiatristController : Controller
             return NotFound();
         }
 
+
+
+
         var psychiatrist = await _psychiatristRepository.GetPsychiatrist( id );
         if (psychiatrist == null)
         {

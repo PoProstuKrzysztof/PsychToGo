@@ -43,11 +43,14 @@ public class PatientController : Controller
         return View(patients);
     }
 
-    [HttpGet("Patient/create")]
+    [HttpGet]
     
-    public IActionResult CreatePatientMVC()
+    public async Task<IActionResult> CreatePatientMVC()
     {
-        return View();
+        var newPatient = new PatientViewModel();
+        newPatient.Psychologists = await _patientService.PsychologistsList();
+        newPatient.Psychiatrists = await _patientService.PsychiatristsList();
+        return View(newPatient);
     }
 
 
@@ -69,7 +72,7 @@ public class PatientController : Controller
         {
             return RedirectToAction( "Index" );
         }
-        return View( pvm);
+        return RedirectToAction( "CreatePatientMVC" );
     }
 
 

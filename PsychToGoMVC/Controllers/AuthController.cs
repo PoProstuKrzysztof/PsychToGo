@@ -49,7 +49,7 @@ public class AuthController : Controller
             return RedirectToAction( "Index", "Home" );
         }
 
-        return View();
+        return View(ModelState);
 
 
     }
@@ -68,7 +68,7 @@ public class AuthController : Controller
         var register = await _authService.RegisterAsync<HttpResponseMessage>( obj );
         if (register != string.Empty)
         {
-            return RedirectToAction( "Login" );
+            return RedirectToAction( "Index", "Home" );
         }
         return View();
     }
@@ -77,6 +77,8 @@ public class AuthController : Controller
     {
         return View();
     }
+
+    
 
     public async Task<IActionResult> Logout()
     {

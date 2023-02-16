@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PsychToGo.DTO;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -38,10 +39,12 @@ public class PatientViewModel
 
     [Required(ErrorMessage = "You have to choose psychologist")]
     public virtual int PsychologistId { get; set; }
+    public ICollection<PsychologistDTO> Psychologists { get; set; }
     
     public virtual int MedicineId { get; set; }
+    public ICollection<MedicineDTO> Medicines { get; set; }
 
-
-    public virtual int PsychiatristId { get; set; } 
+    public virtual int PsychiatristId { get; set; }
+    public ICollection<PsychiatristDTO> Psychiatrists { get; set; }
 }
 

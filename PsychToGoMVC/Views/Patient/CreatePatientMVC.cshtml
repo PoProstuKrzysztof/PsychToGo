@@ -46,24 +46,24 @@
                 <label asp-for="Address" class="control-label">Address</label>
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
-            <div class="form-floating mb-3 mt-3">
-                <input asp-for="PsychiatristId" class="form-control" placeholder="Enter psychologist id" name="Psychologist id" type="number" required />
-                <label asp-for="PsychologistId" class="control-label"></label>
 
-                <span asp-validation-for="PsychologistId" class="text-danger"></span>
-            </div>
             <div class="form-floating mb-3 mt-3">
 
-                <input asp-for="MedicineId" class="form-control" placeholder="Enter medicine id" name="Medicine id" type="number"  />
+                <input asp-for="MedicineId" class="form-control" placeholder="Enter medicine id" name="Medicine id" type="number" />
                 <label asp-for="MedicineId" class="control-label"></label>
                 <span asp-validation-for="MedicineId" class="text-danger"></span>
             </div>
-            <div class="form-floating mb-3 mt-3">
-                <input asp-for="PsychiatristId" class="form-control" placeholder="Enter psychiatrist id" name="Psychiatrist id" type="number"  />
-                <label asp-for="PsychiatristId" class="control-label"></label>
 
-                <span asp-validation-for="PsychiatristId" class="text-danger"></span>
+            <div class="form-control mb-3 mt-3">
+                @Html.LabelFor(model => model.PsychologistId, "Psychologist")
+                @Html.DropDownListFor(model => model.PsychologistId, new SelectList(Model.Psychologists, "Id","Name"),"- Please select - ")
+
             </div>
+            <div class="form-control mb-3 mt-3">
+                @Html.LabelFor(model => model.PsychiatristId, "Psychiatrist")
+                @Html.DropDownListFor(model => model.PsychiatristId, new SelectList(Model.Psychiatrists, "Id","Name"),"- Please select - ")
+            </div>
+            
             
             <div class=" mb-2 mt-2">
 

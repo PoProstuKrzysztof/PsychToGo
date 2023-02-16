@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -8,9 +9,11 @@ using PsychToGo.DTO;
 using PsychToGo.Interfaces;
 using PsychToGo.Models;
 using PsychToGo.Models.Identity;
+using System.ComponentModel;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Web.Mvc;
 
 namespace PsychToGo.Repository;
 
@@ -94,7 +97,9 @@ public class UserRepository : IUserRepository
             UserName = registrationRequest.UserName,
             Email = registrationRequest.UserName,
             NormalizedEmail = registrationRequest.UserName.ToUpper(),
-            Name = registrationRequest.Name
+            Name = registrationRequest.Name,
+            LastName = registrationRequest.LastName
+            
 
         };
 
@@ -110,7 +115,7 @@ public class UserRepository : IUserRepository
                     await _roleManager.CreateAsync( new IdentityRole( "psychologist" ) );
                     await _roleManager.CreateAsync( new IdentityRole( "psychiatrist" ) );
                 }
-                await _userManager.AddToRoleAsync( user, "admin" );
+                await _userManager.AddToRoleAsync( user, "patient" );
 
                 var userToReturn = _context.ApplicationUsers.FirstOrDefault( u => u.UserName == registrationRequest.UserName );
                 return _mapper.Map<UserDTO>( userToReturn );
@@ -124,4 +129,7 @@ public class UserRepository : IUserRepository
 
         return new UserDTO();
     }
+
+   
+
 }
