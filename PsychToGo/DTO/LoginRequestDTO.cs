@@ -13,4 +13,6 @@ public class LoginRequestDTO
     [PersonalData]
     [DataType(DataType.Password)]
     public string Password { get; set; }
+
+    
 }

@@ -9,50 +9,44 @@
 
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-3">
         <form method="post" asp-antiforgery="true" class="was-validated">
             <div asp-validation-summary="All" class="text-danger"></div>
             <legend>Patient</legend>
             <div class="form-floating mb-3 mt-3">
-                <input asp-for="Name" class="form-control" placeholder="Enter name"  type="text" required/>
+                <input asp-for="Name" class="form-control" placeholder="Enter name" type="text" required />
                 <label asp-for="Name" class="control-label">Name</label>
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3 mt-3">
-                <input asp-for="LastName" class="form-control" placeholder="Enter last name" type="text" required/>
+                <input asp-for="LastName" class="form-control" placeholder="Enter last name" type="text" required />
                 <label asp-for="LastName" class="control-label">Last name</label>
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3 mt-3">
-                <input asp-for="Email" class="form-control" placeholder="Enter e-mail"  type="email" required />
+                <input asp-for="Email" class="form-control" placeholder="Enter e-mail" type="email" required />
                 <label asp-for="Email" class="control-label">E-mail</label>
                 <span asp-validation-for="Email" class="text-danger"></span>
 
             </div>
             <div class="form-floating mb-3 mt-3">
-                <input asp-for="Phone" class="form-control" placeholder="Enter phone number" type="tel"  required/>
+                <input asp-for="Phone" class="form-control" placeholder="Enter phone number" type="tel" required />
                 <label asp-for="Phone" class="control-label">Phone</label>
                 <span asp-validation-for="Phone" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3 mt-3">
 
-                <input asp-for="DateOfBirth" min="1960-01-01"  max="2023-01-01" placeholder="Enter date of birth" class="form-control" type="date" required/>
+                <input asp-for="DateOfBirth" min="1960-01-01" max="2023-01-01" placeholder="Enter date of birth" class="form-control" type="date" required />
                 <label asp-for="DateOfBirth" class="control-label">Date of birth</label>
                 <span asp-validation-for="DateOfBirth" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3 mt-3">
 
-                <input asp-for="Address" class="form-control" type="text" placeholder="Enter address" name="Address" required/>
+                <input asp-for="Address" class="form-control" type="text" placeholder="Enter address" name="Address" required />
                 <label asp-for="Address" class="control-label">Address</label>
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
-
-            <div class="form-floating mb-3 mt-3">
-
-                <input asp-for="MedicineId" class="form-control" placeholder="Enter medicine id" name="Medicine id" type="number" />
-                <label asp-for="MedicineId" class="control-label"></label>
-                <span asp-validation-for="MedicineId" class="text-danger"></span>
-            </div>
+            
 
             <div class="form-control mb-3 mt-3">
                 @Html.LabelFor(model => model.PsychologistId, "Psychologist")
@@ -60,16 +54,24 @@
 
             </div>
             <div class="form-control mb-3 mt-3">
+
                 @Html.LabelFor(model => model.PsychiatristId, "Psychiatrist")
                 @Html.DropDownListFor(model => model.PsychiatristId, new SelectList(Model.Psychiatrists, "Id","Name"),"- Please select - ")
             </div>
-            
+            <div class="form-control mb-3 mt-3">
+                @Html.LabelFor(model => model.MedicinesId, "Medicines")
+            <div>
+                @Html.ListBoxFor(model => model.MedicinesId, new MultiSelectList(Model.Medicines, "Id","Name"))
+            </div>
+            </div>
             
             <div class=" mb-2 mt-2">
 
                 <button asp-action="CreatePatientMVC" class="btn btn-outline-primary">Create</button>
                 <a class="btn btn-outline-primary " asp-action="Index">Back</a>
             </div>
+
+            
 
         </form>
 
@@ -78,7 +80,6 @@
 </div>
 
 <div>
-    
 </div>
 
 @section Scripts {

@@ -13,7 +13,7 @@ using System.ComponentModel;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using System.Web.Mvc;
+
 
 namespace PsychToGo.Repository;
 
@@ -35,7 +35,8 @@ public class UserRepository : IUserRepository
         _mapper = mapper;
         _roleManager = roleManager;
     }
-
+    
+   
     public bool IsUniqueUser(string username)
     {
         var user = _context.ApplicationUsers.FirstOrDefault( x => x.UserName == username );
@@ -44,9 +45,16 @@ public class UserRepository : IUserRepository
             return true;
         }
 
+        
+
         return false;
     }
 
+    /// <summary>
+    /// Login to application using passowrd and email
+    /// </summary>
+    /// <param name="loginRequest"></param>
+    /// <returns></returns>
     public async Task<LoginResponseDTO> Login(LoginRequestDTO loginRequest)
     {
         var user = _context.ApplicationUsers.FirstOrDefault( x => x.UserName.ToLower() == loginRequest.UserName.ToLower() );
@@ -89,7 +97,11 @@ public class UserRepository : IUserRepository
 
         return loginResponse;
     }
-
+    /// <summary>
+    /// Registration request to register into application
+    /// </summary>
+    /// <param name="registrationRequest"></param>
+    /// <returns></returns>
     public async Task<UserDTO> Register(RegistrationRequestDTO registrationRequest)
     {
         AppUser user = new AppUser()

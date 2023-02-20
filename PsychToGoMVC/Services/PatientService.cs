@@ -10,6 +10,7 @@ public class PatientService : IPatientService
     Uri baseAddress = new Uri( "https://localhost:7291/api/Patient" );
     Uri psychiatristAddress = new Uri( "https://localhost:7291/api/Psychiatrist" );
     Uri psychologistAddress = new Uri( "https://localhost:7291/api/Psychologist" );
+    Uri medicinesAddress = new Uri( "https://localhost:7291/api/Medicine" );
     HttpClient client = new HttpClient();
 
     public PatientService()
@@ -40,7 +41,9 @@ public class PatientService : IPatientService
             Phone = findPatient.Phone,
             PsychiatristId = psychiatristId,
             PsychologistId = psychologistId,
-            MedicinesId = medicines
+            MedicinesId = medicines.Select( m => m.Id ).ToList()
+            
+
         };
 
         return parsedPatient;
@@ -75,5 +78,13 @@ public class PatientService : IPatientService
     {
         var psychologists = await client.GetFromJsonAsync<ICollection<PsychologistDTO>>( psychologistAddress + $"/list" );
         return psychologists;
+    }
+
+    public async Task<ICollection<MedicineDTO>> MedicinesList()
+    {
+        List<MedicineDTO>? medicines = await client.GetFromJsonAsync<List<MedicineDTO>>( medicinesAddress + $"/list" );
+        
+        return medicines;
+
     }
 }

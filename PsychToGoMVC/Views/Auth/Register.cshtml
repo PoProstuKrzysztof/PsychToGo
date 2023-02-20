@@ -33,6 +33,10 @@
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="col-6 offset-3 pb-3">
+                <input asp-for="ConfirmPassowrd" type="password" class="form-control" placeholder="Re-enter password..." />
+                <span asp-validation-for="ConfirmPassowrd" class="text-danger"></span>
+            </div>
+            <div class="col-6 offset-3 pb-3">
                 <button type="submit" class="btn btn-success form-control" value="Submit">Register</button>
             </div>
         </div>

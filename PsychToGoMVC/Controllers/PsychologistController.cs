@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PsychToGo.DTO;
+using PsychToGo.Models.Identity;
 using PsychToGoMVC.Models;
+using System.Security.Claims;
 using System.Text;
 
 namespace PsychToGoMVC.Controllers;
@@ -9,10 +12,12 @@ public class PsychologistController : Controller
 {
     Uri baseAdress = new Uri( "https://localhost:7291/api/Psychologist" );
     HttpClient client = new HttpClient();
+    
+    private readonly IHttpContextAccessor _httpContext;
 
-    public PsychologistController()
+    public PsychologistController(IHttpContextAccessor httpContext)
     {
-
+        _httpContext = httpContext;
         client = new HttpClient();
         client.BaseAddress = baseAdress;
     }
@@ -77,7 +82,7 @@ public class PsychologistController : Controller
 
         if (psychologist == null)
         {
-            RedirectToAction( "Index" );
+            return RedirectToAction( "Index" );
         }
 
         return View( psychologist );
@@ -97,6 +102,34 @@ public class PsychologistController : Controller
         }
         return View( psychologist );
     }
+
+
+    [HttpGet]
+    public async Task<IActionResult> GetPsychologistPatients()
+    {
+        //Getting user e-mail here so I can locate his Id in database and view all his patients
+
+
+        var user = _httpContext.HttpContext.User?.FindFirst(ClaimTypes.Email);
+        
+        if(user == null)
+        {
+            return BadRequest();
+        }
+
+        List<PsychologistDTO> psychologists = await client.GetFromJsonAsync<List<PsychologistDTO>>( client.BaseAddress + "/list" );
+
+        var psychologistId = psychologists.Where(x => x.Email.ToLower() == user.Value.ToLower()).Select(x => x.Id).FirstOrDefault();
+
+        List<PatientDTO> patients = await client.GetFromJsonAsync<List<PatientDTO>>( client.BaseAddress + $"/{psychologistId}/patients" );
+        if (patients == null)
+        {
+            return RedirectToAction( "Index" );
+        }
+
+        return View("AssignPsychiatrist", patients );
+    }
+
 }
 
 

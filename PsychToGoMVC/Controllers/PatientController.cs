@@ -50,7 +50,7 @@ public class PatientController : Controller
         var newPatient = new PatientViewModel();
         newPatient.Psychologists = await _patientService.PsychologistsList();
         newPatient.Psychiatrists = await _patientService.PsychiatristsList();
-        newPatient.MedicinesId = await _patientService.MedicinesList();
+        newPatient.Medicines = await _patientService.MedicinesList();
         newPatient.MedicinesId = new List<int>();
         return View(newPatient);
     }
@@ -58,7 +58,7 @@ public class PatientController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult CreatePatientMVC([FromForm] int medicineId,PatientViewModel pvm)
+    public IActionResult CreatePatientMVC(PatientViewModel pvm)
     {
 
        Patient? newPatient = _patientService.CreatePatientInstance(pvm);
@@ -68,13 +68,13 @@ public class PatientController : Controller
         
         StringContent content = new StringContent(data, Encoding.UTF8,"application/json" );
         HttpResponseMessage response = client.
-            PostAsync( client.BaseAddress + $"/create?psychologistId={pvm.PsychologistId}&psychiatristId={pvm.PsychiatristId}&medicineId={pvm.MedicineId}", content ).Result;
+            PostAsync( client.BaseAddress + $"/create?psychologistId={pvm.PsychologistId}&psychiatristId={pvm.PsychiatristId}&medicineId={pvm.MedicinesId.First()}", content ).Result;
         
         if(response.IsSuccessStatusCode)
         {
             return RedirectToAction( "Index" );
         }
-        return RedirectToAction( "CreatePatientMVC" );
+         return RedirectToAction( "CreatePatientMVC" );
     }
 
 
@@ -118,7 +118,7 @@ public class PatientController : Controller
 
         StringContent content = new StringContent( data, Encoding.UTF8, "application/json" );
         HttpResponseMessage response =  client.
-            PutAsync( client.BaseAddress + $"/{pvm.Id}?psychologistId={pvm.PsychologistId}&psychiatristId={pvm.PsychiatristId}&medicineId={pvm.MedicineId}", content ).Result;
+            PutAsync( client.BaseAddress + $"/{pvm.Id}?psychologistId={pvm.PsychologistId}&psychiatristId={pvm.PsychiatristId}&medicineId={pvm.MedicinesId}", content ).Result;
 
         if (response.IsSuccessStatusCode)
         {

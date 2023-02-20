@@ -29,6 +29,7 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-center">
 
                     <ul class="nav flex-grow-1 justify-content-center  ">
+                        <a class="btn btn-outline-success" asp-controller="Psychologist" asp-action="GetPsychologistPatients">Assign psychiatrist</a>
                         @if (httpAccessor.HttpContext.Session.Get( "JWTToken" ) != null && httpAccessor.HttpContext.Session.GetString( "JWTToken" ).ToString().Length > 0 )
                         {
 

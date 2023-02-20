@@ -33,16 +33,15 @@ builder.Services.AddScoped<IPsychiatristRepository, PsychiatristRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 
-builder.Services.AddIdentity<AppUser, IdentityRole>()
-    .AddEntityFrameworkStores<AppDbContext>()
-    .AddRoles<IdentityRole>()
-    .AddDefaultTokenProviders();
 
 builder.Services.AddScoped<DbContext, AppDbContext>();
 builder.Services.AddAutoMapper( AppDomain.CurrentDomain.GetAssemblies() );
 builder.Services.AddTransient<DataSeed>();
 
-
+builder.Services.AddIdentity<AppUser, IdentityRole>()
+    .AddEntityFrameworkStores<AppDbContext>()
+    .AddRoles<IdentityRole>()
+    .AddDefaultTokenProviders();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen( options =>

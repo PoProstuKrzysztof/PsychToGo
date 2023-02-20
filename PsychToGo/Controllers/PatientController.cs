@@ -206,7 +206,7 @@ public class PatientController : Controller
             return StatusCode( 500, ModelState );
         }
 
-        return Created( "Successfully created patient",patientMap );
+        return Created( "Successfully created patient",newPatient );
 
     }
 

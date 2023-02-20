@@ -12,10 +12,12 @@ public class PatientViewModel
     
     [Required]
     [StringLength(30,MinimumLength = 3 ,ErrorMessage = "Last name is too short!" )]
+    [RegularExpression("^[A-Za-z .]$", ErrorMessage = "{0} should contain only alphabets, space and dot")]
     public string Name { get; set; } = string.Empty;
    
     [Required]
     [StringLength( 30, MinimumLength = 3 , ErrorMessage ="Last name is too short!")]
+    [RegularExpression( "^[A-Za-z .]$", ErrorMessage = "{0} should contain only alphabets, space and dot" )]
     public string LastName { get; set; } = string.Empty;
     
     [Required( ErrorMessage = "The e-mail adress is required" )]
