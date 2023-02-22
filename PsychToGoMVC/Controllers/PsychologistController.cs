@@ -41,6 +41,7 @@ public class PsychologistController : Controller
         }
         else
         {
+            ModelState.AddModelError( "", $"There are not psychologists" );
             psychologists = Enumerable.Empty<PsychologistDTO>().ToList();
         }
 
@@ -131,6 +132,7 @@ public class PsychologistController : Controller
         {
             return RedirectToAction( "Index" );
         }
+        ModelState.AddModelError( "", $"An error occurred when editing psychologists" );
         return View( psychologist );
     }
 

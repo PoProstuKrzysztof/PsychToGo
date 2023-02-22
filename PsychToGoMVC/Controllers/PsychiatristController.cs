@@ -38,6 +38,7 @@ public class PsychiatristController : Controller
         }
         else
         {
+            ModelState.AddModelError( "", $"There are no psychiatrists );
             psychiatrists = Enumerable.Empty<PsychiatristDTO>().ToList();
 
         }
@@ -67,14 +68,13 @@ public class PsychiatristController : Controller
     {
         string data = JsonConvert.SerializeObject( pvm );
         StringContent content = new StringContent( data, Encoding.UTF8, "application/json" );
-        HttpResponseMessage response = client.PostAsync( client.BaseAddress + "/create", content ).Result;
-
-        
+        HttpResponseMessage response = client.PostAsync( client.BaseAddress + "/create", content ).Result;      
 
         if (response.IsSuccessStatusCode)
         {
             return RedirectToAction( "Index" );
         }
+        ModelState.AddModelError( "", $"An error occurred when creating psychiatrist" );
         return View(pvm);
     }
 
@@ -133,6 +133,7 @@ public class PsychiatristController : Controller
         {
             return RedirectToAction( "Index" );
         }
+        ModelState.AddModelError( "", $"An error occurred when editing psychiatrist" );
         return View( psychiatrist );
     }
 }

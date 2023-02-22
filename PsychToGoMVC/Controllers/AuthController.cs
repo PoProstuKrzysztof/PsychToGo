@@ -58,7 +58,7 @@ public class AuthController : Controller
             return RedirectToAction( "Index", "Home" );
         }
 
-        ModelState.AddModelError( "", "An error occurred while logging in" );
+        ModelState.AddModelError( "", $"An error occurred while logging in" );
         return View(obj);
 
 

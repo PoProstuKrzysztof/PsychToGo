@@ -43,6 +43,7 @@ public class PatientController : Controller
         }
         else
         {
+            ModelState.AddModelError( "", $"There are not patients" );
             patients = Enumerable.Empty<PatientViewModel>().ToList();
             
         }
@@ -88,7 +89,8 @@ public class PatientController : Controller
         {
             return RedirectToAction( "Index" );
         }
-         return RedirectToAction( "CreatePatientMVC" );
+        ModelState.AddModelError( "", $"An error occurred when creating patient" );
+        return RedirectToAction( "CreatePatientMVC" );
     }
 
 
@@ -152,6 +154,7 @@ public class PatientController : Controller
         {
             return RedirectToAction( "Index" );
         }
+        ModelState.AddModelError( "", $"An error occurred when editing patient" );
         return View( pvm );
     }
 

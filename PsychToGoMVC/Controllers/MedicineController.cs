@@ -30,6 +30,7 @@ public class MedicineController : Controller
         else
         {
             medicines = Enumerable.Empty<MedicineDTO>().ToList();
+            ModelState.AddModelError( "", $"There are not medicines" );
         }
 
         return View(medicines );
@@ -55,6 +56,7 @@ public class MedicineController : Controller
         {
            return RedirectToAction( "Index" );
         }
+        ModelState.AddModelError( "", $"Something went wrong when creating medicine." );
         return View(mdo);
     }
 
@@ -95,6 +97,7 @@ public class MedicineController : Controller
         {
             return RedirectToAction( "Index" );
         }
+        ModelState.AddModelError( "", $"An error occurred when editing medicine" );
         return View( medicine );
     }
 
