@@ -50,13 +50,15 @@
 
             <div class="form-control mb-3 mt-3">
                 @Html.LabelFor(model => model.PsychologistId, "Psychologist")
-                @Html.DropDownListFor(model => model.PsychologistId, new SelectList(Model.Psychologists, "Id","Name"),"- Please select - ")
+                @Html.DropDownListFor(model => model.PsychologistId, new SelectList(Model.Psychologists, "Id","Name"),"- Select - ")
 
             </div>
+            <hr />
+            <h4>Choose only if you decide to assign psychiatrist</h4>
             <div class="form-control mb-3 mt-3">
 
                 @Html.LabelFor(model => model.PsychiatristId, "Psychiatrist")
-                @Html.DropDownListFor(model => model.PsychiatristId, new SelectList(Model.Psychiatrists, "Id","Name"),"- Please select - ")
+                @Html.DropDownListFor(model => model.PsychiatristId, new SelectList(Model.Psychiatrists, "Id","Name LastName"),"- Select - ")
             </div>
             <div class="form-control mb-3 mt-3">
                 @Html.LabelFor(model => model.MedicinesId, "Medicines")

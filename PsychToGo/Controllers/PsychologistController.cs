@@ -86,8 +86,9 @@ public class PsychologistController : Controller
 		{
 			return NotFound();
 		}
-		return Ok( _mapper.Map<List<PatientDTO>>( psychologistPatients ) );
+		return Ok(  psychologistPatients );
 	}
+	
 	//Post
 	[HttpPost( "create" )]
     [ProducesResponseType( StatusCodes.Status400BadRequest )]

@@ -15,8 +15,8 @@ public class Patient
     //Relationships
     
     public virtual ICollection<PatientMedicine>? PatientMedicines { get; set; }
-    public int PsychologistId { get; set; }
+    public  int PsychologistId { get; set; }
     public Psychologist? Psychologist { get; set; }
-    public int PsychiatristId { get; set; }
+    public  int? PsychiatristId { get; set; }
     public Psychiatrist? Psychiatrist { get; set; }
 }

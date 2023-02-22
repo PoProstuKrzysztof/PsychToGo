@@ -6,6 +6,9 @@ using System.Text;
 namespace PsychToGoMVC.Controllers;
 public class MedicineController : Controller
 {
+    /// <summary>
+    /// Base address to connect with api
+    /// </summary>
     Uri baseAdress = new Uri( "https://localhost:7291/api/Medicine" );
     HttpClient client = new HttpClient();
 

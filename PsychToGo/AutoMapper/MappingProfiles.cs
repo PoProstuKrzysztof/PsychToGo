@@ -3,6 +3,7 @@ using PsychToGo.DTO;
 using PsychToGo.Models;
 using PsychToGo.Models.Identity;
 
+
 namespace PsychToGo.AutoMapper;
 
 public class MappingProfiles : Profile
@@ -11,6 +12,7 @@ public class MappingProfiles : Profile
     {
         CreateMap<Patient, PatientDTO>();
         CreateMap<PatientDTO, Patient>();
+       
 
         CreateMap<Psychologist, PsychologistDTO>();
         CreateMap<PsychologistDTO,Psychologist>();

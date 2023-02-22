@@ -1,20 +1,8 @@
-﻿@using PsychToGo.DTO;
-@model List<PatientDTO>
+﻿
+@model PatientViewModel
 
 @{
     ViewData["Title"] = "Assign psychiatrist";
 }
 
-<h1>
-   Assign psychiatrist to patient
-</h1>
-<hr />
 
-<div class="container border-4">
-    <ol class="list-group list-group-numbered">
-        @foreach (var patient in Model)
-        {
-            <li class="list-group-item">@patient.Name @patient.LastName @patient.Email</li>
-        }
-    </ol>
-</div>

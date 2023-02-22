@@ -61,8 +61,8 @@ public class PatientService : IPatientService
             Address = pvm.Address,
             DateOfBirth = pvm.DateOfBirth,
             Phone = pvm.Phone,
-            PsychologistId = pvm.PsychiatristId,
-            PsychiatristId = pvm.PsychologistId
+            PsychologistId = pvm.PsychologistId,
+            PsychiatristId = pvm.PsychiatristId
         };
 
         return newPatient;

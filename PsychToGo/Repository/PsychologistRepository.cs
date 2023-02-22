@@ -100,7 +100,7 @@ public class PsychologistsRepository : IPsychologistRepository
                 .ToListAsync();
             if(psychologistPatients == null)
             {
-                return null;
+                return new List<Patient>();
             }
 
             return psychologistPatients;

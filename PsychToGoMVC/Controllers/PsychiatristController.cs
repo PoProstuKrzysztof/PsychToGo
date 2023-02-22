@@ -11,7 +11,9 @@ using System.Text;
 namespace PsychToGoMVC.Controllers;
 public class PsychiatristController : Controller
 {
-
+    /// <summary>
+    /// Base address to connect with api
+    /// </summary>
     Uri baseAdress = new Uri( "https://localhost:7291/api/Psychiatrist" );
     HttpClient client = new HttpClient();
 
@@ -21,7 +23,10 @@ public class PsychiatristController : Controller
         client = new HttpClient();
         client.BaseAddress = baseAdress;
     }
-    
+    /// <summary>
+    /// List of psychiatrists
+    /// </summary>
+    /// <returns>List of psychiatrists without patients</returns>
     public IActionResult Index()
     {
         List<PsychiatristDTO> psychiatrists = new List<PsychiatristDTO>();
@@ -40,13 +45,21 @@ public class PsychiatristController : Controller
         return View( psychiatrists );
     }
 
-    [HttpGet]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    /// <summary>
+    /// Return creation view
+    /// </summary>
+    
+    [HttpGet]   
     public IActionResult CreatePsychiatristMVC()
     {
         return View();
     }
 
+    /// <summary>
+    /// Create new psychiatrist
+    /// </summary>
+    /// <param name="pvm"></param>
+    
     [HttpPost]
     [Authorize( Roles = "admin" )]
     [ValidateAntiForgeryToken]
@@ -65,7 +78,11 @@ public class PsychiatristController : Controller
         return View(pvm);
     }
 
-
+    /// <summary>
+    /// Delete psychiatrist
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpGet]
     [Authorize( Roles = "admin" )]
     public IActionResult DeletePsychiatrist([FromRoute] int id)
@@ -79,6 +96,11 @@ public class PsychiatristController : Controller
         return BadRequest();
     }
 
+    /// <summary>
+    /// Edit psychiatrist view
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpGet]
     [Authorize( Roles = "admin" )]
     public async Task<IActionResult> EditPsychiatrist([FromRoute] int id)
@@ -93,6 +115,11 @@ public class PsychiatristController : Controller
         return View( psychiatrist );
     }
 
+    /// <summary>
+    /// Edit psychiatrist
+    /// </summary>
+    /// <param name="psychiatrist"></param>
+    /// <returns></returns>
     [HttpPost]
     [Authorize( Roles = "admin" )]
     [ValidateAntiForgeryToken]

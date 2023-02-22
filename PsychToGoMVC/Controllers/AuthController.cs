@@ -19,6 +19,10 @@ public class AuthController : Controller
         _authService = authService;       
     }
 
+    /// <summary>
+    /// Get new login request 
+    /// </summary>
+    /// <returns></returns>
     [HttpGet]
     public IActionResult Login()
     {
@@ -26,6 +30,11 @@ public class AuthController : Controller
         return View( loginObj );
     }
 
+    /// <summary>
+    /// Logging
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Login(LoginRequestDTO obj)
@@ -37,7 +46,7 @@ public class AuthController : Controller
             LoginResponseDTO model = JsonConvert.DeserializeObject<LoginResponseDTO>( response );
             var handler = new JwtSecurityTokenHandler();
             var jwt = handler.ReadJwtToken( model.Token );
-
+            //Reading JWT token with claims
             var identity = new ClaimsIdentity( CookieAuthenticationDefaults.AuthenticationScheme );
             identity.AddClaim( new Claim( ClaimTypes.Name, jwt.Claims.FirstOrDefault( u => u.Type == "unique_name" ).Value ) );
             identity.AddClaim( new Claim( ClaimTypes.Role, jwt.Claims.FirstOrDefault( u => u.Type == "role" ).Value ) );
@@ -49,18 +58,27 @@ public class AuthController : Controller
             return RedirectToAction( "Index", "Home" );
         }
 
-        return View(ModelState);
+        ModelState.AddModelError( "", "An error occurred while logging in" );
+        return View(obj);
 
 
     }
 
-
+    /// <summary>
+    /// Get register page
+    /// </summary>
+    /// <returns></returns>
     [HttpGet]
     public IActionResult Register()
     {
         return View();
     }
-
+    
+    /// <summary>
+    /// Register
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Register(RegistrationRequestDTO obj)
@@ -73,13 +91,21 @@ public class AuthController : Controller
         return View();
     }
 
+    /// <summary>
+    /// Get AccessDenied view
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet]
     public IActionResult AccessDenied()
     {
         return View();
     }
 
-    
-
+    /// <summary>
+    /// Logout
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet]
     public async Task<IActionResult> Logout()
     {
         await HttpContext.SignOutAsync();

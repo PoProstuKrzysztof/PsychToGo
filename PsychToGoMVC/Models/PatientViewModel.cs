@@ -7,17 +7,18 @@ namespace PsychToGoMVC.Models;
 
 public class PatientViewModel
 {
+    //Basic information
     [HiddenInput]
     public int Id { get; set; }
     
     [Required]
     [StringLength(30,MinimumLength = 3 ,ErrorMessage = "Last name is too short!" )]
-    [RegularExpression("^[A-Za-z .]$", ErrorMessage = "{0} should contain only alphabets, space and dot")]
+    
     public string Name { get; set; } = string.Empty;
    
     [Required]
     [StringLength( 30, MinimumLength = 3 , ErrorMessage ="Last name is too short!")]
-    [RegularExpression( "^[A-Za-z .]$", ErrorMessage = "{0} should contain only alphabets, space and dot" )]
+    
     public string LastName { get; set; } = string.Empty;
     
     [Required( ErrorMessage = "The e-mail adress is required" )]
@@ -39,14 +40,15 @@ public class PatientViewModel
     [StringLength(30, MinimumLength = 4)]
     public string Address { get; set; } = string.Empty;
 
+    // Information about his doctors
     [Required(ErrorMessage = "You have to choose psychologist")]
-    public virtual int PsychologistId { get; set; }
-    public ICollection<PsychologistDTO> Psychologists { get; set; }
+    public int PsychologistId { get; set; }
+    public virtual ICollection<PsychologistDTO> Psychologists { get; set; }
     
-    public List<int> MedicinesId { get; set; }
-    public ICollection<MedicineDTO> Medicines { get; set; }
+    public List<int>? MedicinesId { get; set; }
+    public virtual ICollection<MedicineDTO> Medicines { get; set; }
 
-    public virtual int PsychiatristId { get; set; }
-    public ICollection<PsychiatristDTO> Psychiatrists { get; set; }
+    public int? PsychiatristId { get; set; }
+    public virtual ICollection<PsychiatristDTO> Psychiatrists { get; set; }
 }
 

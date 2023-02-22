@@ -5,6 +5,7 @@ using System.Diagnostics;
 namespace PsychToGoMVC.Controllers;
 public class HomeController : Controller
 {
+
     private readonly ILogger<HomeController> _logger;
 
     public HomeController(ILogger<HomeController> logger)

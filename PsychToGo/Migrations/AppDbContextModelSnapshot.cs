@@ -318,7 +318,8 @@ namespace PsychToGo.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PsychiatristId")
+                    b.Property<int?>("PsychiatristId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int>("PsychologistId")

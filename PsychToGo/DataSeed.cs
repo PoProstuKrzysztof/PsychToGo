@@ -1,18 +1,22 @@
-﻿using PsychToGo.Data;
+﻿using Microsoft.AspNetCore.Identity;
+using PsychToGo.Data;
 using PsychToGo.Models;
+using PsychToGo.Models.Identity;
 
 namespace PsychToGo;
 
 public class DataSeed
 {
     private readonly AppDbContext _context;
+    private readonly UserManager<AppUser> _userManager;
 
-    public DataSeed(AppDbContext context)
+    public DataSeed(AppDbContext context, UserManager<AppUser> userManager)
     {
+        _userManager = userManager;
         _context = context;
     }
 
-    public void SeedDataContext()
+    public async void SeedDataContext()
     {
         if (!_context.Psychiatrists.Any())
         {
@@ -82,9 +86,63 @@ public class DataSeed
 
         };
 
+        if (!_context.UserRoles.Any())
+        {
+            var roles = new List<IdentityRole>()
+            {
+                new IdentityRole()
+                {
+                    Name = "admin",
+                    NormalizedName= "ADMIN",
+                },
+                new IdentityRole()
+                {
+                    Name = "psychologist",
+                    NormalizedName= "PSYCHOLOGIST",
+                },
+                new IdentityRole()
+                {
+                    Name = "psychiatrist",
+                    NormalizedName= "PSYCHIATRIST",
+                },
+                new IdentityRole()
+                {
+                    Name = "patient",
+                    NormalizedName= "PATIENT",
+                }
+            };
+            _context.Roles.AddRange( roles );
+            _context.SaveChanges();
+        }
 
+        if (!_context.ApplicationUsers.Any())
+        {
+            var appUsers = new List<AppUser>()
+            {
+                new AppUser()
+                {
+ UserName = "admin@gmail.com",
+            Email = "admin@gmail.com",
+            NormalizedEmail = "ADMIN@GMAIL.COM",
+            Name = "Admin",
+            LastName = "Admin",
+            PasswordHash = "Admin123"
+            
+                }
+            };
 
+            foreach (var user in appUsers)
+            {
+                var password = "Admin123";
+                var hashedPassword = _userManager.PasswordHasher.HashPassword( user, password );
+                user.PasswordHash = hashedPassword;
+                var result = await _userManager.CreateAsync( user );
+            }
 
+            //Add more app users like psychologist/patient/psychiatrist
+            _context.ApplicationUsers.AddRange( appUsers );
+            _context.SaveChanges();
+        }
         if (!_context.Patients.Any())
         {
             var patients = new List<Patient>()

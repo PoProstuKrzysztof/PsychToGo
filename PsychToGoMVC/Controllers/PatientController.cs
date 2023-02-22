@@ -11,6 +11,9 @@ using System.Text.Json.Nodes;
 namespace PsychToGoMVC.Controllers;
 public class PatientController : Controller
 {
+    /// <summary>
+    /// Base address to connect with api
+    /// </summary>
     private readonly IPatientService _patientService;
 
     Uri baseAdress = new Uri( "https://localhost:7291/api/Patient" );
@@ -23,6 +26,10 @@ public class PatientController : Controller
         client.BaseAddress = baseAdress;
     }
 
+    /// <summary>
+    /// List of patients 
+    /// </summary>
+    /// <returns></returns>
     [Authorize(Roles = "admin")]
     public IActionResult Index()
     {
@@ -43,8 +50,11 @@ public class PatientController : Controller
         return View(patients);
     }
 
-    [HttpGet]
-    
+    /// <summary>
+    /// Get patient creation view
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet] 
     public async Task<IActionResult> CreatePatientMVC()
     {
         var newPatient = new PatientViewModel();
@@ -55,7 +65,11 @@ public class PatientController : Controller
         return View(newPatient);
     }
 
-
+    /// <summary>
+    /// Create new patient
+    /// </summary>
+    /// <param name="pvm"></param>
+    /// <returns></returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public IActionResult CreatePatientMVC(PatientViewModel pvm)
@@ -78,7 +92,11 @@ public class PatientController : Controller
     }
 
 
-
+    /// <summary>
+    /// Delete patient
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpGet]
     public IActionResult DeletePatient([FromRoute]int id)
     {
@@ -92,6 +110,11 @@ public class PatientController : Controller
         return BadRequest();
     }
 
+    /// <summary>
+    /// Get patient edit view
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpGet]
     public async Task<IActionResult> EditPatient([FromRoute] int id)
     {
@@ -106,6 +129,11 @@ public class PatientController : Controller
         return View( editedPatient );
     }
 
+    /// <summary>
+    /// Edit patient
+    /// </summary>
+    /// <param name="pvm"></param>
+    /// <returns></returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public IActionResult EditPatient(PatientViewModel pvm)
@@ -126,4 +154,19 @@ public class PatientController : Controller
         }
         return View( pvm );
     }
+
+
+    [HttpGet]
+    public async Task<IActionResult> AssignPsychiatrist([FromRoute]int id)
+    {
+        PatientViewModel patient = await _patientService.CreateParsedPatientInstance( id );
+        if (patient == null)
+        {
+            return RedirectToAction( "Index" );
+        }
+        return View( patient );
+    }
+
+    //[HttpPost]
+    //public async Task<IActionResult> AssignPsychiatrist
 }

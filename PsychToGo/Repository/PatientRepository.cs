@@ -201,7 +201,7 @@ public class PatientRepository : IPatientRepository
         }
     }
 
-    public async Task<int> GetPatientPsychologistId(int id)
+    public async Task<int?> GetPatientPsychologistId(int id)
     {
         try
         {
@@ -228,7 +228,7 @@ public class PatientRepository : IPatientRepository
     }
 
 
-    public async Task<int> GetPatientPsychiatristId(int id)
+    public async Task<int?> GetPatientPsychiatristId(int id)
     {
         try
         {

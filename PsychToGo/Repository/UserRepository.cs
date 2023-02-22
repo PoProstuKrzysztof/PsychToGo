@@ -59,7 +59,18 @@ public class UserRepository : IUserRepository
     {
         var user = _context.ApplicationUsers.FirstOrDefault( x => x.UserName.ToLower() == loginRequest.UserName.ToLower() );
 
+         
+       
+
         bool isValidPassword = await _userManager.CheckPasswordAsync( user, loginRequest.Password );
+        if (!isValidPassword)
+        {
+            return new LoginResponseDTO()
+            {
+                Token = "",
+                User = _mapper.Map<UserDTO>( user )
+            };
+        }
 
         if (user == null)
         {
@@ -119,19 +130,13 @@ public class UserRepository : IUserRepository
         {
             var result = await _userManager.CreateAsync( user, registrationRequest.Password );
             if (result.Succeeded)
-            {
-                if (!_roleManager.RoleExistsAsync( "admin" ).GetAwaiter().GetResult())
-                {
-                    await _roleManager.CreateAsync( new IdentityRole( "admin" ) );
-                    await _roleManager.CreateAsync( new IdentityRole( "patient" ) );
-                    await _roleManager.CreateAsync( new IdentityRole( "psychologist" ) );
-                    await _roleManager.CreateAsync( new IdentityRole( "psychiatrist" ) );
-                }
-                await _userManager.AddToRoleAsync( user, "patient" );
+            {               
+                await _userManager.AddToRoleAsync( user, "admin" );
 
                 var userToReturn = _context.ApplicationUsers.FirstOrDefault( u => u.UserName == registrationRequest.UserName );
                 return _mapper.Map<UserDTO>( userToReturn );
             }
+           
         }
         catch (Exception ex)
         {

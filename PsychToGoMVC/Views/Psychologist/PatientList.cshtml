@@ -1,0 +1,25 @@
+﻿@using PsychToGo.DTO;
+@using PsychToGo.Models;
+@model List<Patient>
+
+@{
+    ViewData["Title"] = "Patient list";
+}
+
+<h1>
+    Assign psychiatrist to patient
+</h1>
+<hr />
+
+<div class="container border-2 ">
+    <ol class="list-group list-group-numbered">
+        @foreach (var patient in Model)
+        {
+            <li class="list-group-item">
+                <strong>@patient.Name @patient.LastName</strong>   @patient.Email @patient.PsychiatristId
+                <a class="btn btn-primary" asp-action="AssignPatient" asp-route-id="@patient.Id">Assign</a>
+            </li>
+        }
+    </ol>
+
+</div>
