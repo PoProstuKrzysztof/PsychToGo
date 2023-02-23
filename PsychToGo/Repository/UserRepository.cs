@@ -128,6 +128,7 @@ public class UserRepository : IUserRepository
 
         try
         {
+            //For development, change role name every time if you want to assign user to specific role
             var result = await _userManager.CreateAsync( user, registrationRequest.Password );
             if (result.Succeeded)
             {               
