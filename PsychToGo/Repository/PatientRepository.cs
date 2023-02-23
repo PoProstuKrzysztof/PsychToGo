@@ -39,6 +39,7 @@ public class PatientRepository : IPatientRepository
     {
         try
         {
+            
             var medicineEntity = await _context.Medicines
                 .Where( x => x.Id == medicineId )
                 .FirstOrDefaultAsync();
@@ -50,6 +51,22 @@ public class PatientRepository : IPatientRepository
             };
             await _context.AddAsync( patientMedicine );
 
+            await _context.AddAsync( patient );
+            return await Save();
+
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
+
+    public async Task<bool> CreatePatientWithoutPsychiatrist( Patient patient)
+    {
+        try
+        {
+                     
             await _context.AddAsync( patient );
             return await Save();
 

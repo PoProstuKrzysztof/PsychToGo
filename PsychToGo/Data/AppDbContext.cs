@@ -29,14 +29,14 @@ public class AppDbContext : IdentityDbContext<AppUser>
         builder.Entity<PatientMedicine>()
             .HasOne( p => p.Patient )
             .WithMany( pm => pm.PatientMedicines )
-            .HasForeignKey( m => m.PatientId )
-            .IsRequired();
+            .HasForeignKey( m => m.PatientId );
+            
 
         builder.Entity<PatientMedicine>()
             .HasOne( m => m.Medicine )
             .WithMany( pm => pm.PatientMedicines )
-            .HasForeignKey( p => p.MedicineId )
-            .IsRequired();
+            .HasForeignKey( p => p.MedicineId );
+            
 
         builder.Entity<Patient>()
             .HasOne(p => p.Psychologist)
@@ -47,8 +47,8 @@ public class AppDbContext : IdentityDbContext<AppUser>
         builder.Entity<Patient>()
             .HasOne( p => p.Psychiatrist )
             .WithMany( p => p.Patients )
-            .HasForeignKey( p => p.PsychiatristId )
-            .IsRequired();
+            .HasForeignKey( p => p.PsychiatristId );
+            
 
             
             

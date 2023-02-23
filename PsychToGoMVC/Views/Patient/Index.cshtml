@@ -27,15 +27,19 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Phone)
                 </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.DateOfBirth)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Address)
-                </th>
-                <th>
-                    Operations
-                </th>
+                @if (User.IsInRole( "admin" ) || User.IsInRole( "psychologist" ) || User.IsInRole( "psychiatrist" ))
+                {
+                    <th>
+                        @Html.DisplayNameFor(model => model.DateOfBirth)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Address)
+                    </th>
+                    <th>
+                        Operations
+                    </th>
+                }
+
             </tr>
         </thead>
         <tbody>
@@ -55,16 +59,20 @@
                     <td>
                         @Html.DisplayFor(modelItem => patient.Phone)
                     </td>
-                    <td>
-                        @patient.DateOfBirth.ToString("yyyy-MM-dd")
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => patient.Address)
-                    </td>
-                    <td >
-                        <a class="btn btn-warning btn-sm" asp-action="EditPatient" asp-route-id="@patient.Id">Edit</a>
-                        <a class="btn btn-danger btn-sm" asp-action="DeletePatient" asp-route-id="@patient.Id">Delete</a>
-                    </td>
+                    @if (User.IsInRole( "admin" ) || User.IsInRole( "psychologist" ) || User.IsInRole( "psychiatrist" ))
+                    {
+                        <td>
+                            @patient.DateOfBirth.ToString("yyyy-MM-dd")
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => patient.Address)
+                        </td>
+                        <td>
+                            <a class="btn btn-warning btn-sm" asp-action="EditPatient" asp-route-id="@patient.Id">Edit</a>
+                            <a class="btn btn-danger btn-sm" asp-action="DeletePatient" asp-route-id="@patient.Id">Delete</a>
+                        </td>
+                    }
+
                 </tr>
             }
         </tbody>

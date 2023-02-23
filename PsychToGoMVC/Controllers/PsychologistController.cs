@@ -161,7 +161,8 @@ public class PsychologistController : Controller
         List<Patient> patients = await client.GetFromJsonAsync<List<Patient>>( client.BaseAddress + $"/{psychologistId}/patients" );
         if (patients == null)
         {
-            return RedirectToAction( "Index" );
+            ModelState.AddModelError( "", "Error has occured" );
+            return View( ModelState );
         }
         
         return View("PatientList", patients );

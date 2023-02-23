@@ -12,7 +12,7 @@ using PsychToGo.Data;
 namespace PsychToGo.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230222191937_InitialCreate")]
+    [Migration("20230223201203_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -322,7 +322,6 @@ namespace PsychToGo.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("PsychiatristId")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int>("PsychologistId")
@@ -490,9 +489,7 @@ namespace PsychToGo.Migrations
                 {
                     b.HasOne("PsychToGo.Models.Psychiatrist", "Psychiatrist")
                         .WithMany("Patients")
-                        .HasForeignKey("PsychiatristId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PsychiatristId");
 
                     b.HasOne("PsychToGo.Models.Psychologist", "Psychologist")
                         .WithMany("Patients")

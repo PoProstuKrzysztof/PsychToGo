@@ -38,7 +38,7 @@ public class PsychiatristController : Controller
         }
         else
         {
-            ModelState.AddModelError( "", $"There are no psychiatrists );
+            ModelState.AddModelError( "", $"There are no psychiatrists ");
             psychiatrists = Enumerable.Empty<PsychiatristDTO>().ToList();
 
         }

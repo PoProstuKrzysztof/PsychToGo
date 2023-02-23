@@ -246,7 +246,7 @@ namespace PsychToGo.Migrations
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PsychologistId = table.Column<int>(type: "int", nullable: false),
-                    PsychiatristId = table.Column<int>(type: "int", nullable: false)
+                    PsychiatristId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -255,8 +255,7 @@ namespace PsychToGo.Migrations
                         name: "FK_Patients_Psychiatrists_PsychiatristId",
                         column: x => x.PsychiatristId,
                         principalTable: "Psychiatrists",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Patients_Psychologists_PsychologistId",
                         column: x => x.PsychologistId,

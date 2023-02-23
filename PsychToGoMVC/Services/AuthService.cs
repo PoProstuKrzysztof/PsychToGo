@@ -27,10 +27,10 @@ public class AuthService : IAuthService
         HttpResponseMessage response =  client.PostAsync( client.BaseAddress + "/login" ,content).Result;
         if(response.IsSuccessStatusCode)
         {
-            string result = response.Content.ReadAsStringAsync().Result;
+            string result =  response.Content.ReadAsStringAsync().Result;
 
 
-            return result;
+            return  result;
         }
 
         return string.Empty ;

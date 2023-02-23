@@ -49,7 +49,7 @@ public class PatientService : IPatientService
         return parsedPatient;
     }
 
-    public Patient CreatePatientInstance(PatientViewModel pvm)
+    public async Task<Patient> CreatePatientInstance(PatientViewModel pvm)
     {
 
         Patient newPatient = new Patient()

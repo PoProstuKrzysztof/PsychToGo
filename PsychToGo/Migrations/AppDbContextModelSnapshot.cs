@@ -319,7 +319,6 @@ namespace PsychToGo.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("PsychiatristId")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int>("PsychologistId")
@@ -487,9 +486,7 @@ namespace PsychToGo.Migrations
                 {
                     b.HasOne("PsychToGo.Models.Psychiatrist", "Psychiatrist")
                         .WithMany("Patients")
-                        .HasForeignKey("PsychiatristId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PsychiatristId");
 
                     b.HasOne("PsychToGo.Models.Psychologist", "Psychologist")
                         .WithMany("Patients")

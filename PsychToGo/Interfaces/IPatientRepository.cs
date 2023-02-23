@@ -16,6 +16,7 @@ public interface IPatientRepository
 
     //Post
     Task<bool> CreatePatient(int medicineId, Patient patient);
+    Task<bool> CreatePatientWithoutPsychiatrist(Patient patient);
     Task<bool> Save();
     Task<bool> CheckDuplicate(PatientDTO patient);
 

@@ -17,7 +17,7 @@
         {
             <li class="list-group-item">
                 <strong>@patient.Name @patient.LastName</strong>   @patient.Email @patient.PsychiatristId
-                <a class="btn btn-primary ms-2" asp-action="AssignPatient" asp-route-id="@patient.Id">Assign</a>
+                <a class="btn btn-primary ms-2" asp-action="AssignPsychiatrist" asp-controller="Patient" asp-route-id="@patient.Id">Assign</a>
             </li>
         }
     </ol>

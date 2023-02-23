@@ -1,0 +1,32 @@
+﻿
+@model PatientViewModel
+
+@{
+    ViewData["Title"] = "Assign psychiatrist";
+}
+
+<h1>Assign psychiatrist to <strong>@Model.Name @Model.LastName</strong></h1>
+<div class="container border-2 col-md-3">
+    <form method="post" asp-antiforgery="true" >
+        <input asp-for="Name"  hidden value="@Model.Name"/>
+        <input asp-for="LastName" hidden value="@Model.LastName" />
+        <input asp-for="Email" hidden value="@Model.Email" />
+        <input asp-for="DateOfBirth" hidden value="@Model.DateOfBirth" />
+        <input asp-for="Address" hidden value="@Model.Address" />
+        <input asp-for="PsychologistId" hidden value="@Model.PsychologistId"  />
+        <input asp-for="Phone" hidden value="@Model.Phone" />
+        <input asp-for="MedicinesId" hidden value="@Model.MedicinesId" />
+        <input asp-for="Id" hidden value="@Model.Id" />
+
+        <div class="form-control mb-3 mt-3">
+
+            @Html.LabelFor(model => model.PsychiatristId, "Psychiatrist")
+            @Html.DropDownListFor(model => model.PsychiatristId, new SelectList(Model.Psychiatrists, "Id","Name LastName"),"- Select - ")
+        </div>
+
+        <div class=" mb-2 mt-2">
+
+            <button asp-action="AssignPsychiatrist" class="btn btn-outline-primary">Assign</button>            
+        </div>
+    </form>
+</div>

@@ -27,19 +27,25 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-center">
-                    <a class="btn btn-outline-success" asp-controller="Psychologist" asp-action="GetPsychologistPatients">Assign psychiatrist</a>
+                    @if (User.IsInRole( "psychologist" ))
+                    {
+                        <a class="btn btn-outline-success" asp-controller="Psychologist" asp-action="GetPsychologistPatients">Assign psychiatrist</a>
+
+                    }
                     <ul class="nav flex-grow-1 justify-content-center  ">
                         @if (httpAccessor.HttpContext.Session.Get( "JWTToken" ) != null && httpAccessor.HttpContext.Session.GetString( "JWTToken" ).ToString().Length > 0)
                         {
+                            @if (User.IsInRole( "admin" ) || User.IsInRole( "psychologist" ) || User.IsInRole( "psychiatrist" ))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Patient" asp-action="Index">Patients</a>
+                                </li>
+                            }
+
 
                             @if (User.IsInRole( "admin" ))
                             {
                                 <a class="btn btn-success " asp-controller="Auth" asp-action="Register">Register new user</a>
-
-
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="Patient" asp-action="Index">Patients</a>
-                                </li>
 
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-controller="Medicine" asp-action="Index">Medicines</a>
@@ -48,15 +54,15 @@
 
 
 
-                            @if (User.IsInRole( "patient" ) || User.IsInRole( "admin" ))
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="Psychiatrist" asp-action="Index">Psychiatrists</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="Psychologist" asp-action="Index">Psychologists</a>
-                                </li>
-                            }
+                            @*@if (User.IsInRole( "patient" ) || User.IsInRole( "admin" ))
+                        {}*@
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Psychiatrist" asp-action="Index">Psychiatrists</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Psychologist" asp-action="Index">Psychologists</a>
+                            </li>
+
                         }
 
                     </ul>

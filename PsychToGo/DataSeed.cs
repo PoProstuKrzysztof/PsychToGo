@@ -8,15 +8,15 @@ namespace PsychToGo;
 public class DataSeed
 {
     private readonly AppDbContext _context;
-    private readonly UserManager<AppUser> _userManager;
 
-    public DataSeed(AppDbContext context, UserManager<AppUser> userManager)
+
+    public DataSeed(AppDbContext context)
     {
-        _userManager = userManager;
+
         _context = context;
     }
 
-    public async void SeedDataContext()
+    public void SeedDataContext()
     {
         if (!_context.Psychiatrists.Any())
         {
@@ -115,28 +115,28 @@ public class DataSeed
             _context.SaveChanges();
         }
 
+
+
         if (!_context.ApplicationUsers.Any())
         {
             var appUsers = new List<AppUser>()
             {
                 new AppUser()
                 {
- UserName = "admin@gmail.com",
+            UserName = "admin@gmail.com",
             Email = "admin@gmail.com",
             NormalizedEmail = "ADMIN@GMAIL.COM",
             Name = "Admin",
             LastName = "Admin",
-            PasswordHash = "Admin123"
-            
+
+            //Hashing passoword, class for this is at the end of this entire class
+            PasswordHash = HashPassword("Admin123")
+
                 }
             };
-
             foreach (var user in appUsers)
             {
-                var password = "Admin123";
-                var hashedPassword = _userManager.PasswordHasher.HashPassword( user, password );
-                user.PasswordHash = hashedPassword;
-                var result = await _userManager.CreateAsync( user );
+                _context.Users.Add( user );
             }
 
             //Add more app users like psychologist/patient/psychiatrist
@@ -288,4 +288,16 @@ public class DataSeed
 
 
     }
+    /// <summary>
+    /// Hashing class
+    /// </summary>
+    /// <param name="password"></param>
+    /// <returns></returns>
+    private string HashPassword(string password)
+    {
+        var passwordHasher = new PasswordHasher<AppUser>();
+        return passwordHasher.HashPassword( null, password );
+    }
 }
+
+

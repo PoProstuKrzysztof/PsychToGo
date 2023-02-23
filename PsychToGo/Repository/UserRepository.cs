@@ -131,7 +131,7 @@ public class UserRepository : IUserRepository
             var result = await _userManager.CreateAsync( user, registrationRequest.Password );
             if (result.Succeeded)
             {               
-                await _userManager.AddToRoleAsync( user, "admin" );
+                await _userManager.AddToRoleAsync( user, "psychologist" );
 
                 var userToReturn = _context.ApplicationUsers.FirstOrDefault( u => u.UserName == registrationRequest.UserName );
                 return _mapper.Map<UserDTO>( userToReturn );

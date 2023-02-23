@@ -171,6 +171,49 @@ public class PatientController : Controller
     }
 
 
+
+    [HttpPost( "createNOPSYCH" )]
+    [ProducesResponseType( StatusCodes.Status400BadRequest )]
+    [ProducesResponseType( StatusCodes.Status201Created )]
+    [ProducesResponseType( StatusCodes.Status422UnprocessableEntity )]
+
+    public async Task<IActionResult> CreatePatientWithoutPsychiatrist(int psychologistId, [FromBody] PatientDTO newPatient)
+    {
+        if (newPatient == null)
+        {
+            return BadRequest( ModelState );
+        }
+
+        if (await _patientRepository.CheckDuplicate( newPatient ))
+        {
+            ModelState.AddModelError( "Error", "Patient already exists." );
+            return StatusCode( 422, ModelState );
+        }
+
+        if (!ModelState.IsValid)
+        {
+            ModelState.AddModelError( "Error", "Error has occured while creating" );
+            return BadRequest( ModelState );
+        }
+
+        var patientMap = _mapper.Map<Patient>( newPatient );
+
+       
+        patientMap.Psychologist = await _psychologistRepository.GetPsychologist( psychologistId );
+
+
+        if (!await _patientRepository.CreatePatientWithoutPsychiatrist(patientMap ))
+        {
+            ModelState.AddModelError( "", "Something went wrong while saving patient." );
+            return StatusCode( 500, ModelState );
+        }
+
+        return Created( "Successfully created patient", newPatient );
+
+    }
+
+
+
     [HttpPost( "create" )]       
     [ProducesResponseType( StatusCodes.Status400BadRequest )]  
     [ProducesResponseType( StatusCodes.Status201Created )]
