@@ -37,7 +37,7 @@ public class ExceptionHandlerMiddleware
                     ex.GetType().ToString(),
                     ex.Message );
             }
-           await httpContext.Response.WriteAsync( "Error occured" );
+           await httpContext.Response.WriteAsync( "Something went wrong. " );
         }
         
     }

@@ -26,10 +26,7 @@ public class PsychologistController : Controller
         client.BaseAddress = baseAdress;
     }
 
-    /// <summary>
-    /// Show list of psychologists without their patients
-    /// </summary>
-    /// <returns>List of psychologists </returns>
+  
     public IActionResult Index()
     {
         List<PsychologistDTO> psychologists = new List<PsychologistDTO>();
@@ -49,21 +46,14 @@ public class PsychologistController : Controller
     }
 
 
-    /// <summary>
-    /// Create psychologist GET method
-    /// </summary>
-    /// <returns>Creation view</returns>
+   
     [HttpGet]
     public IActionResult CreatePsychologistMVC()
     {
         return View();
     }
 
-    /// <summary>
-    /// Create psychiatrist POST method
-    /// </summary>
-    /// <param name="pvm"></param>
-    /// <returns>New psychologist</returns>
+   
     [HttpPost]
     [ValidateAntiForgeryToken]
     public IActionResult CreatePsychologistMVC(PsychologistDTO pvm)
@@ -81,10 +71,7 @@ public class PsychologistController : Controller
         return View( pvm );
     }
 
-    /// <summary>
-    /// Delete psychologist
-    /// </summary>
-    /// <param name="id"></param>
+    
     
     [HttpGet]
     public IActionResult DeletePsychologist([FromRoute] int id)
@@ -98,10 +85,7 @@ public class PsychologistController : Controller
         return BadRequest();
     }
 
-    /// <summary>
-    /// Get psychologist credentials for edit
-    /// </summary>
-    /// <param name="id"></param>
+    
     
     [HttpGet]
     public async Task<IActionResult> EditPsychologist([FromRoute] int id)
@@ -115,10 +99,7 @@ public class PsychologistController : Controller
 
         return View( psychologist );
     }
-    /// <summary>
-    /// Edit psychologist
-    /// </summary>
-    /// <param name="psychologist"></param>
+    
     
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -136,10 +117,7 @@ public class PsychologistController : Controller
         return View( psychologist );
     }
 
-    /// <summary>
-    /// Get psychologist all patients
-    /// </summary>
-    /// <returns></returns>
+  
     [HttpGet]
     public async Task<IActionResult> GetPsychologistPatients()
     {

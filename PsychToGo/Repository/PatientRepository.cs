@@ -229,7 +229,7 @@ public class PatientRepository : IPatientRepository
                 return 0;
             }
 
-            var psychologistId = patient.PsychiatristId; 
+            var psychologistId = patient.PsychologistId; 
             if(psychologistId == null)
             {
                 return 0;

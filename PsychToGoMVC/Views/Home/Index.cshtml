@@ -1,9 +1,55 @@
-﻿@{
+﻿@using PsychToGo.DTO;
+<head>
+    <link rel="stylesheet" href="~/PsychToGoMVC.styles.css" asp-append-version="true" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel="stylesheet">
+</head>
+
+
+
+@model LoginRequestDTO
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>This app is still in progress. If you encounter any errors, please contact our tech support.</p>
-    <h4 class="text-danger">To see tabs you have to <strong>Log In</strong></h4>
-</div>
+<!DOCTYPE html>
+
+<body>
+    <div class="container-homepage">
+        <div class="content">
+            <h2 class="logo"><i>PsychToGo</i></h2>
+
+            <div class="text-sci">
+                <h2>
+                    Welcome! <br /><span>
+                        To navigate through service you have to log in.
+                        To get your login information you have to contact your administrator.
+                    </span>
+                </h2>
+            </div>
+
+        </div>
+        <div class="log-box">
+            <div class="form-box login">
+                <form method="post">
+                    <h2>Log in</h2>
+                    <div class="input-box">
+                        <div>
+                            <label>E-mail</label>
+                            <input asp-for="UserName" type="text" placeholder="E-mail..." required />
+                            <span asp-validation-for="UserName" class="text-danger"></span>
+                        </div>
+                        <div >
+                            <label>Password</label>
+                            <input asp-for="Password" type="password" placeholder="Password..." required />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        <button type="submit" class="btn" value="Submit">Login</button>
+                    </div>
+                    
+
+                </form>
+            </div>
+        </div>
+    </div>
+</body>

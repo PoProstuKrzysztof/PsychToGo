@@ -26,11 +26,7 @@ public class PatientController : Controller
         client = new HttpClient();
         client.BaseAddress = baseAdress;
     }
-
-    /// <summary>
-    /// List of patients 
-    /// </summary>
-    /// <returns></returns>   
+ 
     public IActionResult Index()
     {
         List<PatientViewModel> patients = new List<PatientViewModel>();
@@ -51,14 +47,13 @@ public class PatientController : Controller
         return View( patients );
     }
 
-    /// <summary>
-    /// Get patient creation view
-    /// </summary>
-    /// <returns></returns>
+    
     [HttpGet]
     public async Task<IActionResult> CreatePatientMVC()
     {
         PatientViewModel? newPatient = new PatientViewModel();
+
+        //Populating patientviewmodel with models
         newPatient.Psychologists = await _patientService.PsychologistsList();
         newPatient.Psychiatrists = await _patientService.PsychiatristsList();
         newPatient.Medicines = await _patientService.MedicinesList();
@@ -66,11 +61,7 @@ public class PatientController : Controller
         return View( newPatient );
     }
 
-    /// <summary>
-    /// Create new patient
-    /// </summary>
-    /// <param name="pvm"></param>
-    /// <returns></returns>
+   
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CreatePatientMVC(PatientViewModel pvm)
@@ -87,7 +78,7 @@ public class PatientController : Controller
         if (pvm.PsychiatristId == null)
         {
             HttpResponseMessage responseNoPsychiatrist = client.
-    PostAsync( client.BaseAddress + $"/createNOPSYCH?psychologistId={pvm.PsychologistId}", content ).Result;
+                 PostAsync( client.BaseAddress + $"/createNOPSYCH?psychologistId={pvm.PsychologistId}", content ).Result;
             if (responseNoPsychiatrist.IsSuccessStatusCode)
             {
                 return RedirectToAction( "Index" );
@@ -97,7 +88,7 @@ public class PatientController : Controller
         else
         {
             HttpResponseMessage response = client.
-    PostAsync( client.BaseAddress + $"/create?psychologistId={pvm.PsychologistId}&psychiatristId={pvm.PsychiatristId}&medicineId={pvm.MedicinesId.First()}", content ).Result;
+                PostAsync( client.BaseAddress + $"/create?psychologistId={pvm.PsychologistId}&psychiatristId={pvm.PsychiatristId}&medicineId={pvm.MedicinesId.First()}", content ).Result;
             if (response.IsSuccessStatusCode)
             {
                 return RedirectToAction( "Index" );
@@ -112,11 +103,7 @@ public class PatientController : Controller
     }
 
 
-    /// <summary>
-    /// Delete patient
-    /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
+    
     [HttpGet]
     public IActionResult DeletePatient([FromRoute] int id)
     {
@@ -130,11 +117,7 @@ public class PatientController : Controller
         return BadRequest();
     }
 
-    /// <summary>
-    /// Get patient edit view
-    /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
+   
     [HttpGet]
     public async Task<IActionResult> EditPatient([FromRoute] int id)
     {
@@ -149,11 +132,7 @@ public class PatientController : Controller
         return View( editedPatient );
     }
 
-    /// <summary>
-    /// Edit patient
-    /// </summary>
-    /// <param name="pvm"></param>
-    /// <returns></returns>
+    
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> EditPatient(PatientViewModel pvm)
@@ -176,15 +155,11 @@ public class PatientController : Controller
         return View( pvm );
     }
 
-    /// <summary>
-    /// Get AssignPsychiatrist view
-    /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
+    
     [HttpGet]
     public async Task<IActionResult> AssignPsychiatrist([FromRoute] int id)
     {
-        PatientViewModel patient = await _patientService.CreateParsedPatientInstance( id );
+        PatientViewModel? patient = await _patientService.CreateParsedPatientInstance( id );
         if (patient == null)
         {
             ModelState.AddModelError( "", "Error has occured" );
@@ -194,11 +169,7 @@ public class PatientController : Controller
         return View( patient );
     }
 
-    /// <summary>
-    /// Assign psychiatrist
-    /// </summary>
-    /// <param name="patient"></param>
-    /// <returns></returns>
+    
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> AssignPsychiatrist([FromBody] PatientViewModel patient)
