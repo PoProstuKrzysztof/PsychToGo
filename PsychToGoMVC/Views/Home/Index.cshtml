@@ -1,9 +1,4 @@
 ﻿@using PsychToGo.DTO;
-<head>
-    <link rel="stylesheet" href="~/PsychToGoMVC.styles.css" asp-append-version="true" />
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel="stylesheet">
-</head>
-
 
 
 @model LoginRequestDTO
@@ -13,8 +8,14 @@
 }
 
 <!DOCTYPE html>
-
+<head>
+    <link rel="stylesheet" href="~/PsychToGoMVC.styles.css" asp-append-version="true" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel="stylesheet">
+</head>
 <body>
+    
+    
+    <div class="background"></div>
     <div class="container-homepage">
         <div class="content">
             <h2 class="logo"><i>PsychToGo</i></h2>
@@ -31,25 +32,36 @@
         </div>
         <div class="log-box">
             <div class="form-box login">
-                <form method="post">
+                <form asp method="post">
                     <h2>Log in</h2>
                     <div class="input-box">
-                        <div>
-                            <label>E-mail</label>
-                            <input asp-for="UserName" type="text" placeholder="E-mail..." required />
-                            <span asp-validation-for="UserName" class="text-danger"></span>
-                        </div>
-                        <div >
-                            <label>Password</label>
-                            <input asp-for="Password" type="password" placeholder="Password..." required />
-                            <span asp-validation-for="Password" class="text-danger"></span>
-                        </div>
-                        <button type="submit" class="btn" value="Submit">Login</button>
-                    </div>
-                    
 
+                        <label>E-mail</label>
+                        <input asp-for="UserName" type="text" placeholder="E-mail..." required />
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+
+
+
+                    </div>
+
+                    <div class="input-box">
+
+                        <label>Password</label>
+                        <input asp-for="Password" type="password" placeholder="Password..." required />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+
+                    </div>
+
+                    <button asp-controller="Auth" asp-action="Login" type="submit" asp class="btn" value="Submit">Login</button>
                 </form>
             </div>
         </div>
     </div>
 </body>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync( "_ValidationScriptsPartial" );
+    }
+}

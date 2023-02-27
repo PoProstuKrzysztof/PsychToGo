@@ -1,4 +1,7 @@
-﻿@model IEnumerable<PsychToGo.DTO.MedicineDTO>
+﻿
+
+
+@model IEnumerable<PsychToGo.DTO.MedicineDTO>
 
 
 @{
@@ -6,75 +9,78 @@
     ViewBag.CurrentUrl = "~/Medicines/Index";
 }
 
-<div class="border p-4">
-    <h1 class="text-primary">Medicines</h1>
-    <hr />
-    <p>
-        <a class="btn btn-outline-primary" asp-action="CreateMedicineMVC">Create New</a>
-    </p>
-    <table class="table table-hover border shadow-lg">
-        <thead>
-            <tr>
-
-                <th>
-                    @Html.DisplayNameFor(model => model.Name)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Description)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ProductionDate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ExpireDate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.DailyDose)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Ingredients)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.InStock)
-                </th>
-                <th>
-                    Operations
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var medicines in Model)
-            {
+<body>
+    <div class="border p-4">
+        <h1 class="text-primary">Medicines</h1>
+        <hr />
+        <p>
+            <a class="btn btn-outline-primary" asp-action="CreateMedicineMVC">Create New</a>
+        </p>
+        <table class="table table-hover border shadow-lg">
+            <thead>
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => medicines.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => medicines.Description)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => medicines.ProductionDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => medicines.ExpireDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => medicines.DailyDose)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => medicines.Ingredients)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => medicines.InStock)
-                    </td>
-                    <td >
-                        <a class="btn btn-warning btn-sm" asp-action="EditMedicine" asp-route-id="@medicines.Id">Edit</a>
-                        <a class="btn btn-danger btn-sm" asp-action="DeleteMedicine" asp-route-id="@medicines.Id">Delete</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
 
-</div>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Description)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ProductionDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ExpireDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DailyDose)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Ingredients)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.InStock)
+                    </th>
+                    <th>
+                        Operations
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var medicines in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => medicines.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => medicines.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => medicines.ProductionDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => medicines.ExpireDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => medicines.DailyDose)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => medicines.Ingredients)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => medicines.InStock)
+                        </td>
+                        <td>
+                            <a class="btn btn-warning btn-sm" asp-action="EditMedicine" asp-route-id="@medicines.Id">Edit</a>
+                            <a class="btn btn-danger btn-sm" asp-action="DeleteMedicine" asp-route-id="@medicines.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</body>
+
 

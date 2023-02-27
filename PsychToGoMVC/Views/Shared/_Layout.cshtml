@@ -21,12 +21,23 @@
             <a  asp-controller="Medicine" asp-action="Index">Medicines</a>
             <a  asp-controller="Psychiatrist" asp-action="Index">Psychiatrists</a>
             <a asp-controller="Psychologist" asp-action="Index">Psychologists</a>
+            @if (httpAccessor.HttpContext.Session.GetString( "JWTToken" ) != null &&
+            httpAccessor.HttpContext.Session.GetString( "JWTToken" ).ToString().Length > 0)
+            {
+
+                <a class="btn-sm btn-primary " asp-controller="Auth" asp-action="Logout">Logout</a>
+
+            }
         </nav>
     </header>
-
+    
    
 
+    
 
+
+        
+    
 
 
 
