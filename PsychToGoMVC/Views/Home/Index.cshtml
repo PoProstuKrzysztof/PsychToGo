@@ -1,4 +1,5 @@
 ﻿@using PsychToGo.DTO;
+@inject IHttpContextAccessor httpAccessor
 
 
 @model LoginRequestDTO
@@ -8,13 +9,12 @@
 }
 
 <!DOCTYPE html>
+
 <head>
     <link rel="stylesheet" href="~/PsychToGoMVC.styles.css" asp-append-version="true" />
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel="stylesheet">
 </head>
-<body>
-    
-    
+<body> 
     <div class="background"></div>
     <div class="container-homepage">
         <div class="content">
@@ -24,40 +24,50 @@
                 <h2>
                     Welcome! <br /><span>
                         To navigate through service you have to log in.
-                        To get your login information you have to contact your administrator.
+                        To get your login details you have to contact your administrator.
                     </span>
                 </h2>
             </div>
 
         </div>
-        <div class="log-box">
-            <div class="form-box login">
-                <form asp method="post">
-                    <h2>Log in</h2>
-                    <div class="input-box">
 
-                        <label>E-mail</label>
-                        <input asp-for="UserName" type="text" placeholder="E-mail..." required />
-                        <span asp-validation-for="UserName" class="text-danger"></span>
+        @if (httpAccessor.HttpContext.Session.GetString( "JWTToken" ) != null &&
+        httpAccessor.HttpContext.Session.GetString( "JWTToken" ).ToString().Length > 0)
+        {
+            //TODO: add different page if user is logged in 
+        }
+        else
+        {
+            <div class="log-box">
+                <div class="form-box login">
+                    <form asp method="post">
+                        <h2>Log in</h2>
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <div class="input-box">
 
+                            <label>E-mail</label>
+                            <input asp-for="UserName" type="text" placeholder="E-mail..." required />
+                           
+                        </div>
 
+                        <div class="input-box">
 
-                    </div>
+                            <label>Password</label>
+                            <input asp-for="Password" type="password" placeholder="Password..." required />
+                            
+                        </div>
 
-                    <div class="input-box">
-
-                        <label>Password</label>
-                        <input asp-for="Password" type="password" placeholder="Password..." required />
-                        <span asp-validation-for="Password" class="text-danger"></span>
-
-                    </div>
-
-                    <button asp-controller="Auth" asp-action="Login" type="submit" asp class="btn" value="Submit">Login</button>
-                </form>
+                        <button asp-controller="Auth" asp-action="Login" type="submit" asp class="btn" value="Submit">Login</button>
+                    </form>
+                </div>
             </div>
-        </div>
+        }
+        
+        
     </div>
+
 </body>
+
 
 
 @section Scripts {

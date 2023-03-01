@@ -19,10 +19,7 @@ public class AuthController : Controller
         _authService = authService;       
     }
 
-    /// <summary>
-    /// Get new login request 
-    /// </summary>
-    /// <returns></returns>
+    
     [HttpGet]
     public IActionResult Login()
     {
@@ -30,11 +27,7 @@ public class AuthController : Controller
         return View( loginObj );
     }
 
-    /// <summary>
-    /// Logging
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <returns></returns>
+    
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Login(LoginRequestDTO obj)
@@ -59,26 +52,19 @@ public class AuthController : Controller
         }
 
         ModelState.AddModelError( "", $"An error occurred while logging in" );
-        return View(obj);
+        return RedirectToAction( "Index", "Home", obj );
 
 
     }
 
-    /// <summary>
-    /// Get register page
-    /// </summary>
-    /// <returns></returns>
+    
     [HttpGet]
     public IActionResult Register()
     {
         return View();
     }
     
-    /// <summary>
-    /// Register
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <returns></returns>
+  
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Register(RegistrationRequestDTO obj)
@@ -91,20 +77,14 @@ public class AuthController : Controller
         return View();
     }
 
-    /// <summary>
-    /// Get AccessDenied view
-    /// </summary>
-    /// <returns></returns>
+    
     [HttpGet]
     public IActionResult AccessDenied()
     {
         return View();
     }
 
-    /// <summary>
-    /// Logout
-    /// </summary>
-    /// <returns></returns>
+    
     [HttpGet]
     public async Task<IActionResult> Logout()
     {

@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - PsychToGo</title>
+    <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/PsychToGoMVC.styles.css" asp-append-version="true" />
@@ -14,6 +14,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 </head>
 <body>
+    
     <header class="header">
         <nav class="navbar">
             <a  asp-controller="Home" asp-action="Index">PsychToGo</a>
@@ -24,109 +25,19 @@
             @if (httpAccessor.HttpContext.Session.GetString( "JWTToken" ) != null &&
             httpAccessor.HttpContext.Session.GetString( "JWTToken" ).ToString().Length > 0)
             {
-
-                <a class="btn-sm btn-primary " asp-controller="Auth" asp-action="Logout">Logout</a>
-
+                <a class="btn btn-primary " asp-controller="Auth" asp-action="Logout">Logout</a>
             }
         </nav>
-    </header>
+    </header>   
     
-   
-
     
-
-
         
-    
-
-
-
-    @*<header>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3 ">
-            <div class="container-fluid ">
-
-
-
-                <a class="navbar-brand" asp-controller="Home" asp-action="Index">PsychToGo</a>
-
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-center">
-                    @if (User.IsInRole( "psychologist" ))
-                    {
-                        <a class="btn btn-outline-success" asp-controller="Psychologist" asp-action="GetPsychologistPatients">Assign psychiatrist</a>
-
-                    }
-                    <ul class="nav flex-grow-1 justify-content-center  ">
-                        @if (httpAccessor.HttpContext.Session.Get( "JWTToken" ) != null && httpAccessor.HttpContext.Session.GetString( "JWTToken" ).ToString().Length > 0)
-                        {
-                            @if (User.IsInRole( "admin" ) || User.IsInRole( "psychologist" ) || User.IsInRole( "psychiatrist" ))
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="Patient" asp-action="Index">Patients</a>
-                                </li>
-                            }
-
-
-                            @if (User.IsInRole( "admin" ))
-                            {
-                                <a class="btn btn-success " asp-controller="Auth" asp-action="Register">Register new user</a>
-
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="Medicine" asp-action="Index">Medicines</a>
-                                </li>
-                            }
-
-
-
-                        
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Psychiatrist" asp-action="Index">Psychiatrists</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Psychologist" asp-action="Index">Psychologists</a>
-                            </li>
-
-                        }
-
-                    </ul>
-
-
-                    <div>
-                        <ul class="navbar-nav me-auto">
-
-
-                            @if (httpAccessor.HttpContext.Session.GetString( "JWTToken" ) != null &&
-                            httpAccessor.HttpContext.Session.GetString( "JWTToken" ).ToString().Length > 0)
-                            {
-                                <li class="nav-item ">
-                                    <a class="nav-link text-white  btn-sm btn-primary " asp-controller="Auth" asp-action="Logout">Logout</a>
-                                </li>
-                            }
-                            else
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link btn-sm btn-primary text-white" asp-controller="Auth" asp-action="Login">Login</a>
-                                </li>
-
-                            }
-                        </ul>
-
-                    </div>
-
-                </div>
-
-            </div>
-        </nav>
-    </header>*@
-    <div class="container">
-        <main role="main" class="pb-3">
+        <main role="main">
+            
             @RenderBody()
+
         </main>
-    </div>
+    
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

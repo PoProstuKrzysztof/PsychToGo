@@ -1,31 +1,22 @@
-@import url('https://fonts.googleapis.com/css?family=Poppin');
+@import url('https://fonts.googleapis.com/css?family=Poppins');
 
 
-@media (min-width: 768px) {
+@media (min-width: 480px) {
     html {
-        font-size: 16px;
+        font-size: 12px;
     }
 }
+
 
 
 html {
     font-size: 16px;
     position: relative;
     min-height: 100%;
-    background: #030512;
-    
-    
+    background: #FFFFFF;
 }
 
 
-/*.background {
-    width: 100%;
-    height: 100vh;
-    background: #00008B;
-    background-position: center;
-    background-size: cover;
-    filter: blur(10px);
-}*/
 
 
 .footer {
@@ -40,17 +31,16 @@ html {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Sitka Small' , sans-serif;
 }
 
 .header {
     position: sticky;
-    top:0;
-    left: 0;
-    right: 0;
+    top: 0;
+    left: 0;    
     width: 100%;
-    padding: 15px 35.5%;    
-    background: #030512;
+    padding: 14px 32.5%;
+    background: #CD4613;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -63,12 +53,12 @@ html {
     bottom: -6px;
     left: 0;
     width: 100%;
-    height: 2px;
+    height: 4px;
     background: #FFFFFF;
     border-radius: 5px;
     transform: translateY(10px);
     opacity: 0;
-    transition: .5s;
+    transition: 0.7s;
 }
 
 .navbar a:hover::after {
@@ -82,19 +72,23 @@ html {
     font-size: 16px;
     color: #FFFFFF;
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 900;
     margin-right: 20px;
 }
 
-.container-homepage .logo {
-    font-size: 40px;
-    color: antiquewhite;
+.background{
+    width:100%;
+    height:100vh;
+    background:url('img/baard-hansen-jJuYXZdLg84-unsplash.jpg') no-repeat;
+    background-size:cover;
+    background-position:center;
+    filter:blur(5px);
 }
 
 .text-sci h2 {
     font-size: 35px;
-    color: antiquewhite;
-    
+    font-weight: 800;
+    color: aliceblue;
 }
 
 .text-sci h2 span {
@@ -106,12 +100,35 @@ html {
     font-size: 16px;
     margin: 20px;
 }
+
+.container-homepage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 75%;
+    height: 650px;
+    background: url('img/baard-hansen-jJuYXZdLg84-unsplash.jpg') no-repeat;
+    background-size: cover;
+    background-position: center;
+    border-radius: 30px;
+    margin-top: 15px;
+}
+
+
+
+    .container-homepage .logo {
+        font-size: 40px;
+        font-weight: 700;
+        color: aliceblue;
+    }
+
 .container-homepage .content {
     position: absolute;
     top: 0;
     left: 0;
     width: 50%;
-    height: 70%;
+    height: 85%;
     background: transparent;
     padding: 70px;
     display:flex;
@@ -131,19 +148,20 @@ html {
 .log-box .form-box{
     display:flex;
     width:100%;
-    height: 70%;
+    height: 85%;
     justify-content: center;
     align-items: center;
     background: transparent;
     backdrop-filter:blur(5px);
     border-top-right-radius: 10px;
     border-bottom-right-radius:10px;
-    color: antiquewhite;
+    border-bottom-left-radius: 20px;
+    color: brown;
 }
 .log-box .btn {
     width: 100%;
     height: 45px;
-    background: #0723C8;
+    background: brown;
     color: white;
     border: none;
     outline: none;
@@ -189,19 +207,5 @@ html {
 
 
 
-
-.container-homepage {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 75%;
-    height: 550px;
-    background: url('img/kanan-khasmammadov-xo8_dJg6D1k-unsplash.jpg') no-repeat;
-    background-size: cover;
-    background-position: center;
-    border-radius: 30px;
-    margin-top: 15px;
-}
 
 
