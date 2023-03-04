@@ -37,10 +37,11 @@ html {
 .header {
     position: sticky;
     top: 0;
-    left: 0;    
+    left: 0;
     width: 100%;
     padding: 14px 32.5%;
-    background: #CD4613;
+    background: linear-gradient(90deg, #b72c2c, brown); 
+    
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -101,6 +102,12 @@ html {
     margin: 20px;
 }
 
+.container-homepage .logo {
+    font-size: 40px;
+    font-weight: 700;
+    color: aliceblue;
+}
+
 .container-homepage {
     position: absolute;
     top: 50%;
@@ -117,11 +124,7 @@ html {
 
 
 
-    .container-homepage .logo {
-        font-size: 40px;
-        font-weight: 700;
-        color: aliceblue;
-    }
+   
 
 .container-homepage .content {
     position: absolute;
@@ -204,8 +207,4 @@ html {
     pointer-events: none;
    
 }
-
-
-
-
 
