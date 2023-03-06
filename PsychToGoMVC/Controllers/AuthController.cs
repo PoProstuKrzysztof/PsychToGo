@@ -72,9 +72,14 @@ public class AuthController : Controller
         var register = await _authService.RegisterAsync<HttpResponseMessage>( obj );
         if (register != string.Empty)
         {
-            return RedirectToAction( "Index", "Home" );
+            if(obj.Role == "admin")
+            {
+                return RedirectToAction( "Index", "Home" );
+            }
+
+            return RedirectToAction( $"Create{obj.Role}MVC" , $"{obj.Role}" );
         }
-        return View();
+        return View(obj);
     }
 
     

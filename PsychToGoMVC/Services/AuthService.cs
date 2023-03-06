@@ -17,7 +17,12 @@ public class AuthService : IAuthService
         client.BaseAddress = baseAdress;
     }
 
-
+    /// <summary>
+    /// Login call to API
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="userLogin"></param>
+    /// <returns></returns>
     public async Task<string> LoginAsync<T>(LoginRequestDTO userLogin)
     {
         string data = JsonConvert.SerializeObject( userLogin );
@@ -38,6 +43,13 @@ public class AuthService : IAuthService
       
     }
 
+
+    /// <summary>
+    /// Register call to API
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="userCreate"></param>
+    /// <returns></returns>
     public async Task<string> RegisterAsync<T>(RegistrationRequestDTO userCreate)
     {
         string data = JsonConvert.SerializeObject( userCreate );

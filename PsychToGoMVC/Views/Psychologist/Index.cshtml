@@ -8,12 +8,12 @@
 <div class="container border p-5 mt-2">
     <h1 class="text-primary">Psychologists</h1>
     <hr />
-    @if (User.IsInRole( "admin" ))
-    {
+    @*@if (User.IsInRole( "admin" ))
+    {}*@
         <p>
             <a class="btn btn-outline-primary" asp-action="CreatePsychologistMVC">Create New</a>
         </p>
-    }
+    
     <table class="table table-hover border shadow-lg">
         <thead>
             <tr>

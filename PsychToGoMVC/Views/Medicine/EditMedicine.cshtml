@@ -6,7 +6,7 @@
     ViewData["Title"] = "Edit medicine";
 }
 
-<h1 class="text-primary">Edit <b>@Model.Name </b></h1>
+<h1 class="text-primary text-center">Edit <b>@Model.Name </b></h1>
 <hr />
 
 <body>
@@ -50,3 +50,9 @@
 
     </form>
 </body>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync( "_ValidationScriptsPartial" );
+    }
+}
