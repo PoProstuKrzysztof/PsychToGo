@@ -113,6 +113,7 @@ public class UserRepository : IUserRepository
     /// </summary>
     /// <param name="registrationRequest"></param>
     /// <returns></returns>
+    [ValidateAntiForgeryToken]
     public async Task<UserDTO> Register(RegistrationRequestDTO registrationRequest)
     {
         AppUser user = new AppUser()
@@ -132,7 +133,7 @@ public class UserRepository : IUserRepository
             var result = await _userManager.CreateAsync( user, registrationRequest.Password );
             if (result.Succeeded)
             {               
-                await _userManager.AddToRoleAsync( user, "psychologist" );
+                await _userManager.AddToRoleAsync( user, registrationRequest.Role );
 
                 var userToReturn = _context.ApplicationUsers.FirstOrDefault( u => u.UserName == registrationRequest.UserName );
                 return _mapper.Map<UserDTO>( userToReturn );

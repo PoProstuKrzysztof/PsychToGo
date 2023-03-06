@@ -29,4 +29,7 @@ public class RegistrationRequestDTO
     [Display(Name = "Re-enter password")]
     public string? ConfirmPassowrd { get; set; }
 
+    [Required]
+    public string? Role { get; set; }
+
 }

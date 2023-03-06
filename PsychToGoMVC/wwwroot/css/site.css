@@ -5,6 +5,9 @@
     html {
         font-size: 12px;
     }
+    table{
+        width:90%;
+    }
 }
 
 
@@ -17,7 +20,9 @@ html {
 }
 
 
-
+body::-webkit-scrollbar{
+   display:none;
+}
 
 .footer {
     position: absolute;
@@ -84,12 +89,18 @@ html {
     background-size:cover;
     background-position:center;
     filter:blur(5px);
+    transform:scale(1.01);
 }
 
 .text-sci h2 {
     font-size: 35px;
     font-weight: 800;
     color: aliceblue;
+    background-color:brown;
+    border: solid 10px thick;
+    
+    
+    
 }
 
 .text-sci h2 span {
@@ -124,9 +135,8 @@ html {
 
 
 
-   
 
-.container-homepage .content {
+    .container-homepage .content {
     position: absolute;
     top: 0;
     left: 0;
@@ -134,9 +144,9 @@ html {
     height: 85%;
     background: transparent;
     padding: 70px;
-    display:flex;
+    display: flex;
     justify-content: space-evenly;
-    flex-direction:column;
+    flex-direction: column;
 }
 
 
@@ -192,7 +202,7 @@ html {
     border: none;
     outline: none;
     font-size:16px;
-    color: white;
+    color: black;
     font-weight:500;
     padding-right: 28px;
 }
@@ -207,4 +217,51 @@ html {
     pointer-events: none;
    
 }
+
+
+
+.container-form-create {
+    position:center;
+}
+
+
+
+
+
+.form-create {
+    background-color: #f2f2f2;
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin: 50px auto;
+    max-width: 500px;
+}
+
+input[type=text], select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 6px;
+    margin-bottom: 16px;
+    resize: vertical;
+}
+
+input[type=submit] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+    input[type=submit]:hover {
+        background-color: #45a049;
+    }
+
+
+	
+
+
 

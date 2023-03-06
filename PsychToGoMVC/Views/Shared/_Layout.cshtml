@@ -22,6 +22,7 @@
             <a asp-controller="Medicine" asp-action="Index">Medicines</a>
             <a asp-controller="Psychiatrist" asp-action="Index">Psychiatrists</a>
             <a asp-controller="Psychologist" asp-action="Index">Psychologists</a>
+            <a asp-controller="Auth" asp-action="Register">Register new user</a>
             @if (httpAccessor.HttpContext.Session.GetString( "JWTToken" ) != null &&
             httpAccessor.HttpContext.Session.GetString( "JWTToken" ).ToString().Length > 0)
             {
