@@ -95,9 +95,7 @@ public class PatientController : Controller
             }
 
         }
-
-
-        
+       
         ModelState.AddModelError( "", $"An error occurred when creating patient" );
         return RedirectToAction( "CreatePatientMVC" );
     }
@@ -165,6 +163,7 @@ public class PatientController : Controller
             ModelState.AddModelError( "", "Error has occured" );
             return RedirectToAction( "Index" );
         }
+
         patient.Psychiatrists = await _patientService.PsychiatristsList();
         return View( patient );
     }
@@ -187,7 +186,7 @@ public class PatientController : Controller
         {
             return RedirectToAction( "GetPsychologistPatients", "Psychologist" );
         }
-        ModelState.AddModelError( "", $"An error occurred when editing patient" );
+        ModelState.AddModelError( "", $"An error occurred when assignit psychiatrist to patient" );
         return View( patient );
     }
 }

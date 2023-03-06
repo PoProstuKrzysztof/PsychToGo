@@ -77,7 +77,7 @@ public class AuthController : Controller
                 return RedirectToAction( "Index", "Home" );
             }
 
-            return RedirectToAction( $"Create{obj.Role}MVC" , $"{obj.Role}" );
+            return RedirectToAction( $"Create{obj.Role}MVC" , $"{obj.Role}", obj );
         }
         return View(obj);
     }

@@ -116,9 +116,8 @@ body::-webkit-scrollbar{
 
 .container-homepage .logo {
     font-size: 70px;
-    
-    font-weight: 700;
-    color: aliceblue;
+    font-weight: 700;   
+    color: red;
 }
 
 .container-homepage {

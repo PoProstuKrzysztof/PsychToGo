@@ -61,7 +61,6 @@ public class AuthService : IAuthService
         {
             string result = response.Content.ReadAsStringAsync().Result;
 
-
             return result;
         }
 

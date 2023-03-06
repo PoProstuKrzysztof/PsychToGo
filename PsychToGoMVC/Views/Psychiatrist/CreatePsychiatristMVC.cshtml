@@ -8,7 +8,7 @@
 
 <hr />
 <body>
-    <form class="form-create" method="post" asp-antiforgery="true">        
+    <form class="form-create" method="post" asp-antiforgery="true">
         <input asp-for="Id" hidden />
 
         <div>
@@ -16,48 +16,48 @@
             <input asp-for="Name" class="form-control" placeholder="Enter name" type="text" required />
             <span asp-validation-for="Name" class="text-danger"></span>
         </div>
-        
+
 
         <div>
             <label asp-for="LastName" class="control-label">Last name</label>
             <input asp-for="LastName" class="form-control" placeholder="Enter last name" type="text" required />
             <span asp-validation-for="LastName" class="text-danger"></span>
         </div>
-       
+
 
         <div>
             <label asp-for="Email" class="control-label">E-mail</label>
             <input asp-for="Email" class="form-control" placeholder="Enter e-mail" type="email" required />
             <span asp-validation-for="Email" class="text-danger"></span>
         </div>
-        
+
 
         <div>
             <label asp-for="Phone" class="control-label">Phone</label>
-        <input asp-for="Phone" class="form-control" placeholder="Enter phone number" type="tel" required />
-        <span asp-validation-for="Phone" class="text-danger"></span>
+            <input asp-for="Phone" class="form-control" placeholder="Enter phone number" type="tel" required />
+            <span asp-validation-for="Phone" class="text-danger"></span>
         </div>
-        
+
 
         <div>
             <label asp-for="DateOfBirth" class="control-label">Date of birth</label>
             <input asp-for="DateOfBirth" min="1960-01-01" placeholder="Enter date of birth" class="form-control" type="date" required />
             <span asp-validation-for="DateOfBirth" class="text-danger"></span>
         </div>
-        
+
 
         <div>
             <label asp-for="Address" class="control-label">Address</label>
-        <input asp-for="Address" class="form-control" type="text" placeholder="Enter address" name="Address" required />
-        <span asp-validation-for="Address" class="text-danger"></span>
+            <input asp-for="Address" class="form-control" type="text" placeholder="Enter address" name="Address" required />
+            <span asp-validation-for="Address" class="text-danger"></span>
         </div>
-        
+
 
         <div>
-            <button class="btn btn-outline-primary" asp-action="CreatePsychologistMVC">Create</button>
-            <button class="btn btn-outline-primary" asp-action="Index" asp-controller="Psychologist">Back</button>
+            <button class="btn btn-outline-primary" asp-action="CreatePsychiatristMVC">Create</button>
+            <a class="btn btn-outline-primary" asp-action="Index" asp-controller="Psychiatrist">Back</a>
         </div>
-        
+
     </form>
 </body>
 
@@ -65,6 +65,8 @@
 
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync( "_ValidationScriptsPartial" );
+    }
 }
 
