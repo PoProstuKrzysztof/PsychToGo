@@ -41,7 +41,6 @@ public class PatientController : Controller
         {
             ModelState.AddModelError( "", $"There are not patients" );
             patients = Enumerable.Empty<PatientViewModel>().ToList();
-
         }
 
         return View( patients );
@@ -77,6 +76,7 @@ public class PatientController : Controller
         //Check if new patients should be created without psychiatrist and medicines
         if (pvm.PsychiatristId == null)
         {
+            //if not psychiatrist is assigned 
             HttpResponseMessage responseNoPsychiatrist = client.
                  PostAsync( client.BaseAddress + $"/createNOPSYCH?psychologistId={pvm.PsychologistId}", content ).Result;
             if (responseNoPsychiatrist.IsSuccessStatusCode)
@@ -87,6 +87,7 @@ public class PatientController : Controller
         }
         else
         {
+            //if psychiatrist is assigned
             HttpResponseMessage response = client.
                 PostAsync( client.BaseAddress + $"/create?psychologistId={pvm.PsychologistId}&psychiatristId={pvm.PsychiatristId}&medicineId={pvm.MedicinesId.First()}", content ).Result;
             if (response.IsSuccessStatusCode)
