@@ -12,7 +12,6 @@ public class DataSeed
 
     public DataSeed(AppDbContext context)
     {
-
         _context = context;
     }
 
