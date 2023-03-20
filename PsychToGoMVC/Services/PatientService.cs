@@ -36,12 +36,15 @@ public class PatientService : IPatientService
                 Email = findPatient.Email,
                 Address = findPatient.Address,
                 DateOfBirth = findPatient.DateOfBirth,
-                Phone = findPatient.Phone,               
-                PsychologistId = psychologistId               
+                Phone = findPatient.Phone,
+                PsychologistId = psychologistId,
+                Id = id
             };
 
             return parsedPatientNoPsychiatrist;
         }
+
+
         List<Medicine>? medicines = await client.GetFromJsonAsync<List<Medicine>>( client.BaseAddress + $"/{id}/medicines" );
 
         int psychiatristId = await client.GetFromJsonAsync<int>( client.BaseAddress + $"/{id}/psychiatrist" );
@@ -58,8 +61,9 @@ public class PatientService : IPatientService
             Phone = findPatient.Phone,
             PsychiatristId = psychiatristId,
             PsychologistId = psychologistId,
-            MedicinesId = medicines.Select( m => m.Id ).ToList()
-            
+            MedicinesId = medicines.Select( m => m.Id ).ToList(),
+            Id = id
+
 
         };
 

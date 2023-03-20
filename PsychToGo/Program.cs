@@ -34,7 +34,6 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 
 
-builder.Services.AddScoped<DbContext, AppDbContext>();
 builder.Services.AddAutoMapper( AppDomain.CurrentDomain.GetAssemblies() );
 builder.Services.AddTransient<DataSeed>();
 

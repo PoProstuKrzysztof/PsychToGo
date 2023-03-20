@@ -27,12 +27,34 @@ public class PatientRepository : IPatientRepository
 
             return await Save();
 
+         
         }
         catch(Exception)
         {
             throw;
         }
     }
+
+    public async Task<bool> AssignPsychiatrist(int patientId, int psychiatristId)
+    {
+        try
+        {
+            var patient = await _context.Patients.FirstOrDefaultAsync( x => x.Id == patientId );
+            if (patient == null)
+            {
+                return false;
+            }
+
+            patient.Psychiatrist = await _context.Psychiatrists.FirstOrDefaultAsync( x => x.Id == psychiatristId );
+            return await Save();
+
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
 
     //Post 
     public async Task<bool> CreatePatient(int medicineId, Patient patient)
@@ -86,8 +108,8 @@ public class PatientRepository : IPatientRepository
             if (patientDuplicate != null)
             {
                 return true;
-            }
-
+            }          
+           
             return false;
         }
         catch (Exception)
@@ -230,11 +252,7 @@ public class PatientRepository : IPatientRepository
             }
 
             var psychologistId = patient.PsychologistId; 
-            if(psychologistId == null)
-            {
-                return 0;
-            }
-
+           
             return psychologistId;
             
         }
@@ -269,6 +287,8 @@ public class PatientRepository : IPatientRepository
             throw;
         }
     }
+
+    
 }
 
 

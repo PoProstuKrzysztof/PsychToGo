@@ -43,12 +43,12 @@ public class PatientViewModel
     // Information about his doctors
     [Required(ErrorMessage = "You have to choose psychologist")]
     public int PsychologistId { get; set; }
-    public virtual ICollection<PsychologistDTO> Psychologists { get; set; }
+    public virtual ICollection<PsychologistDTO>? Psychologists { get; set; }
     
     public List<int>? MedicinesId { get; set; }
-    public virtual ICollection<MedicineDTO> Medicines { get; set; }
+    public virtual ICollection<MedicineDTO>? Medicines { get; set; }
 
     public int? PsychiatristId { get; set; }
-    public virtual ICollection<PsychiatristDTO> Psychiatrists { get; set; }
+    public virtual ICollection<PsychiatristDTO>? Psychiatrists { get; set; }
 }
 
