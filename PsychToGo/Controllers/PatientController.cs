@@ -98,7 +98,6 @@ public class PatientController : Controller
         }
 
 
-
         var patient = await (_patientRepository.GetPatientById( id ));
         if (patient == null)
         {
@@ -280,8 +279,7 @@ public class PatientController : Controller
     [ProducesResponseType( StatusCodes.Status404NotFound )]
     public async Task<IActionResult> UpdatePatient(
         [FromQuery] int psychiatristId,
-        [FromQuery] int psychologistId,
-        [FromQuery] int medicineId,
+        [FromQuery] int psychologistId,       
         int patientId,
         [FromBody] PatientDTO updatedPatient)
 

@@ -142,7 +142,7 @@ public class PatientController : Controller
         if (pvm.PsychiatristId == null)
         {
             response = client.
-                 PutAsync( client.BaseAddress + $"UpdateNoPsychiatrist/{pvm.Id}?psychologistId={pvm.PsychologistId}", content ).Result;
+                 PutAsync( client.BaseAddress + $"/UpdateNoPsychiatrist/{pvm.Id}?psychologistId={pvm.PsychologistId}", content ).Result;
         }
         else
         {
