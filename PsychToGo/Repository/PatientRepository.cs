@@ -19,7 +19,7 @@ public class PatientRepository : IPatientRepository
 
     
     //Put
-    public async Task<bool> UpdatePatient(int psychologistId, int psychiatristId, int medicineId, Patient patient)
+    public async Task<bool> UpdatePatient(Patient patient)
     {
         try
         {
@@ -34,6 +34,22 @@ public class PatientRepository : IPatientRepository
             throw;
         }
     }
+
+    //public async Task<bool> UpdatePatientNoPsychiatrist(int psychologistId, Patient patient)
+    //{
+    //    try
+    //    {
+    //        _context.Update( patient );
+
+    //        return await Save();
+
+
+    //    }
+    //    catch (Exception)
+    //    {
+    //        throw;
+    //    }
+    //}
 
     public async Task<bool> AssignPsychiatrist(int patientId, int psychiatristId)
     {
@@ -288,7 +304,7 @@ public class PatientRepository : IPatientRepository
         }
     }
 
-    
+   
 }
 
 

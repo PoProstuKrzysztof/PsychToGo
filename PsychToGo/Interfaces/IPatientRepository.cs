@@ -21,7 +21,8 @@ public interface IPatientRepository
     Task<bool> CheckDuplicate(PatientDTO patient);
 
     //Put
-    Task<bool> UpdatePatient(int psychologistId,int psychiatristId,int medicineId, Patient patient);
+    Task<bool> UpdatePatient(Patient patient);
+    //Task<bool> UpdatePatientNoPsychiatrist(int psychologistId, Patient patient);
     Task<bool> AssignPsychiatrist(int patientId, int psychiatristId);
 
     //Delete

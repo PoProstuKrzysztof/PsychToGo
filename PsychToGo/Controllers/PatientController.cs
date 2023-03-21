@@ -285,8 +285,6 @@ public class PatientController : Controller
         int patientId,
         [FromBody] PatientDTO updatedPatient)
 
-
-
     {
         if (updatedPatient == null)
         {
@@ -312,7 +310,49 @@ public class PatientController : Controller
         patient.Psychiatrist = await _psychiatristRepository.GetPsychiatrist( psychiatristId );
         patient.Psychologist = await _psychologistRepository.GetPsychologist( psychologistId );
 
-        if (!await _patientRepository.UpdatePatient( psychologistId, psychiatristId, medicineId, patient ))
+        if (!await _patientRepository.UpdatePatient(patient ))
+        {
+            ModelState.AddModelError( "Error", "Something went wrong updating patient" );
+            return StatusCode( 500, ModelState );
+        }
+
+        return NoContent();
+    }
+
+    [HttpPut( "UpdateNoPsychiatrist/{patientId}" )]
+    [ProducesResponseType( StatusCodes.Status204NoContent )]
+    [ProducesResponseType( StatusCodes.Status400BadRequest )]
+    [ProducesResponseType( StatusCodes.Status404NotFound )]
+    public async Task<IActionResult> UpdatePatientNoPsychiatrist(       
+        [FromQuery] int psychologistId,       
+        int patientId,
+        [FromBody] PatientDTO updatedPatient)
+
+    {
+        if (updatedPatient == null)
+        {
+            return BadRequest( ModelState );
+
+        }
+        if (patientId != updatedPatient.Id)
+        {
+            return BadRequest( ModelState );
+        }
+
+        if (!await _patientRepository.PatientExists( patientId ))
+        {
+            return NotFound();
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+
+        var patient = _mapper.Map<Patient>( updatedPatient );        
+        patient.Psychologist = await _psychologistRepository.GetPsychologist( psychologistId );
+
+        if (!await _patientRepository.UpdatePatient( patient ))
         {
             ModelState.AddModelError( "Error", "Something went wrong updating patient" );
             return StatusCode( 500, ModelState );

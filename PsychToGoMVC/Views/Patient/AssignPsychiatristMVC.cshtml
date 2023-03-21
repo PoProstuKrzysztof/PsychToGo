@@ -20,7 +20,6 @@
             <input asp-for="Id" hidden value="@Model.Id" />
 
             <div class="form-control mb-3 mt-3">
-
                 @Html.LabelFor(model => model.PsychiatristId, "Psychiatrist")
                 @Html.DropDownListFor(model => model.PsychiatristId, new SelectList(Model.Psychiatrists, "Id","LastName"),"- Select - ")
             </div>
