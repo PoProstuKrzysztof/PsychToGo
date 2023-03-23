@@ -8,6 +8,7 @@ using PsychToGoMVC.Models;
 using PsychToGoMVC.Services.Interfaces;
 using System.Text;
 using System.Text.Json.Nodes;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace PsychToGoMVC.Controllers;
 public class PatientController : Controller
@@ -34,7 +35,7 @@ public class PatientController : Controller
         if (response.IsSuccessStatusCode)
         {
 
-            string data = response.Content.ReadAsStringAsync().Result;
+            string data = response.Content.ReadAsStringAsync().Result; 
             patients = JsonConvert.DeserializeObject<List<PatientViewModel>>( data );
         }
         else
@@ -123,7 +124,9 @@ public class PatientController : Controller
         {
             return RedirectToAction( "Index" );
         }
-
+        var medicines = await client.GetAsync( client.BaseAddress + $"/{id}/medicines" );
+        var data = medicines.Content.ReadAsStringAsync().Result;
+        editedPatient.Medicines =  JsonConvert.DeserializeObject<List<MedicineDTO>>( medicines.Content.ReadAsStringAsync().Result );
         return View( editedPatient );
     }
 
