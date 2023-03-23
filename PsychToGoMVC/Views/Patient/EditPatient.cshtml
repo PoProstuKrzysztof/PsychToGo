@@ -40,15 +40,12 @@
         <label asp-for="PsychologistId" class="control-label"></label>
         <input asp-for="PsychologistId" class="form-control" value="@Model.PsychologistId" />
 
-        
-
-        @Html.ListBoxFor(model => model.MedicinesId, new MultiSelectList(Model.Medicines, "Id","Name"))
-@*
-        <label asp-for="MedicinesId" class="control-label"></label>
-        <input asp-for="MedicinesId" class="form-control" value="@Model.MedicinesId" />*@
-
+                    
         <label asp-for="PsychiatristId" class="control-label"></label>
         <input asp-for="PsychiatristId" class="form-control" value="@Model.PsychiatristId" />
+
+        <label class="text-danger">Just for display. You can't edit medicines.'</label>
+        @Html.ListBoxFor(model => model.MedicinesId, new MultiSelectList(Model.Medicines, "Id","Name"))
 
         <button type="submit" class="btn btn-outline-warning mt-2">Edit</button>
     </form>

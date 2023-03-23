@@ -124,6 +124,8 @@ public class PatientController : Controller
         {
             return RedirectToAction( "Index" );
         }
+
+        //populate patient medicine list with medicines
         var medicines = await client.GetAsync( client.BaseAddress + $"/{id}/medicines" );
         var data = medicines.Content.ReadAsStringAsync().Result;
         editedPatient.Medicines =  JsonConvert.DeserializeObject<List<MedicineDTO>>( medicines.Content.ReadAsStringAsync().Result );
