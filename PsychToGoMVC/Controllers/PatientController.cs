@@ -181,7 +181,7 @@ public class PatientController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> AssignPsychiatristMVC([FromQuery] int patientId,[FromBody] PatientViewModel patient)
+    public async Task<IActionResult> AssignPsychiatristMVC( PatientViewModel patient)
     {
         Patient? assignedPatient = await _patientService.CreatePatientInstance( patient );
 
@@ -190,7 +190,7 @@ public class PatientController : Controller
 
         StringContent content = new StringContent( data, Encoding.UTF8, "application/json" );
         HttpResponseMessage response = client.
-            PutAsync( client.BaseAddress + $"/AssignPsychiatrist?{patient.Id}&psychiatristId={patient.PsychiatristId}", content ).Result;
+            PutAsync( client.BaseAddress + $"/AssignPsychiatrist?patientId={assignedPatient.Id}&psychiatristId={assignedPatient.PsychiatristId}", content ).Result;
 
         if (response.IsSuccessStatusCode)
         {

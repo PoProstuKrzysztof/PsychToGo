@@ -35,22 +35,6 @@ public class PatientRepository : IPatientRepository
         }
     }
 
-    //public async Task<bool> UpdatePatientNoPsychiatrist(int psychologistId, Patient patient)
-    //{
-    //    try
-    //    {
-    //        _context.Update( patient );
-
-    //        return await Save();
-
-
-    //    }
-    //    catch (Exception)
-    //    {
-    //        throw;
-    //    }
-    //}
-
     public async Task<bool> AssignPsychiatrist(int patientId, int psychiatristId)
     {
         try

@@ -33,14 +33,14 @@ public class PatientController : Controller
 
 
     [HttpGet( "{id}/psychiatrist" )]
-    [ProducesResponseType( StatusCodes.Status200OK )]
-    [ProducesResponseType( StatusCodes.Status404NotFound )]
+    [ProducesResponseType( StatusCodes.Status200OK )]   
     public async Task<IActionResult> GetPatientPsychiatristId(int id)
     {
         var psychiatristId = await _patientRepository.GetPatientPsychiatristId( id );
         if (psychiatristId == 0)
         {
-            return NotFound();
+            // It was NotFound() keyword, but for CreatePatientInstance I had to change it to Ok()
+            return Ok( psychiatristId );
         }
 
         return Ok( psychiatristId );
@@ -256,7 +256,7 @@ public class PatientController : Controller
     [ProducesResponseType( StatusCodes.Status204NoContent )]
     [ProducesResponseType( StatusCodes.Status400BadRequest )]
     [ProducesResponseType( StatusCodes.Status500InternalServerError )]
-    public async Task<IActionResult> AssignPsychiatrist([FromQuery] int patientId, [FromQuery] int psychiatristId)
+    public async Task<IActionResult> AssignPsychiatrist( [FromQuery]int patientId, [FromQuery] int psychiatristId)
     {
         if (!ModelState.IsValid)
         {

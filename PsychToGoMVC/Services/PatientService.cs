@@ -25,11 +25,13 @@ public class PatientService : IPatientService
 
         Patient? findPatient = await client.GetFromJsonAsync<Patient>( client.BaseAddress + $"/{id}" );
 
+
         int psychologistId = await client.GetFromJsonAsync<int>( client.BaseAddress + $"/{id}/psychologist" );
-        int psychiatristId = await client.GetFromJsonAsync<int>( client.BaseAddress + $"/{id}/psychiatrist" );
+        var psychiatristId =  await client.GetFromJsonAsync<int>( client.BaseAddress + $"/{id}/psychiatrist" );
+        
 
 
-        if (psychiatristId == null)
+        if (psychiatristId == 0)
         {
             PatientViewModel parsedPatientNoPsychiatrist = new PatientViewModel()
             {
