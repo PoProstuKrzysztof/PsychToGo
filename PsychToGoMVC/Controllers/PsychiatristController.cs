@@ -1,29 +1,26 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PsychToGo.DTO;
-using PsychToGoMVC.Models;
-using PsychToGoMVC.Services.Interfaces;
-using System.Collections.Generic;
 using System.Text;
 
 namespace PsychToGoMVC.Controllers;
+
 public class PsychiatristController : Controller
 {
     /// <summary>
     /// Base address to connect with api
     /// </summary>
-    Uri baseAdress = new Uri( "https://localhost:7291/api/Psychiatrist" );
-    HttpClient client = new HttpClient();
+    private Uri baseAdress = new Uri( "https://localhost:7291/api/Psychiatrist" );
+
+    private HttpClient client = new HttpClient();
 
     public PsychiatristController()
     {
-
         client = new HttpClient();
         client.BaseAddress = baseAdress;
     }
-    
+
     public IActionResult Index()
     {
         List<PsychiatristDTO> psychiatrists = new List<PsychiatristDTO>();
@@ -35,39 +32,34 @@ public class PsychiatristController : Controller
         }
         else
         {
-            ModelState.AddModelError( "", $"There are no psychiatrists ");
+            ModelState.AddModelError( "", $"There are no psychiatrists " );
             psychiatrists = Enumerable.Empty<PsychiatristDTO>().ToList();
-
         }
 
         return View( psychiatrists );
     }
 
-    
-    
-    [HttpGet]   
+    [HttpGet]
     public IActionResult CreatePsychiatristMVC()
     {
         return View();
     }
 
-    
-    
     [HttpPost]
     [Authorize( Roles = "admin" )]
     [ValidateAntiForgeryToken]
-    public IActionResult CreatePsychiatristMVC(PsychiatristDTO pvm )
+    public IActionResult CreatePsychiatristMVC(PsychiatristDTO pvm)
     {
         string data = JsonConvert.SerializeObject( pvm );
         StringContent content = new StringContent( data, Encoding.UTF8, "application/json" );
-        HttpResponseMessage response = client.PostAsync( client.BaseAddress + "/create", content ).Result;      
+        HttpResponseMessage response = client.PostAsync( client.BaseAddress + "/create", content ).Result;
 
         if (response.IsSuccessStatusCode)
         {
             return RedirectToAction( "Index" );
         }
         ModelState.AddModelError( "", $"An error occurred when creating psychiatrist" );
-        return View(pvm);
+        return View( pvm );
     }
 
     [HttpGet]
@@ -83,7 +75,6 @@ public class PsychiatristController : Controller
         return BadRequest();
     }
 
-    
     [HttpGet]
     [Authorize( Roles = "admin" )]
     public async Task<IActionResult> EditPsychiatrist([FromRoute] int id)
@@ -98,7 +89,6 @@ public class PsychiatristController : Controller
         return View( psychiatrist );
     }
 
-    
     [HttpPost]
     [Authorize( Roles = "admin" )]
     [ValidateAntiForgeryToken]
@@ -106,8 +96,8 @@ public class PsychiatristController : Controller
     {
         string data = JsonConvert.SerializeObject( psychiatrist );
 
-        StringContent content = new StringContent(data, Encoding.UTF8,"application/json" );
-        HttpResponseMessage response =  client.PutAsync( client.BaseAddress + $"/{psychiatrist.Id}", content ).Result;
+        StringContent content = new StringContent( data, Encoding.UTF8, "application/json" );
+        HttpResponseMessage response = client.PutAsync( client.BaseAddress + $"/{psychiatrist.Id}", content ).Result;
         if (response.IsSuccessStatusCode)
         {
             return RedirectToAction( "Index" );

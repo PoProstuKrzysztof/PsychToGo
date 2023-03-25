@@ -4,27 +4,29 @@ using PsychToGo.DTO;
 using System.Text;
 
 namespace PsychToGoMVC.Controllers;
+
 public class MedicineController : Controller
 {
     /// <summary>
     /// Base address to connect with api
     /// </summary>
-    Uri baseAdress = new Uri( "https://localhost:7291/api/Medicine" );
-    HttpClient client = new HttpClient();
+    private Uri baseAdress = new Uri( "https://localhost:7291/api/Medicine" );
+
+    private HttpClient client = new HttpClient();
 
     public MedicineController()
     {
-
         client = new HttpClient();
         client.BaseAddress = baseAdress;
     }
+
     public IActionResult Index()
     {
         List<MedicineDTO> medicines = new List<MedicineDTO>();
-        HttpResponseMessage response =  client.GetAsync( client.BaseAddress + "/list" ).Result;
-        if(response.IsSuccessStatusCode )
+        HttpResponseMessage response = client.GetAsync( client.BaseAddress + "/list" ).Result;
+        if (response.IsSuccessStatusCode)
         {
-            string data =  response.Content.ReadAsStringAsync().Result;
+            string data = response.Content.ReadAsStringAsync().Result;
             medicines = JsonConvert.DeserializeObject<List<MedicineDTO>>( data );
         }
         else
@@ -33,40 +35,37 @@ public class MedicineController : Controller
             ModelState.AddModelError( "", $"There are not medicines" );
         }
 
-        return View(medicines );
+        return View( medicines );
     }
-
 
     [HttpGet]
     public IActionResult CreateMedicineMVC()
     {
-        
         return View();
     }
 
     [HttpPost]
-    
     public IActionResult CreateMedicineMVC(MedicineDTO mdo)
     {
         string data = JsonConvert.SerializeObject( mdo );
         StringContent content = new StringContent( data, Encoding.UTF8, "application/json" );
-        HttpResponseMessage response = client.PostAsync(client.BaseAddress + $"/create",content).Result;
+        HttpResponseMessage response = client.PostAsync( client.BaseAddress + $"/create", content ).Result;
 
-        if(response.IsSuccessStatusCode )
+        if (response.IsSuccessStatusCode)
         {
-           return RedirectToAction( "Index" );
+            return RedirectToAction( "Index" );
         }
         ModelState.AddModelError( "", $"Something went wrong when creating medicine." );
-        return View(mdo);
+        return View( mdo );
     }
 
     [HttpGet]
-    public IActionResult DeleteMedicine([FromRoute]int id)
+    public IActionResult DeleteMedicine([FromRoute] int id)
     {
-        HttpResponseMessage response =  client.DeleteAsync( client.BaseAddress + $"/{id}" ).Result;
-        if(response.IsSuccessStatusCode)
+        HttpResponseMessage response = client.DeleteAsync( client.BaseAddress + $"/{id}" ).Result;
+        if (response.IsSuccessStatusCode)
         {
-           return RedirectToAction( "Index" );
+            return RedirectToAction( "Index" );
         }
 
         return BadRequest();
@@ -75,15 +74,14 @@ public class MedicineController : Controller
     [HttpGet]
     public async Task<IActionResult> EditMedicine([FromRoute] int id)
     {
-        MedicineDTO medicine = await client.GetFromJsonAsync<MedicineDTO>(client.BaseAddress + $"/{id}");
-        if(medicine == null)
+        MedicineDTO medicine = await client.GetFromJsonAsync<MedicineDTO>( client.BaseAddress + $"/{id}" );
+        if (medicine == null)
         {
             return NotFound();
         }
 
         return View( medicine );
     }
-
 
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -100,5 +98,4 @@ public class MedicineController : Controller
         ModelState.AddModelError( "", $"An error occurred when editing medicine" );
         return View( medicine );
     }
-
 }

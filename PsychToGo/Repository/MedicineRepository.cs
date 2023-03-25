@@ -9,9 +9,10 @@ namespace PsychToGo.Repository;
 public class MedicineRepository : IMedicineRepository
 {
     private readonly AppDbContext _context;
+
     public MedicineRepository(AppDbContext context)
     {
-        _context= context;
+        _context = context;
     }
 
     //Post
@@ -22,13 +23,13 @@ public class MedicineRepository : IMedicineRepository
             var entitySaved = await _context.SaveChangesAsync();
             return entitySaved > 0 ? true : false;
         }
-        catch(Exception)
+        catch (Exception)
         {
             throw;
         }
     }
 
-    public async Task<bool> CheckDuplicate( MedicineDTO medicine)
+    public async Task<bool> CheckDuplicate(MedicineDTO medicine)
     {
         try
         {
@@ -54,11 +55,9 @@ public class MedicineRepository : IMedicineRepository
     {
         try
         {
-            
             await _context.AddAsync( medicine );
-         
-            return await Save();
 
+            return await Save();
         }
         catch (Exception)
         {
@@ -71,9 +70,9 @@ public class MedicineRepository : IMedicineRepository
     {
         try
         {
-            return await _context.Medicines.Where(x => x.Id == id ).FirstOrDefaultAsync(); 
+            return await _context.Medicines.Where( x => x.Id == id ).FirstOrDefaultAsync();
         }
-        catch(Exception)
+        catch (Exception)
         {
             throw;
         }
@@ -83,12 +82,11 @@ public class MedicineRepository : IMedicineRepository
     {
         try
         {
-
             var expireDate = await _context.Medicines
-                .Where(x => x.Id == medicineId)
-                .Select(x => x.ExpireDate)
+                .Where( x => x.Id == medicineId )
+                .Select( x => x.ExpireDate )
                 .FirstOrDefaultAsync();
-            if (expireDate.Equals(null))
+            if (expireDate.Equals( null ))
             {
                 return null;
             }
@@ -106,15 +104,12 @@ public class MedicineRepository : IMedicineRepository
     {
         try
         {
-
-
-
             return await _context.Medicines
                 .Where( x => x.Id == medicineId )
                 .Select( m => m.InStock )
                 .FirstOrDefaultAsync();
         }
-        catch(Exception)
+        catch (Exception)
         {
             throw;
         }
@@ -130,7 +125,6 @@ public class MedicineRepository : IMedicineRepository
         {
             throw;
         }
-        
     }
 
     public async Task<bool> MedicineExists(int id)
@@ -138,7 +132,7 @@ public class MedicineRepository : IMedicineRepository
         try
         {
             var medicine = await _context.Medicines.Where( x => x.Id == id ).FirstOrDefaultAsync();
-            if(medicine == null)
+            if (medicine == null)
             {
                 return false;
             }
@@ -150,15 +144,16 @@ public class MedicineRepository : IMedicineRepository
             throw;
         }
     }
+
     //Put
-    public async Task<bool> UpdateMedicine(int categoryId,Medicine medicine)
+    public async Task<bool> UpdateMedicine(int categoryId, Medicine medicine)
     {
         try
         {
             _context.Entry( medicine ).State = EntityState.Detached;
             _context.ChangeTracker.Clear();
             _context.Update( medicine );
-            
+
             return await Save();
         }
         catch (Exception)

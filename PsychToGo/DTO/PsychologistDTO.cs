@@ -20,7 +20,6 @@ public class PsychologistDTO
     [EmailAddress( ErrorMessage = "Invalid email address" )]
     public string Email { get; set; } = string.Empty;
 
-
     [Required]
     [Phone( ErrorMessage = "Invalid phone number" )]
     [StringLength( 12, MinimumLength = 9, ErrorMessage = "Phone number is too short!" )]

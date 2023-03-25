@@ -1,25 +1,19 @@
-using PsychToGoMVC.Services;
-using PsychToGoMVC.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using PsychToGo.Data;
-using Microsoft.AspNetCore.Identity;
-using PsychToGo.Models.Identity;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using PsychToGoMVC.Middleware;
+using PsychToGoMVC.Services;
+using PsychToGoMVC.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder( args );
 var connectionString = builder.Configuration.GetConnectionString( "AppDbContextConnection" ) ?? throw new InvalidOperationException( "Connection string 'AppDbContextConnection' not found." );
 
 builder.Services.AddDbContext<AppDbContext>( options => options.UseSqlServer( connectionString ) );
 
-
-//Identity 
+//Identity
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IPatientService, PatientService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
-
 
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddAuthentication( CookieAuthenticationDefaults.AuthenticationScheme )
@@ -41,18 +35,15 @@ builder.Services.AddSession( options =>
     options.Cookie.IsEssential = true;
 } );
 
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-
     app.UseExceptionHandler( "/Home/Error" );
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-
 
 //app.UseExceptionHandlerMiddleware();
 
@@ -68,6 +59,5 @@ app.UseSession();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}" );
-
 
 app.Run();

@@ -1,16 +1,11 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore.Diagnostics;
-using System.Threading.Tasks;
+﻿namespace PsychToGoMVC.Middleware;
 
-namespace PsychToGoMVC.Middleware;
 // You may need to install the Microsoft.AspNetCore.Http.Abstractions package into your project
 public class ExceptionHandlerMiddleware
 {
     private readonly RequestDelegate _next;
     private readonly ILogger<ExceptionHandlerMiddleware> _logger;
-    
-        
+
     public ExceptionHandlerMiddleware(RequestDelegate next, ILogger<ExceptionHandlerMiddleware> logger)
     {
         _next = next;
@@ -23,12 +18,12 @@ public class ExceptionHandlerMiddleware
         {
             await _next( httpContext );
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
-            if(ex.InnerException != null)
+            if (ex.InnerException != null)
             {
-                _logger.LogError( "{ExceptionType} {ExceptionMessage}", 
-                    ex.InnerException.GetType().ToString(), 
+                _logger.LogError( "{ExceptionType} {ExceptionMessage}",
+                    ex.InnerException.GetType().ToString(),
                     ex.InnerException.Message );
             }
             else
@@ -37,9 +32,8 @@ public class ExceptionHandlerMiddleware
                     ex.GetType().ToString(),
                     ex.Message );
             }
-           await httpContext.Response.WriteAsync( "Something went wrong. " );
+            await httpContext.Response.WriteAsync( "Something went wrong. " );
         }
-        
     }
 }
 

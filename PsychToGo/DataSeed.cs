@@ -9,7 +9,6 @@ public class DataSeed
 {
     private readonly AppDbContext _context;
 
-
     public DataSeed(AppDbContext context)
     {
         _context = context;
@@ -29,7 +28,6 @@ public class DataSeed
                     Phone = "489256126",
                     DateOfBirth = DateTime.Parse( "1995-03-18" ),
                     Address = "Kryształowa 105",
-
                 },
                  new Psychiatrist()
                  {
@@ -39,21 +37,16 @@ public class DataSeed
                             Phone = "504231536",
                             DateOfBirth = DateTime.Parse("1987-02-06"),
                             Address = "Wróżkowa 5"
-
                  },
-
             };
             _context.Psychiatrists.AddRange( psychiatrist );
             _context.SaveChanges();
         }
 
-
         if (!_context.Psychologists.Any())
         {
-
             var psychologists = new List<Psychologist>()
             {
-
                 new Psychologist()
 
                 {
@@ -63,9 +56,7 @@ public class DataSeed
                 Phone = "764238901",
                 DateOfBirth = DateTime.Parse( "1987-05-21" ),
                     Address = "Migdałowa 33a",
-
                 },
-
 
                 new Psychologist()
 
@@ -76,13 +67,10 @@ public class DataSeed
                  Phone = "454212566",
                  DateOfBirth = DateTime.Parse( "1998-04-06" ),
                  Address = "Migdałowa 33a",
-
                 },
-
             };
             _context.Psychologists.AddRange( psychologists );
             _context.SaveChanges();
-
         };
 
         if (!_context.UserRoles.Any())
@@ -114,8 +102,6 @@ public class DataSeed
             _context.SaveChanges();
         }
 
-
-
         if (!_context.ApplicationUsers.Any())
         {
             var appUsers = new List<AppUser>()
@@ -130,7 +116,6 @@ public class DataSeed
 
             //Hashing passoword, class for this is at the end of this entire class
             PasswordHash = HashPassword("Admin123")
-
                 }
             };
             foreach (var user in appUsers)
@@ -167,17 +152,11 @@ public class DataSeed
                     Address = "Akacjowa 15b",
                     PsychiatristId = 2,
                     PsychologistId = 1
-
-
                 }
-
             };
             _context.Patients.AddRange( patients );
             _context.SaveChanges();
         }
-
-
-
 
         if (!_context.Medicines.Any())
         {
@@ -196,7 +175,6 @@ public class DataSeed
                     {
                         Name = "Antipsychotic"
                     }
-
                 },
                 new Medicine()
                 {
@@ -210,7 +188,6 @@ public class DataSeed
                     Category = new MedicineCategory()
                     {
                          Name = "SSRI"
-
                     }
                 },
                 new Medicine()
@@ -225,7 +202,6 @@ public class DataSeed
                      Category = new MedicineCategory()
                      {
                           Name = "Antidepressant"
-
                      }
                 },
                 new Medicine()
@@ -241,10 +217,7 @@ public class DataSeed
                     {
                         Name = "Anxiolytic"
                     }
-
-
                 }
-
             };
             _context.Medicines.AddRange( medicines );
             _context.SaveChanges();
@@ -278,15 +251,12 @@ public class DataSeed
         //            MedicineId = 3,
         //        },
 
-
         //    };
         //    _context.PatientMedicines.AddRange( patientMedicines );
         //    _context.SaveChanges();
         //}
-
-
-
     }
+
     /// <summary>
     /// Hashing class
     /// </summary>
@@ -298,5 +268,3 @@ public class DataSeed
         return passwordHasher.HashPassword( null, password );
     }
 }
-
-

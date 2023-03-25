@@ -15,6 +15,7 @@ public class MedicineCategoryRepository : IMedicineCategoryRepository
     {
         _context = context;
     }
+
     //Post
     public async Task<bool> CheckDuplicate(MedicineCategoryDTO medicineCategory)
     {
@@ -44,7 +45,6 @@ public class MedicineCategoryRepository : IMedicineCategoryRepository
         {
             await _context.AddAsync( category );
             return await Save();
-
         }
         catch (Exception)
         {
@@ -64,6 +64,7 @@ public class MedicineCategoryRepository : IMedicineCategoryRepository
             throw;
         }
     }
+
     //Get
     public async Task<ICollection<Medicine>> GetMedicineByCategory(string categoryName)
     {
@@ -81,7 +82,6 @@ public class MedicineCategoryRepository : IMedicineCategoryRepository
                 return null;
             }
             return medicines;
-
         }
         catch (Exception)
         {
@@ -99,7 +99,6 @@ public class MedicineCategoryRepository : IMedicineCategoryRepository
             }
 
             return await _context.MedicinesCategories.Where( s => s.Name == categoryName.ToLower() ).FirstOrDefaultAsync();
-
         }
         catch (Exception)
         {
@@ -134,7 +133,6 @@ public class MedicineCategoryRepository : IMedicineCategoryRepository
         {
             throw;
         }
-
     }
 
     public async Task<bool> MedicinneCategoryExist(string categoryName)
@@ -153,9 +151,9 @@ public class MedicineCategoryRepository : IMedicineCategoryRepository
     {
         try
         {
-            return await _context.MedicinesCategories.AnyAsync(x => x.Id == categoryId );
+            return await _context.MedicinesCategories.AnyAsync( x => x.Id == categoryId );
         }
-        catch(Exception)
+        catch (Exception)
         {
             throw;
         }
@@ -181,7 +179,7 @@ public class MedicineCategoryRepository : IMedicineCategoryRepository
             _context.Remove( medicineCategory );
             return await Save();
         }
-        catch(Exception)
+        catch (Exception)
         {
             throw;
         }

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using PsychToGo.DTO;
 using PsychToGoMVC.Services.Interfaces;
 using System.Text;
@@ -8,8 +7,8 @@ namespace PsychToGoMVC.Services;
 
 public class AuthService : IAuthService
 {
-    Uri baseAdress = new Uri( "https://localhost:7291/api/UsersAuthorize" );
-    HttpClient client = new HttpClient();
+    private Uri baseAdress = new Uri( "https://localhost:7291/api/UsersAuthorize" );
+    private HttpClient client = new HttpClient();
 
     public AuthService()
     {
@@ -29,20 +28,16 @@ public class AuthService : IAuthService
 
         StringContent content = new StringContent( data, Encoding.UTF8, "application/json" );
 
-        HttpResponseMessage response =  client.PostAsync( client.BaseAddress + "/login" ,content).Result;
-        if(response.IsSuccessStatusCode)
+        HttpResponseMessage response = client.PostAsync( client.BaseAddress + "/login", content ).Result;
+        if (response.IsSuccessStatusCode)
         {
-            string result =  response.Content.ReadAsStringAsync().Result;
+            string result = response.Content.ReadAsStringAsync().Result;
 
-
-            return  result;
+            return result;
         }
 
-        return string.Empty ;
-
-      
+        return string.Empty;
     }
-
 
     /// <summary>
     /// Register call to API

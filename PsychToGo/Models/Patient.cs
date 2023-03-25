@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace PsychToGo.Models;
+﻿namespace PsychToGo.Models;
 
 public class Patient
 {
@@ -13,11 +11,11 @@ public class Patient
     public string Address { get; set; } = string.Empty;
 
     //Relationships
-    
+
     public virtual ICollection<PatientMedicine>? PatientMedicines { get; set; }
-    public  int PsychologistId { get; set; }
+    public int PsychologistId { get; set; }
     public Psychologist? Psychologist { get; set; }
-    
+
     public int? PsychiatristId { get; set; }
     public Psychiatrist? Psychiatrist { get; set; }
 }

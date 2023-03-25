@@ -1,25 +1,23 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PsychToGo.DTO;
-using PsychToGo.Models.Identity;
 using PsychToGoMVC.Services.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace PsychToGoMVC.Controllers;
+
 public class AuthController : Controller
 {
     private readonly IAuthService _authService;
-    
+
     public AuthController(IAuthService authService)
-    {       
-        _authService = authService;       
+    {
+        _authService = authService;
     }
 
-    
     [HttpGet]
     public IActionResult Login()
     {
@@ -27,7 +25,6 @@ public class AuthController : Controller
         return View( loginObj );
     }
 
-    
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Login(LoginRequestDTO obj)
@@ -35,7 +32,6 @@ public class AuthController : Controller
         string response = await _authService.LoginAsync<HttpResponseMessage>( obj );
         if (response != string.Empty)
         {
-
             LoginResponseDTO model = JsonConvert.DeserializeObject<LoginResponseDTO>( response );
             var handler = new JwtSecurityTokenHandler();
             var jwt = handler.ReadJwtToken( model.Token );
@@ -53,18 +49,14 @@ public class AuthController : Controller
 
         ModelState.AddModelError( "", $"An error occurred while logging in" );
         return RedirectToAction( "Index", "Home", obj );
-
-
     }
 
-    
     [HttpGet]
     public IActionResult Register()
     {
         return View();
     }
-    
-  
+
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Register(RegistrationRequestDTO obj)
@@ -72,24 +64,22 @@ public class AuthController : Controller
         var register = await _authService.RegisterAsync<HttpResponseMessage>( obj );
         if (register != string.Empty)
         {
-            if(obj.Role == "admin")
+            if (obj.Role == "admin")
             {
                 return RedirectToAction( "Index", "Home" );
             }
 
-            return RedirectToAction( $"Create{obj.Role}MVC" , $"{obj.Role}", obj );
+            return RedirectToAction( $"Create{obj.Role}MVC", $"{obj.Role}", obj );
         }
-        return View(obj);
+        return View( obj );
     }
 
-    
     [HttpGet]
     public IActionResult AccessDenied()
     {
         return View();
     }
 
-    
     [HttpGet]
     public async Task<IActionResult> Logout()
     {

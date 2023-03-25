@@ -1,7 +1,4 @@
-﻿using Azure.Core;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using PsychToGo.Data;
 using PsychToGo.DTO;
 using PsychToGo.Interfaces;
@@ -12,24 +9,22 @@ namespace PsychToGo.Repository;
 public class PatientRepository : IPatientRepository
 {
     private readonly AppDbContext _context;
+
     public PatientRepository(AppDbContext context)
     {
         _context = context;
     }
 
-    
     //Put
     public async Task<bool> UpdatePatient(Patient patient)
     {
         try
         {
-            _context.Update(patient);
+            _context.Update( patient );
 
             return await Save();
-
-         
         }
-        catch(Exception)
+        catch (Exception)
         {
             throw;
         }
@@ -47,7 +42,6 @@ public class PatientRepository : IPatientRepository
 
             patient.Psychiatrist = await _context.Psychiatrists.FirstOrDefaultAsync( x => x.Id == psychiatristId );
             return await Save();
-
         }
         catch (Exception)
         {
@@ -55,13 +49,11 @@ public class PatientRepository : IPatientRepository
         }
     }
 
-
-    //Post 
+    //Post
     public async Task<bool> CreatePatient(int medicineId, Patient patient)
     {
         try
         {
-            
             var medicineEntity = await _context.Medicines
                 .Where( x => x.Id == medicineId )
                 .FirstOrDefaultAsync();
@@ -75,7 +67,6 @@ public class PatientRepository : IPatientRepository
 
             await _context.AddAsync( patient );
             return await Save();
-
         }
         catch (Exception)
         {
@@ -83,15 +74,12 @@ public class PatientRepository : IPatientRepository
         }
     }
 
-
-    public async Task<bool> CreatePatientWithoutPsychiatrist( Patient patient)
+    public async Task<bool> CreatePatientWithoutPsychiatrist(Patient patient)
     {
         try
         {
-                     
             await _context.AddAsync( patient );
             return await Save();
-
         }
         catch (Exception)
         {
@@ -108,8 +96,8 @@ public class PatientRepository : IPatientRepository
             if (patientDuplicate != null)
             {
                 return true;
-            }          
-           
+            }
+
             return false;
         }
         catch (Exception)
@@ -117,7 +105,6 @@ public class PatientRepository : IPatientRepository
             throw;
         }
     }
-
 
     public async Task<bool> Save()
     {
@@ -132,17 +119,12 @@ public class PatientRepository : IPatientRepository
         }
     }
 
-    //Get 
+    //Get
     public async Task<Patient> GetPatientById(int id)
     {
         try
         {
-
             var patient = await _context.Patients.Where( p => p.Id == id ).FirstOrDefaultAsync();
-            if (patient == null)
-            {
-                return null;
-            }
 
             return patient;
         }
@@ -150,8 +132,6 @@ public class PatientRepository : IPatientRepository
         {
             throw;
         }
-
-
     }
 
     public async Task<Patient> GetPatientByName(string name)
@@ -159,13 +139,8 @@ public class PatientRepository : IPatientRepository
         try
         {
             var patient = await _context.Patients.Where( p => p.Name == name ).FirstOrDefaultAsync();
-            if (patient == null)
-            {
-                return null;
-            }
 
             return patient;
-
         }
         catch (Exception)
         {
@@ -192,9 +167,7 @@ public class PatientRepository : IPatientRepository
                 return null;
             }
 
-
             return patientMedicines;
-
         }
         catch (Exception)
         {
@@ -212,7 +185,6 @@ public class PatientRepository : IPatientRepository
         {
             throw;
         }
-
     }
 
     public async Task<bool> PatientExists(int id)
@@ -226,12 +198,13 @@ public class PatientRepository : IPatientRepository
             throw;
         }
     }
+
     //Delete
     public async Task<bool> DeletePatient(Patient patient)
     {
         try
         {
-             _context.Remove(patient );
+            _context.Remove( patient );
             return await Save();
         }
         catch (Exception)
@@ -244,43 +217,15 @@ public class PatientRepository : IPatientRepository
     {
         try
         {
-
             var patient = await GetPatientById( id );
             if (!await PatientExists( patient.Id ))
             {
                 return 0;
             }
 
-            var psychologistId = patient.PsychologistId; 
-           
+            var psychologistId = patient.PsychologistId;
+
             return psychologistId;
-            
-        }
-        catch(Exception)
-        {
-            throw;
-        }
-    }
-
-
-    public async Task<int?> GetPatientPsychiatristId(int id)
-    {
-        try
-        {
-            var patient = await GetPatientById( id );
-            if(!await PatientExists(patient.Id))
-            {
-                return 0;
-            }
-            var psychiatristId = patient.PsychiatristId;
-            
-            if (psychiatristId == null)
-            {
-                return 0;
-            }
-
-            return psychiatristId;
-
         }
         catch (Exception)
         {
@@ -288,7 +233,27 @@ public class PatientRepository : IPatientRepository
         }
     }
 
-   
+    public async Task<int?> GetPatientPsychiatristId(int id)
+    {
+        try
+        {
+            var patient = await GetPatientById( id );
+            if (!await PatientExists( patient.Id ))
+            {
+                return 0;
+            }
+            var psychiatristId = patient.PsychiatristId;
+
+            if (psychiatristId == null)
+            {
+                return 0;
+            }
+
+            return psychiatristId;
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
 }
-
-

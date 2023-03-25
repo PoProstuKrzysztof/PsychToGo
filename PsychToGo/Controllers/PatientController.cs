@@ -1,26 +1,20 @@
-﻿
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using PsychToGo.DTO;
 using PsychToGo.Interfaces;
 using PsychToGo.Models;
-using PsychToGo.Repository;
 
 namespace PsychToGo.Controllers;
 
-
-
 [Route( "api/[controller]" )]
 [ApiController]
-
 public class PatientController : Controller
 {
     private readonly IPatientRepository _patientRepository;
     private readonly IPsychologistRepository _psychologistRepository;
     private readonly IPsychiatristRepository _psychiatristRepository;
     private readonly IMapper _mapper;
-
 
     public PatientController(IPatientRepository patientRepository, IMapper mapper, IPsychiatristRepository psychiatristRepository, IPsychologistRepository psychologistRepository)
     {
@@ -30,10 +24,8 @@ public class PatientController : Controller
         _psychologistRepository = psychologistRepository;
     }
 
-
-
     [HttpGet( "{id}/psychiatrist" )]
-    [ProducesResponseType( StatusCodes.Status200OK )]   
+    [ProducesResponseType( StatusCodes.Status200OK )]
     public async Task<IActionResult> GetPatientPsychiatristId(int id)
     {
         var psychiatristId = await _patientRepository.GetPatientPsychiatristId( id );
@@ -48,7 +40,6 @@ public class PatientController : Controller
 
     [HttpGet( "{id}/psychologist" )]
     [ProducesResponseType( StatusCodes.Status200OK )]
-
     [ProducesResponseType( StatusCodes.Status404NotFound )]
     public async Task<IActionResult> GetPatientPsychologistId(int id)
     {
@@ -60,7 +51,6 @@ public class PatientController : Controller
 
         return Ok( psychologistId );
     }
-
 
     [HttpGet( "patients" )]
     [ResponseCache( CacheProfileName = "Cache60" )]
@@ -75,7 +65,6 @@ public class PatientController : Controller
             return NotFound();
         }
 
-
         if (!ModelState.IsValid)
         {
             return BadRequest( ModelState );
@@ -83,8 +72,6 @@ public class PatientController : Controller
 
         return Ok( _mapper.Map<List<PatientDTO>>( patients ) );
     }
-
-
 
     [HttpGet( "{id}" )]
     [ProducesResponseType( StatusCodes.Status200OK, Type = typeof( Patient ) )]
@@ -97,23 +84,19 @@ public class PatientController : Controller
             return NotFound();
         }
 
-
         var patient = await (_patientRepository.GetPatientById( id ));
         if (patient == null)
         {
             return NotFound();
         }
 
-
         if (!ModelState.IsValid)
         {
             return BadRequest( ModelState );
         }
 
-
         return Ok( _mapper.Map<PatientDTO>( patient ) );
     }
-
 
     [HttpGet( "{name}/patient" )]
     [ProducesResponseType( StatusCodes.Status200OK, Type = typeof( Patient ) )]
@@ -132,7 +115,6 @@ public class PatientController : Controller
             return NotFound();
         }
 
-
         if (!ModelState.IsValid)
         {
             return BadRequest( ModelState );
@@ -140,7 +122,6 @@ public class PatientController : Controller
 
         return Ok( _mapper.Map<PatientDTO>( patient ) );
     }
-
 
     [HttpGet( "{id}/medicines" )]
     [ProducesResponseType( StatusCodes.Status200OK, Type = typeof( ICollection<Medicine> ) )]
@@ -159,23 +140,18 @@ public class PatientController : Controller
             return NotFound();
         }
 
-
         if (!ModelState.IsValid)
         {
             return BadRequest( ModelState );
         }
 
-
         return Ok( _mapper.Map<List<MedicineDTO>>( patientMedicines ) );
     }
-
-
 
     [HttpPost( "createNOPSYCH" )]
     [ProducesResponseType( StatusCodes.Status400BadRequest )]
     [ProducesResponseType( StatusCodes.Status201Created )]
     [ProducesResponseType( StatusCodes.Status422UnprocessableEntity )]
-
     public async Task<IActionResult> CreatePatientWithoutPsychiatrist(int psychologistId, [FromBody] PatientDTO newPatient)
     {
         if (newPatient == null)
@@ -197,9 +173,7 @@ public class PatientController : Controller
 
         var patientMap = _mapper.Map<Patient>( newPatient );
 
-
         patientMap.Psychologist = await _psychologistRepository.GetPsychologist( psychologistId );
-
 
         if (!await _patientRepository.CreatePatientWithoutPsychiatrist( patientMap ))
         {
@@ -208,16 +182,12 @@ public class PatientController : Controller
         }
 
         return Created( "Successfully created patient", newPatient );
-
     }
-
-
 
     [HttpPost( "create" )]
     [ProducesResponseType( StatusCodes.Status400BadRequest )]
     [ProducesResponseType( StatusCodes.Status201Created )]
     [ProducesResponseType( StatusCodes.Status422UnprocessableEntity )]
-
     public async Task<IActionResult> CreatePatient(int psychologistId, int psychiatristId, int medicineId, [FromBody] PatientDTO newPatient)
     {
         if (newPatient == null)
@@ -241,7 +211,6 @@ public class PatientController : Controller
         patientMap.Psychiatrist = await _psychiatristRepository.GetPsychiatrist( psychiatristId );
         patientMap.Psychologist = await _psychologistRepository.GetPsychologist( psychologistId );
 
-
         if (!await _patientRepository.CreatePatient( medicineId, patientMap ))
         {
             ModelState.AddModelError( "", "Something went wrong while saving patient." );
@@ -249,14 +218,13 @@ public class PatientController : Controller
         }
 
         return Created( "Successfully created patient", newPatient );
-
     }
 
     [HttpPut( "AssignPsychiatrist/" )]
     [ProducesResponseType( StatusCodes.Status204NoContent )]
     [ProducesResponseType( StatusCodes.Status400BadRequest )]
     [ProducesResponseType( StatusCodes.Status500InternalServerError )]
-    public async Task<IActionResult> AssignPsychiatrist( [FromQuery]int patientId, [FromQuery] int psychiatristId)
+    public async Task<IActionResult> AssignPsychiatrist([FromQuery] int patientId, [FromQuery] int psychiatristId)
     {
         if (!ModelState.IsValid)
         {
@@ -272,14 +240,13 @@ public class PatientController : Controller
         return NoContent();
     }
 
-
     [HttpPut( "{patientId}" )]
     [ProducesResponseType( StatusCodes.Status204NoContent )]
     [ProducesResponseType( StatusCodes.Status400BadRequest )]
     [ProducesResponseType( StatusCodes.Status404NotFound )]
     public async Task<IActionResult> UpdatePatient(
         [FromQuery] int psychiatristId,
-        [FromQuery] int psychologistId,       
+        [FromQuery] int psychologistId,
         int patientId,
         [FromBody] PatientDTO updatedPatient)
 
@@ -287,7 +254,6 @@ public class PatientController : Controller
         if (updatedPatient == null)
         {
             return BadRequest( ModelState );
-
         }
         if (patientId != updatedPatient.Id)
         {
@@ -308,7 +274,7 @@ public class PatientController : Controller
         patient.Psychiatrist = await _psychiatristRepository.GetPsychiatrist( psychiatristId );
         patient.Psychologist = await _psychologistRepository.GetPsychologist( psychologistId );
 
-        if (!await _patientRepository.UpdatePatient(patient ))
+        if (!await _patientRepository.UpdatePatient( patient ))
         {
             ModelState.AddModelError( "Error", "Something went wrong updating patient" );
             return StatusCode( 500, ModelState );
@@ -321,8 +287,8 @@ public class PatientController : Controller
     [ProducesResponseType( StatusCodes.Status204NoContent )]
     [ProducesResponseType( StatusCodes.Status400BadRequest )]
     [ProducesResponseType( StatusCodes.Status404NotFound )]
-    public async Task<IActionResult> UpdatePatientNoPsychiatrist(       
-        [FromQuery] int psychologistId,       
+    public async Task<IActionResult> UpdatePatientNoPsychiatrist(
+        [FromQuery] int psychologistId,
         int patientId,
         [FromBody] PatientDTO updatedPatient)
 
@@ -330,7 +296,6 @@ public class PatientController : Controller
         if (updatedPatient == null)
         {
             return BadRequest( ModelState );
-
         }
         if (patientId != updatedPatient.Id)
         {
@@ -347,7 +312,7 @@ public class PatientController : Controller
             return BadRequest();
         }
 
-        var patient = _mapper.Map<Patient>( updatedPatient );        
+        var patient = _mapper.Map<Patient>( updatedPatient );
         patient.Psychologist = await _psychologistRepository.GetPsychologist( psychologistId );
 
         if (!await _patientRepository.UpdatePatient( patient ))
@@ -358,7 +323,6 @@ public class PatientController : Controller
 
         return NoContent();
     }
-
 
     [HttpDelete( "{patientId}" )]
     [ProducesResponseType( StatusCodes.Status200OK )]
@@ -391,6 +355,4 @@ public class PatientController : Controller
 
         return NoContent();
     }
-
 }
-

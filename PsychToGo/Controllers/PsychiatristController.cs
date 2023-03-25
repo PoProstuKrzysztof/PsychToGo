@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PsychToGo.DTO;
 using PsychToGo.Interfaces;
 using PsychToGo.Models;
-using PsychToGo.Repository;
 
 namespace PsychToGo.Controllers;
 
@@ -14,6 +12,7 @@ public class PsychiatristController : Controller
 {
     private readonly IPsychiatristRepository _psychiatristRepository;
     private readonly IMapper _mapper;
+
     public PsychiatristController(IPsychiatristRepository psychiatristRepository, IMapper mapper)
     {
         _psychiatristRepository = psychiatristRepository;
@@ -33,20 +32,15 @@ public class PsychiatristController : Controller
             return NotFound();
         }
 
-
         if (!ModelState.IsValid)
         {
-            return BadRequest(ModelState);
+            return BadRequest( ModelState );
         }
 
-
         return Ok( _mapper.Map<List<PsychiatristDTO>>( psychiatrists ) );
-
     }
 
-
     [HttpGet( "{id}" )]
-    
     [ProducesResponseType( StatusCodes.Status200OK, Type = typeof( PsychiatristDTO ) )]
     [ProducesResponseType( StatusCodes.Status400BadRequest )]
     [ProducesResponseType( StatusCodes.Status404NotFound )]
@@ -57,9 +51,6 @@ public class PsychiatristController : Controller
             return NotFound();
         }
 
-
-
-
         var psychiatrist = await _psychiatristRepository.GetPsychiatrist( id );
         if (psychiatrist == null)
         {
@@ -68,23 +59,21 @@ public class PsychiatristController : Controller
 
         if (!ModelState.IsValid)
         {
-            return BadRequest(ModelState);
+            return BadRequest( ModelState );
         }
 
         return Ok( _mapper.Map<PsychiatristDTO>( psychiatrist ) );
     }
 
-
     [HttpGet( "{psychiatristId}/patients" )]
-    
-    [ProducesResponseType(StatusCodes.Status200OK,Type = typeof(ICollection<Patient>))]
+    [ProducesResponseType( StatusCodes.Status200OK, Type = typeof( ICollection<Patient> ) )]
     [ProducesResponseType( StatusCodes.Status400BadRequest )]
     [ProducesResponseType( StatusCodes.Status404NotFound )]
     public async Task<IActionResult> GetPsychiatrisPatients(int psychiatristId)
     {
         try
         {
-            if(! await _psychiatristRepository.PsychiatristExist( psychiatristId ))
+            if (!await _psychiatristRepository.PsychiatristExist( psychiatristId ))
             {
                 return NotFound();
             }
@@ -95,24 +84,23 @@ public class PsychiatristController : Controller
                 return NotFound();
             }
 
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState );
+                return BadRequest( ModelState );
             }
 
-            return Ok(_mapper.Map<List<PatientDTO>>( psychatirstPatients ) );
+            return Ok( _mapper.Map<List<PatientDTO>>( psychatirstPatients ) );
         }
-        catch(Exception)
+        catch (Exception)
         {
             throw;
         }
     }
 
     [HttpPost( "create" )]
-    
     [ProducesResponseType( StatusCodes.Status201Created )]
     [ProducesResponseType( StatusCodes.Status400BadRequest )]
-    [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+    [ProducesResponseType( StatusCodes.Status422UnprocessableEntity )]
     public async Task<IActionResult> CreatePsychiatrist([FromBody] PsychiatristDTO newPsychiatrist)
     {
         if (newPsychiatrist == null)
@@ -128,7 +116,7 @@ public class PsychiatristController : Controller
 
         if (!ModelState.IsValid)
         {
-            return BadRequest(ModelState );
+            return BadRequest( ModelState );
         }
 
         var psychiatrist = _mapper.Map<Psychiatrist>( newPsychiatrist );
@@ -139,7 +127,6 @@ public class PsychiatristController : Controller
         }
 
         return Created( "Successfully created psychiatrist", psychiatrist );
-
     }
 
     [HttpPut( "{psychiatristId}" )]
@@ -152,7 +139,6 @@ public class PsychiatristController : Controller
         if (updatedPsychiatrist == null)
         {
             return BadRequest( ModelState );
-
         }
         if (psychiatristId != updatedPsychiatrist.Id)
         {
@@ -179,8 +165,6 @@ public class PsychiatristController : Controller
 
         return NoContent();
     }
-
-
 
     [HttpDelete( "{psychiatristId}" )]
     [ProducesResponseType( StatusCodes.Status204NoContent )]
@@ -212,8 +196,4 @@ public class PsychiatristController : Controller
 
         return NoContent();
     }
-
-
-
-
 }

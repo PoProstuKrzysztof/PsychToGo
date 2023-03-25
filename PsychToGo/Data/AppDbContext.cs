@@ -11,7 +11,7 @@ public class AppDbContext : IdentityDbContext<AppUser>
     {
     }
 
-    public DbSet<AppUser> ApplicationUsers { get; set; }   
+    public DbSet<AppUser> ApplicationUsers { get; set; }
     public DbSet<Patient> Patients { get; set; }
     public DbSet<Psychiatrist> Psychiatrists { get; set; }
     public DbSet<Psychologist> Psychologists { get; set; }
@@ -30,27 +30,21 @@ public class AppDbContext : IdentityDbContext<AppUser>
             .HasOne( p => p.Patient )
             .WithMany( pm => pm.PatientMedicines )
             .HasForeignKey( m => m.PatientId );
-            
 
         builder.Entity<PatientMedicine>()
             .HasOne( m => m.Medicine )
             .WithMany( pm => pm.PatientMedicines )
             .HasForeignKey( p => p.MedicineId );
-            
 
         builder.Entity<Patient>()
-            .HasOne(p => p.Psychologist)
-            .WithMany( ps => ps.Patients)
-            .HasForeignKey( p => p.PsychologistId)
+            .HasOne( p => p.Psychologist )
+            .WithMany( ps => ps.Patients )
+            .HasForeignKey( p => p.PsychologistId )
             .IsRequired();
 
         builder.Entity<Patient>()
             .HasOne( p => p.Psychiatrist )
             .WithMany( p => p.Patients )
             .HasForeignKey( p => p.PsychiatristId );
-            
-
-            
-            
     }
 }

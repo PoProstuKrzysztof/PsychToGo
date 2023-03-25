@@ -7,12 +7,11 @@ public class LoginRequestDTO
 {
     [Required]
     [PersonalData]
-    [EmailAddress(ErrorMessage = "Invalid e-mail")]
+    [EmailAddress( ErrorMessage = "Invalid e-mail" )]
     public string UserName { get; set; }
+
     [Required]
     [PersonalData]
-    [DataType(DataType.Password)]
+    [DataType( DataType.Password )]
     public string Password { get; set; }
-
-    
 }

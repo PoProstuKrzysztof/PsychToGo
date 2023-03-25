@@ -1,19 +1,14 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using PsychToGo.Data;
 using PsychToGo.DTO;
 using PsychToGo.Interfaces;
-using PsychToGo.Models;
 using PsychToGo.Models.Identity;
-using System.ComponentModel;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-
 
 namespace PsychToGo.Repository;
 
@@ -25,8 +20,6 @@ public class UserRepository : IUserRepository
     private string secretKey;
     private readonly IMapper _mapper;
 
-
-
     public UserRepository(AppDbContext context, IConfiguration configuration, UserManager<AppUser> userManager, IMapper mapper, RoleManager<IdentityRole> roleManager)
     {
         _context = context;
@@ -35,8 +28,7 @@ public class UserRepository : IUserRepository
         _mapper = mapper;
         _roleManager = roleManager;
     }
-    
-   
+
     public bool IsUniqueUser(string username)
     {
         var user = _context.ApplicationUsers.FirstOrDefault( x => x.UserName == username );
@@ -44,7 +36,7 @@ public class UserRepository : IUserRepository
         {
             return true;
         }
-        
+
         return false;
     }
 
@@ -56,9 +48,6 @@ public class UserRepository : IUserRepository
     public async Task<LoginResponseDTO> Login(LoginRequestDTO loginRequest)
     {
         var user = _context.ApplicationUsers.FirstOrDefault( x => x.UserName.ToLower() == loginRequest.UserName.ToLower() );
-
-         
-       
 
         bool isValidPassword = await _userManager.CheckPasswordAsync( user, loginRequest.Password );
         if (!isValidPassword)
@@ -101,11 +90,11 @@ public class UserRepository : IUserRepository
         {
             Token = tokenHandler.WriteToken( token ),
             User = _mapper.Map<UserDTO>( user )
-            
         };
 
         return loginResponse;
     }
+
     /// <summary>
     /// Registration request to register into application
     /// </summary>
@@ -121,8 +110,6 @@ public class UserRepository : IUserRepository
             NormalizedEmail = registrationRequest.UserName.ToUpper(),
             Name = registrationRequest.Name,
             LastName = registrationRequest.LastName
-            
-
         };
 
         try
@@ -130,23 +117,18 @@ public class UserRepository : IUserRepository
             //For development, change role name every time if you want to assign user to specific role
             var result = await _userManager.CreateAsync( user, registrationRequest.Password );
             if (result.Succeeded)
-            {               
+            {
                 await _userManager.AddToRoleAsync( user, registrationRequest.Role );
 
                 var userToReturn = _context.ApplicationUsers.FirstOrDefault( u => u.UserName == registrationRequest.UserName );
                 return _mapper.Map<UserDTO>( userToReturn );
             }
-           
         }
         catch (Exception ex)
         {
             throw;
         }
 
-
         return new UserDTO();
     }
-
-   
-
 }

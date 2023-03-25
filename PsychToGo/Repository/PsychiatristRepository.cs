@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using PsychToGo.Data;
 using PsychToGo.DTO;
 using PsychToGo.Interfaces;
@@ -15,6 +14,7 @@ public class PsychiatristRepository : IPsychiatristRepository
     {
         _context = context;
     }
+
     //Post
 
     public async Task<bool> Save()
@@ -45,7 +45,6 @@ public class PsychiatristRepository : IPsychiatristRepository
             }
 
             return false;
-
         }
         catch (Exception)
         {
@@ -65,6 +64,7 @@ public class PsychiatristRepository : IPsychiatristRepository
             throw;
         }
     }
+
     //Get
     public async Task<Psychiatrist> GetPsychiatrist(int id)
     {
@@ -76,10 +76,9 @@ public class PsychiatristRepository : IPsychiatristRepository
                 return null;
             }
 
-
             return findPsychiatrist;
         }
-        catch(Exception) 
+        catch (Exception)
         {
             throw;
         }
@@ -93,14 +92,14 @@ public class PsychiatristRepository : IPsychiatristRepository
                 .Where( x => x.PsychiatristId == id )
                 .Select( p => p )
                 .ToListAsync();
-            if(psychiatristPatients == null)
+            if (psychiatristPatients == null)
             {
                 return null;
             }
 
             return psychiatristPatients;
         }
-        catch(Exception)
+        catch (Exception)
         {
             throw;
         }
@@ -110,13 +109,12 @@ public class PsychiatristRepository : IPsychiatristRepository
     {
         try
         {
-            return await _context.Psychiatrists.OrderBy(x => x.Id).ToListAsync();
+            return await _context.Psychiatrists.OrderBy( x => x.Id ).ToListAsync();
         }
         catch (Exception)
         {
             throw;
         }
-        
     }
 
     public async Task<bool> PsychiatristExist(int id)
@@ -125,11 +123,10 @@ public class PsychiatristRepository : IPsychiatristRepository
         {
             return await _context.Psychiatrists.AnyAsync( x => x.Id == id );
         }
-        catch(Exception)
+        catch (Exception)
         {
             throw;
         }
-        
     }
 
     public async Task<bool> UpdatePsychiatrist(Psychiatrist psychiatrist)
@@ -139,11 +136,12 @@ public class PsychiatristRepository : IPsychiatristRepository
             _context.Update( psychiatrist );
             return await Save();
         }
-        catch(Exception )
+        catch (Exception)
         {
             throw;
         }
     }
+
     //Delete
     public async Task<bool> DeletePsychiatrist(Psychiatrist psychiatrist)
     {
@@ -152,7 +150,7 @@ public class PsychiatristRepository : IPsychiatristRepository
             _context.Remove( psychiatrist );
             return await Save();
         }
-        catch(Exception ) 
+        catch (Exception)
         {
             throw;
         }

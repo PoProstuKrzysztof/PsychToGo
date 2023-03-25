@@ -3,9 +3,9 @@ using PsychToGoMVC.Models;
 using System.Diagnostics;
 
 namespace PsychToGoMVC.Controllers;
+
 public class HomeController : Controller
 {
-
     private readonly ILogger<HomeController> _logger;
 
     public HomeController(ILogger<HomeController> logger)
@@ -21,7 +21,6 @@ public class HomeController : Controller
     public IActionResult Privacy()
     {
         return View();
-
     }
 
     [ResponseCache( Duration = 0, Location = ResponseCacheLocation.None, NoStore = true )]

@@ -1,4 +1,3 @@
-
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +12,6 @@ using PsychToGo.Repository;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder( args );
-
 
 //CACHING
 builder.Services.AddControllers( options =>
@@ -31,8 +29,6 @@ builder.Services.AddScoped<IMedicineRepository, MedicineRepository>();
 builder.Services.AddScoped<IMedicineCategoryRepository, MedicineCategoryRepository>();
 builder.Services.AddScoped<IPsychiatristRepository, PsychiatristRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-
-
 
 builder.Services.AddAutoMapper( AppDomain.CurrentDomain.GetAssemblies() );
 builder.Services.AddTransient<DataSeed>();
@@ -72,14 +68,10 @@ builder.Services.AddSwaggerGen( options =>
             },
             new List<string>()
         }
-
     } );
-
 } );
 
 var key = builder.Configuration.GetValue<string>( "ApiSettings:Secret" );
-
-
 
 builder.Services.AddAuthentication( options =>
 {
@@ -98,9 +90,6 @@ builder.Services.AddAuthentication( options =>
             ValidateAudience = false
         };
     } );
-
-
-
 
 builder.Services.AddDbContext<AppDbContext>( options =>
 {
@@ -129,7 +118,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
 
 app.UseHttpsRedirection();
 

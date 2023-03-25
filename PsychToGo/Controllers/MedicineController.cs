@@ -3,114 +3,109 @@ using Microsoft.AspNetCore.Mvc;
 using PsychToGo.DTO;
 using PsychToGo.Interfaces;
 using PsychToGo.Models;
-using PsychToGo.Repository;
 
 namespace PsychToGo.Controllers;
 
-[Route("api/[controller]")]
+[Route( "api/[controller]" )]
 [ApiController]
 public class MedicineController : Controller
 {
     private readonly IMedicineRepository _medicineRepository;
     private readonly IMedicineCategoryRepository _medicineCategoryRepository;
     private readonly IMapper _mapper;
+
     public MedicineController(IMedicineRepository medicineRepository, IMapper mapper, IMedicineCategoryRepository medicineCategoryRepository)
     {
         _medicineRepository = medicineRepository;
-        _medicineCategoryRepository= medicineCategoryRepository;
+        _medicineCategoryRepository = medicineCategoryRepository;
         _mapper = mapper;
     }
 
     [HttpGet( "list" )]
     [ResponseCache( CacheProfileName = "Cache60" )]
-    [ProducesResponseType(StatusCodes.Status200OK,Type = typeof(ICollection<Medicine>))]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType( StatusCodes.Status200OK, Type = typeof( ICollection<Medicine> ) )]
+    [ProducesResponseType( StatusCodes.Status400BadRequest )]
     public async Task<IActionResult> GetMedicines()
     {
         var medicines = await _medicineRepository.GetMedicines();
-        if(!ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
             return BadRequest();
         }
 
-        return Ok(_mapper.Map<List<MedicineDTO>>( medicines ));
+        return Ok( _mapper.Map<List<MedicineDTO>>( medicines ) );
     }
 
-
-    [HttpGet("{medicineId}/inStock")]
+    [HttpGet( "{medicineId}/inStock" )]
     [ResponseCache( CacheProfileName = "Cache60" )]
     [ProducesResponseType( StatusCodes.Status200OK )]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType( StatusCodes.Status400BadRequest )]
     [ProducesResponseType( StatusCodes.Status404NotFound )]
     public async Task<IActionResult> GetMedicineInStock(int medicineId)
     {
-        if(!await _medicineRepository.MedicineExists(medicineId))
+        if (!await _medicineRepository.MedicineExists( medicineId ))
         {
             return NotFound();
         }
 
-        if(!ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
             return BadRequest( ModelState );
         }
 
         var inStock = await _medicineRepository.GetMedicineInStock( medicineId );
-    
-        return Ok(inStock);
 
+        return Ok( inStock );
     }
 
-    [HttpGet("{medicineId}/ExpireDate")]
-    [ProducesResponseType(StatusCodes.Status200OK )]
+    [HttpGet( "{medicineId}/ExpireDate" )]
+    [ProducesResponseType( StatusCodes.Status200OK )]
     [ProducesResponseType( StatusCodes.Status400BadRequest )]
     [ProducesResponseType( StatusCodes.Status404NotFound )]
     public async Task<IActionResult> GetMedicineExpireDate(int medicineId)
     {
-        if(!await _medicineRepository.MedicineExists(medicineId))
+        if (!await _medicineRepository.MedicineExists( medicineId ))
         {
             return NotFound();
         }
 
-        if(!ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
-            return BadRequest(ModelState);
+            return BadRequest( ModelState );
         }
 
         var medicineExpireDate = await _medicineRepository.GetMedicineExpireDate( medicineId );
-        if(medicineExpireDate == null)
+        if (medicineExpireDate == null)
         {
             return NotFound();
         }
 
-        return Ok(medicineExpireDate);
-
+        return Ok( medicineExpireDate );
     }
 
-    [HttpGet("{id}")]
-    [ProducesResponseType(StatusCodes.Status200OK,Type = typeof( MedicineDTO ) )]
+    [HttpGet( "{id}" )]
+    [ProducesResponseType( StatusCodes.Status200OK, Type = typeof( MedicineDTO ) )]
     [ProducesResponseType( StatusCodes.Status400BadRequest )]
     [ProducesResponseType( StatusCodes.Status404NotFound )]
     public async Task<IActionResult> GetMedicineById(int id)
     {
-        if(! await _medicineRepository.MedicineExists(id))
+        if (!await _medicineRepository.MedicineExists( id ))
         {
             return NotFound();
         }
 
-        var medicine = await _medicineRepository.GetMedicine(id);
-        if(medicine == null)
+        var medicine = await _medicineRepository.GetMedicine( id );
+        if (medicine == null)
         {
             return NotFound();
         }
 
-
-        if(!ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
             return BadRequest();
         }
-        return Ok(_mapper.Map<MedicineDTO>(medicine));
+        return Ok( _mapper.Map<MedicineDTO>( medicine ) );
     }
-
 
     [HttpPost( "create" )]
     [ProducesResponseType( StatusCodes.Status201Created )]
@@ -123,41 +118,39 @@ public class MedicineController : Controller
         }
 
         if (await _medicineRepository.CheckDuplicate( newMedicine ))
-        {   
+        {
             ModelState.AddModelError( "", "Medicine already exists." );
             return StatusCode( 422, ModelState );
         }
 
         if (!ModelState.IsValid)
         {
-            return BadRequest(ModelState);
+            return BadRequest( ModelState );
         }
 
         var medicine = _mapper.Map<Medicine>( newMedicine );
         medicine.Category = await _medicineCategoryRepository.GetMedicineCategoryById( newMedicine.CategoryId );
-        if (!await _medicineRepository.CreateMedicine(newMedicine.CategoryId, medicine ))
+        if (!await _medicineRepository.CreateMedicine( newMedicine.CategoryId, medicine ))
         {
             ModelState.AddModelError( "Error", "Something went wrong while saving medicine." );
             return StatusCode( 500, ModelState );
         }
 
-        return Created( "Successfully created medicine",medicine );
-
+        return Created( "Successfully created medicine", medicine );
     }
 
-
-    [HttpPut("{medicineId}")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [HttpPut( "{medicineId}" )]
+    [ProducesResponseType( StatusCodes.Status204NoContent )]
+    [ProducesResponseType( StatusCodes.Status404NotFound )]
     [ProducesResponseType( StatusCodes.Status400BadRequest )]
-    public async Task<IActionResult> UpdateMedicine(int medicineId,[FromBody] MedicineDTO updatedMedicine)
+    public async Task<IActionResult> UpdateMedicine(int medicineId, [FromBody] MedicineDTO updatedMedicine)
     {
-        if(updatedMedicine == null)
+        if (updatedMedicine == null)
         {
             return NotFound();
         }
 
-        if(medicineId != updatedMedicine.Id )
+        if (medicineId != updatedMedicine.Id)
         {
             return BadRequest( ModelState );
         }
@@ -175,8 +168,8 @@ public class MedicineController : Controller
         var medicine = _mapper.Map<Medicine>( updatedMedicine );
 
         medicine.Category = await _medicineCategoryRepository.GetMedicineCategoryById( updatedMedicine.CategoryId );
-        
-        if(! await _medicineRepository.UpdateMedicine(updatedMedicine.CategoryId, medicine))
+
+        if (!await _medicineRepository.UpdateMedicine( updatedMedicine.CategoryId, medicine ))
         {
             ModelState.AddModelError( "Error", "Something went wrong while updating category" );
             return StatusCode( 500, ModelState );
@@ -215,5 +208,4 @@ public class MedicineController : Controller
 
         return NoContent();
     }
-
 }

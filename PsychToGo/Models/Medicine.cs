@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace PsychToGo.Models;
+﻿namespace PsychToGo.Models;
 
 public class Medicine
 {
@@ -13,9 +11,9 @@ public class Medicine
     public string Ingredients { get; set; } = string.Empty;
     public int InStock { get; set; }
 
-    //Relationships 
-    
+    //Relationships
+
     public MedicineCategory Category { get; set; }
-    
+
     public virtual ICollection<PatientMedicine?> PatientMedicines { get; set; }
 }

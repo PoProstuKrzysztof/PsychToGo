@@ -7,29 +7,24 @@ namespace PsychToGoMVC.Services;
 
 public class PatientService : IPatientService
 {
-    Uri baseAddress = new Uri( "https://localhost:7291/api/Patient" );
-    Uri psychiatristAddress = new Uri( "https://localhost:7291/api/Psychiatrist" );
-    Uri psychologistAddress = new Uri( "https://localhost:7291/api/Psychologist" );
-    Uri medicinesAddress = new Uri( "https://localhost:7291/api/Medicine" );
-    HttpClient client = new HttpClient();
+    private Uri baseAddress = new Uri( "https://localhost:7291/api/Patient" );
+    private Uri psychiatristAddress = new Uri( "https://localhost:7291/api/Psychiatrist" );
+    private Uri psychologistAddress = new Uri( "https://localhost:7291/api/Psychologist" );
+    private Uri medicinesAddress = new Uri( "https://localhost:7291/api/Medicine" );
+    private HttpClient client = new HttpClient();
 
     public PatientService()
     {
         client = new HttpClient();
         client.BaseAddress = baseAddress;
-        
     }
 
     public async Task<PatientViewModel> CreateParsedPatientInstance(int id)
     {
-
         Patient? findPatient = await client.GetFromJsonAsync<Patient>( client.BaseAddress + $"/{id}" );
 
-
         int psychologistId = await client.GetFromJsonAsync<int>( client.BaseAddress + $"/{id}/psychologist" );
-        var psychiatristId =  await client.GetFromJsonAsync<int>( client.BaseAddress + $"/{id}/psychiatrist" );
-        
-
+        var psychiatristId = await client.GetFromJsonAsync<int>( client.BaseAddress + $"/{id}/psychiatrist" );
 
         if (psychiatristId == 0)
         {
@@ -48,11 +43,7 @@ public class PatientService : IPatientService
             return parsedPatientNoPsychiatrist;
         }
 
-
         List<Medicine>? medicines = await client.GetFromJsonAsync<List<Medicine>>( client.BaseAddress + $"/{id}/medicines" );
-       
-
-        
 
         PatientViewModel parsedPatient = new PatientViewModel()
         {
@@ -66,8 +57,6 @@ public class PatientService : IPatientService
             PsychologistId = psychologistId,
             MedicinesId = medicines.Select( m => m.Id ).ToList(),
             Id = id
-
-
         };
 
         return parsedPatient;
@@ -75,7 +64,6 @@ public class PatientService : IPatientService
 
     public async Task<Patient> CreatePatientInstance(PatientViewModel pvm)
     {
-
         Patient newPatient = new Patient()
         {
             Id = pvm.Id,
@@ -107,8 +95,7 @@ public class PatientService : IPatientService
     public async Task<ICollection<MedicineDTO>> MedicinesList()
     {
         List<MedicineDTO>? medicines = await client.GetFromJsonAsync<List<MedicineDTO>>( medicinesAddress + $"/list" );
-        
-        return medicines;
 
+        return medicines;
     }
 }

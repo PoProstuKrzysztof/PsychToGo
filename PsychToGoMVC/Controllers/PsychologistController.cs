@@ -1,22 +1,21 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PsychToGo.DTO;
 using PsychToGo.Models;
-using PsychToGo.Models.Identity;
-using PsychToGoMVC.Models;
 using System.Security.Claims;
 using System.Text;
 
 namespace PsychToGoMVC.Controllers;
+
 public class PsychologistController : Controller
 {
     /// <summary>
     /// Base address to connect with api
     /// </summary>
-    Uri baseAdress = new Uri( "https://localhost:7291/api/Psychologist" );
-    HttpClient client = new HttpClient();
-    
+    private Uri baseAdress = new Uri( "https://localhost:7291/api/Psychologist" );
+
+    private HttpClient client = new HttpClient();
+
     private readonly IHttpContextAccessor _httpContext;
 
     public PsychologistController(IHttpContextAccessor httpContext)
@@ -26,7 +25,6 @@ public class PsychologistController : Controller
         client.BaseAddress = baseAdress;
     }
 
-  
     public IActionResult Index()
     {
         List<PsychologistDTO> psychologists = new List<PsychologistDTO>();
@@ -45,15 +43,12 @@ public class PsychologistController : Controller
         return View( psychologists );
     }
 
-
-   
     [HttpGet]
     public IActionResult CreatePsychologistMVC()
     {
         return View();
     }
 
-   
     [HttpPost]
     [ValidateAntiForgeryToken]
     public IActionResult CreatePsychologistMVC(PsychologistDTO pvm)
@@ -62,8 +57,6 @@ public class PsychologistController : Controller
         StringContent content = new StringContent( data, Encoding.UTF8, "application/json" );
         HttpResponseMessage response = client.PostAsync( client.BaseAddress + "/create", content ).Result;
 
-
-
         if (response.IsSuccessStatusCode)
         {
             return RedirectToAction( "Index" );
@@ -71,8 +64,6 @@ public class PsychologistController : Controller
         return View( pvm );
     }
 
-    
-    
     [HttpGet]
     public IActionResult DeletePsychologist([FromRoute] int id)
     {
@@ -85,8 +76,6 @@ public class PsychologistController : Controller
         return BadRequest();
     }
 
-    
-    
     [HttpGet]
     public async Task<IActionResult> EditPsychologist([FromRoute] int id)
     {
@@ -99,8 +88,7 @@ public class PsychologistController : Controller
 
         return View( psychologist );
     }
-    
-    
+
     [HttpPost]
     [ValidateAntiForgeryToken]
     public IActionResult EditPsychologist(PsychologistDTO psychologist)
@@ -117,15 +105,12 @@ public class PsychologistController : Controller
         return View( psychologist );
     }
 
-
     [HttpGet]
     public async Task<IActionResult> GetPsychologistPatients()
     {
         //Getting user e-mail here so It can locate his Id in database and view all his patients
 
-
         var user = _httpContext.HttpContext.User?.FindFirst( ClaimTypes.Name );
-
 
         if (user == null)
         {
@@ -149,7 +134,4 @@ public class PsychologistController : Controller
             Where( x => x.PsychiatristId == null )
             .Select( x => x ).ToList() );
     }
-
 }
-
-
