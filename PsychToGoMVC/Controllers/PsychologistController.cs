@@ -110,21 +110,22 @@ public class PsychologistController : Controller
     {
         //Getting user e-mail here so It can locate his Id in database and view all his patients
 
-        var user = _httpContext.HttpContext.User?.FindFirst( ClaimTypes.Name );
+        var psychologistAsUser = _httpContext.HttpContext.User?.FindFirst( ClaimTypes.Name );
 
-        if (user == null)
+        if (psychologistAsUser == null)
         {
             return BadRequest();
         }
 
         List<PsychologistDTO> psychologists = await client.GetFromJsonAsync<List<PsychologistDTO>>( client.BaseAddress + "/list" );
 
-        var psychologistId = psychologists.Where( x => x.Email.ToLower() == user.Value.ToLower() ).Select( x => x.Id ).FirstOrDefault();
+        var psychologistId = psychologists.Where( x => x.Email.ToLower() == psychologistAsUser.Value.ToLower() )
+            .Select( x => x.Id ).FirstOrDefault();
 
         List<Patient> patients = await client.GetFromJsonAsync<List<Patient>>( client.BaseAddress + $"/{psychologistId}/patients" );
         if (patients == null)
         {
-            ModelState.AddModelError( "", "Error has occured" );
+            ModelState.AddModelError( "", "No patients assigned" );
             return View( ModelState );
         }
 

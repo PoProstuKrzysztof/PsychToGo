@@ -69,8 +69,9 @@ public class AuthController : Controller
                 return RedirectToAction( "Index", "Home" );
             }
 
-            return RedirectToAction( $"Create{obj.Role}MVC", $"{obj.Role}", obj );
+            return RedirectToAction( $"Create{obj.Role}MVC", $"{obj.Role}");
         }
+        ModelState.AddModelError( "","Error occured while registration." );
         return View( obj );
     }
 

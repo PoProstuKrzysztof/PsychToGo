@@ -16,9 +16,9 @@ public interface IPatientRepository
 
     Task<bool> PatientExists(int id);
 
-    Task<int?> GetPatientPsychiatristId(int id);
+    Task<Psychiatrist?> GetPatientPsychiatrist(int id);
 
-    Task<int?> GetPatientPsychologistId(int id);
+    Task<Psychologist?> GetPatientPsychologist(int id);
 
     //Post
     Task<bool> CreatePatient(int medicineId, Patient patient);

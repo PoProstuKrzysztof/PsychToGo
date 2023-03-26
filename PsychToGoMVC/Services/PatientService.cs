@@ -23,10 +23,10 @@ public class PatientService : IPatientService
     {
         Patient? findPatient = await client.GetFromJsonAsync<Patient>( client.BaseAddress + $"/{id}" );
 
-        int psychologistId = await client.GetFromJsonAsync<int>( client.BaseAddress + $"/{id}/psychologist" );
-        var psychiatristId = await client.GetFromJsonAsync<int>( client.BaseAddress + $"/{id}/psychiatrist" );
+        PsychologistDTO psychologist = await client.GetFromJsonAsync<PsychologistDTO>( client.BaseAddress + $"/{id}/psychologist" );
+        PsychiatristDTO psychiatrist = await client.GetFromJsonAsync<PsychiatristDTO>( client.BaseAddress + $"/{id}/psychiatrist" );
 
-        if (psychiatristId == 0)
+        if (psychiatrist == null)
         {
             PatientViewModel parsedPatientNoPsychiatrist = new PatientViewModel()
             {
@@ -36,7 +36,7 @@ public class PatientService : IPatientService
                 Address = findPatient.Address,
                 DateOfBirth = findPatient.DateOfBirth,
                 Phone = findPatient.Phone,
-                PsychologistId = psychologistId,
+                PsychologistId = psychologist.Id,
                 Id = id
             };
 
@@ -53,8 +53,8 @@ public class PatientService : IPatientService
             Address = findPatient.Address,
             DateOfBirth = findPatient.DateOfBirth,
             Phone = findPatient.Phone,
-            PsychiatristId = psychiatristId,
-            PsychologistId = psychologistId,
+            PsychiatristId = psychiatrist.Id,
+            PsychologistId = psychologist.Id,
             MedicinesId = medicines.Select( m => m.Id ).ToList(),
             Id = id
         };

@@ -26,30 +26,30 @@ public class PatientController : Controller
 
     [HttpGet( "{id}/psychiatrist" )]
     [ProducesResponseType( StatusCodes.Status200OK )]
-    public async Task<IActionResult> GetPatientPsychiatristId(int id)
+    public async Task<IActionResult> GetPatientPsychiatrist(int id)
     {
-        var psychiatristId = await _patientRepository.GetPatientPsychiatristId( id );
-        if (psychiatristId == 0)
+        var psychiatrist = await _patientRepository.GetPatientPsychiatrist( id );
+        if (psychiatrist == null)
         {
             // It was NotFound() keyword, but for CreatePatientInstance I had to change it to Ok()
-            return Ok( psychiatristId );
+            return Ok();
         }
 
-        return Ok( psychiatristId );
+        return Ok( _mapper.Map<PsychiatristDTO>( psychiatrist ) );
     }
 
     [HttpGet( "{id}/psychologist" )]
     [ProducesResponseType( StatusCodes.Status200OK )]
     [ProducesResponseType( StatusCodes.Status404NotFound )]
-    public async Task<IActionResult> GetPatientPsychologistId(int id)
+    public async Task<IActionResult> GetPatientPsychologist(int id)
     {
-        var psychologistId = await _patientRepository.GetPatientPsychologistId( id );
-        if (psychologistId == 0)
+        var psychologist = await _patientRepository.GetPatientPsychologist( id );
+        if (psychologist == null)
         {
-            return NotFound();
+            return Ok();
         }
 
-        return Ok( psychologistId );
+        return Ok( _mapper.Map<PsychologistDTO>(psychologist));
     }
 
     [HttpGet( "patients" )]

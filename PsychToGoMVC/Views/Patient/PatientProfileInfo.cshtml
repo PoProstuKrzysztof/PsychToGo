@@ -1,0 +1,52 @@
+﻿@model PatientViewModel
+
+@{
+    ViewData["Title"] = "Profile info";
+}
+
+<h1 class="text-primary text-center">Profile</h1>
+<hr />
+
+<body>
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input asp-for="Id" hidden />
+
+    <label asp-for="Name" class="control-label">Name</label>
+    <input asp-for="Name" class="form-control" value="@Model.Name" readonly />
+
+
+    <label asp-for="LastName" class="control-label">Last name</label>
+    <input asp-for="LastName" class="form-control" value="@Model.LastName" readonly />
+
+
+    <label asp-for="Email" class="control-label">E-mail</label>
+    <input asp-for="Email" class="form-control" type="email" value="@Model.Email" readonly />
+
+
+    <label asp-for="Phone" class="control-label">Phone</label>
+    <input asp-for="Phone" class="form-control" type="tel" value="@Model.Phone" readonly />
+
+
+    <label asp-for="DateOfBirth" class="control-label ">Date of birth</label>
+    <input asp-for="DateOfBirth" class="form-control" type="date" value="@Model.DateOfBirth.ToString("yyyy-MM-dd")" min=" 1960-01-01" readonly />
+
+
+    <label asp-for="Address" class="control-label">Address</label>
+    <input asp-for="Address" class="form-control" value="@Model.Address" readonly />
+
+
+    <label asp-for="Psychologists" class="control-label"></label>
+    <input asp-for="Psychologists" class="form-control" value="@Model.Psychologists" readonly />
+
+
+    <label asp-for="Psychiatrists" class="control-label"></label>
+    <input asp-for="Psychiatrists" class="form-control" value="@Model.Psychiatrists" readonly />
+
+    <label class="text-danger"></label>
+    @Html.ListBoxFor(model => model.MedicinesId, new MultiSelectList(Model.Medicines, "Id","Name"))
+
+</body>
+
+
+

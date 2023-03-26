@@ -4,6 +4,7 @@ using PsychToGo.DTO;
 using PsychToGo.Models;
 using PsychToGoMVC.Models;
 using PsychToGoMVC.Services.Interfaces;
+using System.Security.Claims;
 using System.Text;
 
 namespace PsychToGoMVC.Controllers;
@@ -20,11 +21,12 @@ public class PatientController : Controller
 
     private readonly IHttpContextAccessor _httpContext;
 
-    public PatientController(IPatientService patientService)
+    public PatientController(IPatientService patientService, IHttpContextAccessor httpContext)
     {
         _patientService = patientService;
         client = new HttpClient();
         client.BaseAddress = baseAdress;
+        _httpContext = httpContext;
     }
 
     public IActionResult Index()
@@ -56,6 +58,37 @@ public class PatientController : Controller
         newPatient.Medicines = await _patientService.MedicinesList();
         newPatient.MedicinesId = new List<int>();
         return View( newPatient );
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> PatientProfileInfo()
+    {
+        var patientAsUser = _httpContext.HttpContext.User?.FindFirst( ClaimTypes.Name );
+
+        if (patientAsUser == null)
+        {
+            return NotFound();
+        }
+
+        //Getting patient, his psychologist and psychiatrist
+        List<PatientDTO> patients = await client.GetFromJsonAsync<List<PatientDTO>>( client.BaseAddress + "/patients" );
+
+        int patientId = patients.Where( x => x.Email.ToLower() == patientAsUser.Value.ToLower() )
+            .Select( x => x.Id ).FirstOrDefault();
+              
+
+        PsychologistDTO patientPsychologist = await client.GetFromJsonAsync<PsychologistDTO>( client.BaseAddress + $"/{patientId}/psychologist" );
+        PsychiatristDTO patientPsychiatrist = await client.GetFromJsonAsync<PsychiatristDTO>( client.BaseAddress + $"/{patientId}/psychiatrist" );
+
+        PatientViewModel patientParsedToPatientViewModel = await _patientService.CreateParsedPatientInstance( patientId );
+        patientParsedToPatientViewModel.Psychiatrists = (ICollection<PsychiatristDTO>)patientPsychiatrist;
+        patientParsedToPatientViewModel.Psychologists = ( ICollection<PsychologistDTO> )patientPsychologist;
+
+        var medicines = await client.GetAsync( client.BaseAddress + $"/{patientId}/medicines" );
+        var data = medicines.Content.ReadAsStringAsync().Result;
+        patientParsedToPatientViewModel.Medicines = JsonConvert.DeserializeObject<List<MedicineDTO>>( medicines.Content.ReadAsStringAsync().Result );
+
+        return View( patientParsedToPatientViewModel );
     }
 
     [HttpPost]

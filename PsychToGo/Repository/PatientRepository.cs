@@ -195,7 +195,7 @@ public class PatientRepository : IPatientRepository
         }
         catch (Exception)
         {
-            throw;
+            return false;
         }
     }
 
@@ -213,19 +213,21 @@ public class PatientRepository : IPatientRepository
         }
     }
 
-    public async Task<int?> GetPatientPsychologistId(int id)
+    public async Task<Psychologist?> GetPatientPsychologist(int id)
     {
         try
         {
             var patient = await GetPatientById( id );
             if (!await PatientExists( patient.Id ))
             {
-                return 0;
+                return null;
             }
 
-            var psychologistId = patient.PsychologistId;
+            var patientPsychologist = await _context.Psychologists
+                .Where(x => x.Id == patient.PsychologistId)
+                .FirstOrDefaultAsync();
 
-            return psychologistId;
+            return patientPsychologist;
         }
         catch (Exception)
         {
@@ -233,23 +235,21 @@ public class PatientRepository : IPatientRepository
         }
     }
 
-    public async Task<int?> GetPatientPsychiatristId(int id)
+    public async Task<Psychiatrist?> GetPatientPsychiatrist(int id)
     {
         try
         {
             var patient = await GetPatientById( id );
             if (!await PatientExists( patient.Id ))
             {
-                return 0;
+                return null;
             }
-            var psychiatristId = patient.PsychiatristId;
+            var patientPsychiatrist = await _context.Psychiatrists
+                .Where( x => x.Id == patient.PsychiatristId )
+                .FirstOrDefaultAsync();
+            
 
-            if (psychiatristId == null)
-            {
-                return 0;
-            }
-
-            return psychiatristId;
+            return patientPsychiatrist;
         }
         catch (Exception)
         {
