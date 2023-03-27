@@ -37,7 +37,7 @@ public class PatientViewModel
     [StringLength( 30, MinimumLength = 4 )]
     public string Address { get; set; } = string.Empty;
 
-    // Information about his doctors
+    // Information about his assignments
     [Required( ErrorMessage = "You have to choose psychologist" )]
     public int PsychologistId { get; set; }
 

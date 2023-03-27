@@ -47,7 +47,8 @@ public class UserRepository : IUserRepository
     /// <returns></returns>
     public async Task<LoginResponseDTO> Login(LoginRequestDTO loginRequest)
     {
-        var user = _context.ApplicationUsers.FirstOrDefault( x => x.UserName.ToLower() == loginRequest.UserName.ToLower() );
+        var user = _context.ApplicationUsers
+            .FirstOrDefault( x => x.UserName.ToLower() == loginRequest.UserName.ToLower() );
 
         bool isValidPassword = await _userManager.CheckPasswordAsync( user, loginRequest.Password );
         if (!isValidPassword)
@@ -101,7 +102,7 @@ public class UserRepository : IUserRepository
     /// <param name="registrationRequest"></param>
     /// <returns></returns>
     [ValidateAntiForgeryToken]
-    public async Task<UserDTO> Register(RegistrationRequestDTO registrationRequest)
+    public async Task<UserDTO> Register( RegistrationRequestDTO registrationRequest)
     {
         AppUser user = new AppUser()
         {

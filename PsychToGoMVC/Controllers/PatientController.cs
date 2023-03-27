@@ -81,8 +81,8 @@ public class PatientController : Controller
         PsychiatristDTO patientPsychiatrist = await client.GetFromJsonAsync<PsychiatristDTO>( client.BaseAddress + $"/{patientId}/psychiatrist" );
 
         PatientViewModel patientParsedToPatientViewModel = await _patientService.CreateParsedPatientInstance( patientId );
-        patientParsedToPatientViewModel.Psychiatrists = (ICollection<PsychiatristDTO>)patientPsychiatrist;
-        patientParsedToPatientViewModel.Psychologists = ( ICollection<PsychologistDTO> )patientPsychologist;
+        patientParsedToPatientViewModel.Psychiatrists = new List<PsychiatristDTO>() { patientPsychiatrist };
+        patientParsedToPatientViewModel.Psychologists = new List<PsychologistDTO>() {patientPsychologist };
 
         var medicines = await client.GetAsync( client.BaseAddress + $"/{patientId}/medicines" );
         var data = medicines.Content.ReadAsStringAsync().Result;

@@ -21,6 +21,8 @@ public class RegistrationRequestDTO
     [Required( ErrorMessage = "Password can't be blank" )]
     [DataType( DataType.Password )]
     [StringLength( 50, MinimumLength = 5 )]
+    [RegularExpression( @"^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{5,50}$",
+   ErrorMessage = "Password must contain at least one number and one special character" )]
     public string? Password { get; set; }
 
     [Required( ErrorMessage = "Password can't be blank" )]

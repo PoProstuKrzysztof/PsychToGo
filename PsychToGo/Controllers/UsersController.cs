@@ -23,6 +23,7 @@ public class UsersController : Controller
         var loginResponse = await _repository.Login( loginRequest );
         if (loginResponse.User == null || string.IsNullOrEmpty( loginResponse.Token ))
         {
+            
             return BadRequest( new { message = "Username or password is incorrect" } );
         }
         return Ok( loginResponse );

@@ -48,7 +48,8 @@ public class AuthController : Controller
         }
 
         ModelState.AddModelError( "", $"An error occurred while logging in" );
-        return RedirectToAction( "Index", "Home", obj );
+       
+        return RedirectToAction( "Index", "Home", ModelState );
     }
 
     [HttpGet]
@@ -59,7 +60,7 @@ public class AuthController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Register(RegistrationRequestDTO obj)
+    public async Task<IActionResult> Register( RegistrationRequestDTO obj)
     {
         var register = await _authService.RegisterAsync<HttpResponseMessage>( obj );
         if (register != string.Empty)
