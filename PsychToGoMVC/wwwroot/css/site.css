@@ -237,6 +237,12 @@ input[type=submit] {
     cursor: pointer;
 }
 
-    input[type=submit]:hover {
-        background-color: #45a049;
-    }
+form-group ul li{
+    font-weight:700;
+}
+
+input[type=submit]:hover {
+    background-color: #45a049;
+}
+
+    

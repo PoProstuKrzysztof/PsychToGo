@@ -9,7 +9,7 @@
         <div class="col-lg-8">
             <h1 class="text-primary text-center">Profile</h1>
             <hr />
-          
+
             <input asp-for="Id" hidden />
 
             <div class="row">
@@ -53,7 +53,7 @@
                     </div>
                 </div>
             </div>
-
+            <hr />
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
@@ -61,8 +61,9 @@
                         <ul>
                             @foreach (var psychologist in Model.Psychologists)
                             {
-                                <li>@psychologist.Name @psychologist.LastName</li>
-                                <li>@psychologist.Phone</li>
+                                <li>Full name: @psychologist.Name @psychologist.LastName </li>
+                                <li>Telephone: @psychologist.Phone </li>
+                                <li>E-mail: @psychologist.Email</li>
                             }
                         </ul>
                     </div>
@@ -73,8 +74,9 @@
                         <ul>
                             @foreach (var psychiatrist in Model.Psychiatrists)
                             {
-                               <li>@psychiatrist.Name @psychiatrist.LastName </li>
-                               <li>@psychiatrist.Phone</li>
+                                <li>Full name: @psychiatrist.Name @psychiatrist.LastName </li>
+                                <li>Telephone: @psychiatrist.Phone </li>
+                                <li>E-mail: @psychiatrist.Email</li>
                             }
                         </ul>
                     </div>
@@ -84,7 +86,7 @@
                     <ul>
                         @foreach (var medicine in Model.Medicines)
                         {
-                            <li>@medicine.Name Daily dose: </li>
+                            <li>@medicine.Name Daily dose: @medicine.DailyDose </li>
                             <li>@medicine.DailyDose</li>
                         }
                     </ul>

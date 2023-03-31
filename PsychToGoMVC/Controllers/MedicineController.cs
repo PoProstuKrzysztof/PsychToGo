@@ -38,6 +38,7 @@ public class MedicineController : Controller
         return View( medicines );
     }
 
+    []
     [HttpGet]
     public IActionResult CreateMedicineMVC()
     {
