@@ -86,8 +86,9 @@
                     <ul>
                         @foreach (var medicine in Model.Medicines)
                         {
-                            <li>@medicine.Name Daily dose: @medicine.DailyDose </li>
-                            <li>@medicine.DailyDose</li>
+                            <li>Name of the medicine: @medicine.Name</li>
+                            <li>Daily dose: @medicine.DailyDose</li>
+                            <li>Expire date: @medicine.ExpireDate.ToString("yyyy-MM-dd")</li>
                         }
                     </ul>
                 </div>
