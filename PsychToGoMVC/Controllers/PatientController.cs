@@ -232,4 +232,24 @@ public class PatientController : Controller
         return View( patient );
     }
 
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> AssignMedicine(PatientViewModel patient)
+    {
+        Patient? assignedPatient = await _patientService.CreatePatientInstance( patient );
+
+        string data = JsonConvert.SerializeObject( assignedPatient );
+
+        StringContent content = new StringContent( data, Encoding.UTF8, "application/json" );
+        HttpResponseMessage response = client.
+            PutAsync( client.BaseAddress + $"/AssignPsychiatrist?patientId={assignedPatient.Id}&psychiatristId={assignedPatient.PsychiatristId}", content ).Result;
+
+        if (response.IsSuccessStatusCode)
+        {
+            return RedirectToAction( "GetPsychiatristPatients", "Psychiatrist" );
+        }
+        ModelState.AddModelError( "", $"An error occurred when assignit psychiatrist to patient" );
+        return View( patient );
+    }
+
 }
