@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PsychToGo.DTO;
+using PsychToGo.Models;
+using System.Security.Claims;
 using System.Text;
 
 namespace PsychToGoMVC.Controllers;
@@ -15,10 +17,12 @@ public class PsychiatristController : Controller
 
     private HttpClient client = new HttpClient();
 
-    public PsychiatristController()
+    private readonly IHttpContextAccessor _httpContext;
+    public PsychiatristController(IHttpContextAccessor httpContext)
     {
         client = new HttpClient();
         client.BaseAddress = baseAdress;
+        _httpContext = httpContext;
     }
 
     public IActionResult Index()
@@ -90,7 +94,7 @@ public class PsychiatristController : Controller
     }
 
     [HttpPost]
-    [Authorize( Roles = "admin" )]
+    [Authorize( Roles = "admin, psychiatrist")]
     [ValidateAntiForgeryToken]
     public IActionResult EditPsychiatrist(PsychiatristDTO psychiatrist)
     {
@@ -104,5 +108,35 @@ public class PsychiatristController : Controller
         }
         ModelState.AddModelError( "", $"An error occurred when editing psychiatrist" );
         return View( psychiatrist );
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetPsychiatristPatients()
+    {
+        //Getting user e-mail here so It can locate his Id in database and view all his patients
+
+        var psychiatristAsuser = _httpContext.HttpContext.User?.FindFirst( ClaimTypes.Name );
+
+        if (psychiatristAsuser == null)
+        {
+            return BadRequest();
+        }
+
+        List<PsychiatristDTO>? psychiatrists = await client.GetFromJsonAsync<List<PsychiatristDTO>>( client.BaseAddress + "/list" );
+
+        int? psychiatristId = psychiatrists
+            .Where( x => x.Email.ToLower() == psychiatristAsuser.Value.ToLower() )
+            .Select( x => x.Id ).FirstOrDefault();
+
+        List<Patient>? patients = await client.GetFromJsonAsync<List<Patient>>( client.BaseAddress + $"/{psychiatristId}/patients" );
+        if (patients == null)
+        {
+            ModelState.AddModelError( "", "No patients assigned" );
+            return View( ModelState );
+        }
+
+
+        return View( "PatientList", patients );
+
     }
 }

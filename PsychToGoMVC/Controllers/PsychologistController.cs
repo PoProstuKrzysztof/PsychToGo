@@ -110,7 +110,7 @@ public class PsychologistController : Controller
     {
         //Getting user e-mail here so It can locate his Id in database and view all his patients
 
-        var psychologistAsUser = _httpContext.HttpContext.User?.FindFirst( ClaimTypes.Name );
+        Claim? psychologistAsUser = _httpContext.HttpContext.User?.FindFirst( ClaimTypes.Name );
 
         if (psychologistAsUser == null)
         {
@@ -119,7 +119,7 @@ public class PsychologistController : Controller
 
         List<PsychologistDTO> psychologists = await client.GetFromJsonAsync<List<PsychologistDTO>>( client.BaseAddress + "/list" );
 
-        var psychologistId = psychologists.Where( x => x.Email.ToLower() == psychologistAsUser.Value.ToLower() )
+        int psychologistId = psychologists.Where( x => x.Email.ToLower() == psychologistAsUser.Value.ToLower() )
             .Select( x => x.Id ).FirstOrDefault();
 
         List<Patient> patients = await client.GetFromJsonAsync<List<Patient>>( client.BaseAddress + $"/{psychologistId}/patients" );

@@ -76,10 +76,10 @@ public class PatientController : Controller
         int patientId = patients.Where( x => x.Email.ToLower() == patientAsUser.Value.ToLower() )
             .Select( x => x.Id ).FirstOrDefault();
               
-
+        //Finding patient psychologist and psychiatrist
         PsychologistDTO patientPsychologist = await client.GetFromJsonAsync<PsychologistDTO>( client.BaseAddress + $"/{patientId}/psychologist" );
         PsychiatristDTO patientPsychiatrist = await client.GetFromJsonAsync<PsychiatristDTO>( client.BaseAddress + $"/{patientId}/psychiatrist" );
-
+        
         PatientViewModel patientParsedToPatientViewModel = await _patientService.CreateParsedPatientInstance( patientId );
         patientParsedToPatientViewModel.Psychiatrists = new List<PsychiatristDTO>() { patientPsychiatrist };
         patientParsedToPatientViewModel.Psychologists = new List<PsychologistDTO>() {patientPsychologist };
@@ -217,4 +217,19 @@ public class PatientController : Controller
         ModelState.AddModelError( "", $"An error occurred when assignit psychiatrist to patient" );
         return View( patient );
     }
+
+    [HttpGet]
+    public async Task<IActionResult> AssignMedicine([FromRoute] int id)
+    {
+        PatientViewModel? patient = await _patientService.CreateParsedPatientInstance( id );
+        if (patient == null)
+        {
+            ModelState.AddModelError( "", "Error has occured" );
+            return RedirectToAction( "Index" );
+        }
+
+        patient.Medicines = await _patientService.MedicinesList();
+        return View( patient );
+    }
+
 }

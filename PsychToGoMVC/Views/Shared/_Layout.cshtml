@@ -31,12 +31,23 @@
                 {
                     <a class="btn btn-dark" asp-controller="Psychologist" asp-action="GetPsychologistPatients">Patients list</a>
                 }
+                @if(User.IsInRole("psychiatrist"))
+                {
+                    <a class="btn btn-dark" asp-controller="Psychiatrist" asp-action="GetPsychiatristPatients">Patients list</a>
 
+                }
+                @if (User.IsInRole( "patient" ))
+                {
+                    <a asp-controller="Patient" asp-action="PatientProfileInfo">Profile</a>
+                }
+
+                //for development purpose all have access to those methods
                 <a asp-controller="Medicine" asp-action="Index">Medicines</a>
                 <a asp-controller="Psychiatrist" asp-action="Index">Psychiatrists</a>
                 <a asp-controller="Psychologist" asp-action="Index">Psychologists</a>
+                
                 <a asp-controller="Auth" asp-action="Register">Register new user</a>
-                <a asp-controller="Patient" asp-action="PatientProfileInfo">Profile</a>
+                
 
                 <a class="btn btn-dark" asp-controller="Auth" asp-action="Logout">Logout</a>
             }
@@ -44,8 +55,6 @@
         </nav>
 
     </header>
-
-
 
     <main role="main">
 

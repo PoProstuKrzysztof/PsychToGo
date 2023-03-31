@@ -17,7 +17,7 @@ public class UserRepository : IUserRepository
     private readonly AppDbContext _context;
     private readonly UserManager<AppUser> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
-    private string secretKey;
+    private string? secretKey;
     private readonly IMapper _mapper;
 
     public UserRepository(AppDbContext context, IConfiguration configuration, UserManager<AppUser> userManager, IMapper mapper, RoleManager<IdentityRole> roleManager)
