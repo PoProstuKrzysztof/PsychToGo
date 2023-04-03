@@ -18,6 +18,7 @@ public class PsychiatristController : Controller
     private HttpClient client = new HttpClient();
 
     private readonly IHttpContextAccessor _httpContext;
+
     public PsychiatristController(IHttpContextAccessor httpContext)
     {
         client = new HttpClient();
@@ -94,7 +95,7 @@ public class PsychiatristController : Controller
     }
 
     [HttpPost]
-    [Authorize( Roles = "admin, psychiatrist")]
+    [Authorize( Roles = "admin, psychiatrist" )]
     [ValidateAntiForgeryToken]
     public IActionResult EditPsychiatrist(PsychiatristDTO psychiatrist)
     {
@@ -115,7 +116,7 @@ public class PsychiatristController : Controller
     {
         //Getting user e-mail here so It can locate his Id in database and view all his patients
 
-        var psychiatristAsuser = _httpContext.HttpContext.User?.FindFirst( ClaimTypes.Name );
+        Claim? psychiatristAsuser = _httpContext.HttpContext.User?.FindFirst( ClaimTypes.Name );
 
         if (psychiatristAsuser == null)
         {
@@ -135,8 +136,6 @@ public class PsychiatristController : Controller
             return View( ModelState );
         }
 
-
         return View( "PatientList", patients );
-
     }
 }

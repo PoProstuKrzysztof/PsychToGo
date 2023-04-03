@@ -82,13 +82,13 @@ public class PatientService : IPatientService
 
     public async Task<ICollection<PsychiatristDTO>> PsychiatristsList()
     {
-        var psychiatrists = await client.GetFromJsonAsync<ICollection<PsychiatristDTO>>( psychiatristAddress + $"/list" );
+        ICollection<PsychiatristDTO>? psychiatrists = await client.GetFromJsonAsync<ICollection<PsychiatristDTO>>( psychiatristAddress + $"/list" );
         return psychiatrists;
     }
 
     public async Task<ICollection<PsychologistDTO>> PsychologistsList()
     {
-        var psychologists = await client.GetFromJsonAsync<ICollection<PsychologistDTO>>( psychologistAddress + $"/list" );
+        ICollection<PsychologistDTO>? psychologists = await client.GetFromJsonAsync<ICollection<PsychologistDTO>>( psychologistAddress + $"/list" );
         return psychologists;
     }
 

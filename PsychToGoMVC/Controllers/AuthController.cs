@@ -33,14 +33,14 @@ public class AuthController : Controller
         if (response != string.Empty)
         {
             LoginResponseDTO model = JsonConvert.DeserializeObject<LoginResponseDTO>( response );
-            var handler = new JwtSecurityTokenHandler();
-            var jwt = handler.ReadJwtToken( model.Token );
+            JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
+            JwtSecurityToken jwt = handler.ReadJwtToken( model.Token );
             //Reading JWT token with claims
-            var identity = new ClaimsIdentity( CookieAuthenticationDefaults.AuthenticationScheme );
+            ClaimsIdentity identity = new ClaimsIdentity( CookieAuthenticationDefaults.AuthenticationScheme );
             identity.AddClaim( new Claim( ClaimTypes.Name, jwt.Claims.FirstOrDefault( u => u.Type == "unique_name" ).Value ) );
             identity.AddClaim( new Claim( ClaimTypes.Role, jwt.Claims.FirstOrDefault( u => u.Type == "role" ).Value ) );
 
-            var principal = new ClaimsPrincipal( identity );
+            ClaimsPrincipal principal = new ClaimsPrincipal( identity );
             await HttpContext.SignInAsync( CookieAuthenticationDefaults.AuthenticationScheme, principal );
 
             HttpContext.Session.SetString( "JWTToken", model.Token );
@@ -48,7 +48,7 @@ public class AuthController : Controller
         }
 
         ModelState.AddModelError( "", $"An error occurred while logging in" );
-       
+
         return RedirectToAction( "Index", "Home", ModelState );
     }
 
@@ -60,9 +60,9 @@ public class AuthController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Register( RegistrationRequestDTO obj)
+    public async Task<IActionResult> Register(RegistrationRequestDTO obj)
     {
-        var register = await _authService.RegisterAsync<HttpResponseMessage>( obj );
+        string register = await _authService.RegisterAsync<HttpResponseMessage>( obj );
         if (register != string.Empty)
         {
             if (obj.Role == "admin")
@@ -70,9 +70,9 @@ public class AuthController : Controller
                 return RedirectToAction( "Index", "Home" );
             }
 
-            return RedirectToAction( $"Create{obj.Role}MVC", $"{obj.Role}");
+            return RedirectToAction( $"Create{obj.Role}MVC", $"{obj.Role}" );
         }
-        ModelState.AddModelError( "","Error occured while registration." );
+        ModelState.AddModelError( "", "Error occured while registration." );
         return View( obj );
     }
 

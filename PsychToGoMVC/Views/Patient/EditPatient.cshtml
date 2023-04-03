@@ -1,8 +1,12 @@
-﻿@using PsychToGo.Models;
+﻿@using PsychToGo.DTO;
+@using PsychToGo.Models;
 @model PatientViewModel
 
 @{
     ViewData["Title"] = "Edit patient";
+    PsychiatristDTO psychiatrist = @Model.Psychiatrists.FirstOrDefault();
+    PsychologistDTO psychologist = @Model.Psychologists.FirstOrDefault();
+
 }
 
 <h1 class="text-primary text-center">Edit <b>@Model.Name @Model.LastName</b></h1>
@@ -37,12 +41,12 @@
         <input asp-for="Address" class="form-control" value="@Model.Address" />
         
 
-        <label asp-for="PsychologistId" class="control-label"></label>
-        <input asp-for="PsychologistId" class="form-control" value="@Model.PsychologistId" />
+        <label asp-for="Psychologists" class="control-label"></label>
+        <input asp-for="Psychologists" class="form-control" value="@psychologist.Name @psychologist.LastName" readonly />
 
                     
-        <label asp-for="PsychiatristId" class="control-label"></label>
-        <input asp-for="PsychiatristId" class="form-control" value="@Model.PsychiatristId" />
+        <label asp-for="Psychiatrists" class="control-label"></label>
+        <input asp-for="Psychiatrists" class="form-control" value="@psychiatrist.Name @psychiatrist.LastName" readonly/>
 
         <label class="text-danger">Just for display. You can't edit medicines.'</label>
         @Html.ListBoxFor(model => model.MedicinesId, new MultiSelectList(Model.Medicines, "Id","Name"))

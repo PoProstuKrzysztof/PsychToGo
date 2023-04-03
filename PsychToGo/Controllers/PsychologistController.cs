@@ -28,7 +28,7 @@ public class PsychologistController : Controller
     [ProducesResponseType( StatusCodes.Status404NotFound )]
     public async Task<IActionResult> GetAllPsychologists()
     {
-        var psychologists = await _psychologistRepository.GetPsychologists();
+        ICollection<Psychologist> psychologists = await _psychologistRepository.GetPsychologists();
         if (!ModelState.IsValid)
         {
             return BadRequest();
@@ -48,7 +48,7 @@ public class PsychologistController : Controller
             return NotFound();
         }
 
-        var psychologist = await _psychologistRepository.GetPsychologist( id );
+        Psychologist psychologist = await _psychologistRepository.GetPsychologist( id );
         if (psychologist == null)
         {
             return NotFound();
@@ -78,7 +78,7 @@ public class PsychologistController : Controller
             return BadRequest( ModelState );
         }
 
-        var psychologistPatients = await _psychologistRepository.GetPsychologistPatients( psychologistId );
+        ICollection<Patient> psychologistPatients = await _psychologistRepository.GetPsychologistPatients( psychologistId );
         if (psychologistPatients == null)
         {
             return NotFound();
@@ -108,7 +108,7 @@ public class PsychologistController : Controller
             return BadRequest( ModelState );
         }
 
-        var psychologist = _mapper.Map<Psychologist>( newPsychologist );
+        Psychologist psychologist = _mapper.Map<Psychologist>( newPsychologist );
         if (!await _psychologistRepository.CreatePsychologist( psychologist ))
         {
             ModelState.AddModelError( "Error", "Something went wrong while saving psychologist." );
@@ -145,7 +145,7 @@ public class PsychologistController : Controller
             return BadRequest( ModelState );
         }
 
-        var psychologist = _mapper.Map<Psychologist>( updatedPsychologist );
+        Psychologist psychologist = _mapper.Map<Psychologist>( updatedPsychologist );
 
         if (!await _psychologistRepository.UpdatePsychologist( psychologist ))
         {
@@ -168,7 +168,7 @@ public class PsychologistController : Controller
             return NotFound();
         }
 
-        var psychologistToDelete = await _psychologistRepository.GetPsychologist( psychologistId );
+        Psychologist psychologistToDelete = await _psychologistRepository.GetPsychologist( psychologistId );
         if (psychologistToDelete == null)
         {
             return NotFound();

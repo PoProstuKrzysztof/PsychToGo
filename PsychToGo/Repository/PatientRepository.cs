@@ -30,11 +30,41 @@ public class PatientRepository : IPatientRepository
         }
     }
 
+    public async Task<bool> AssignMedicine(int patientId, int medicineId)
+    {
+        try
+        {
+            Patient? patientEntity = await _context.Patients.FirstOrDefaultAsync( x => x.Id == patientId );
+
+            Medicine? medicineEntity = await _context.Medicines
+                .Where( x => x.Id == medicineId )
+                .FirstOrDefaultAsync();
+
+            PatientMedicine relationship = new PatientMedicine()
+            {
+                Medicine = medicineEntity,
+                Patient = patientEntity
+            };
+
+            await _context.AddAsync( relationship );
+
+            return await Save();
+        }
+        catch (DbUpdateException)
+        {
+            return false;
+        }
+        catch (Exception e)
+        {
+            throw;
+        }
+    }
+
     public async Task<bool> AssignPsychiatrist(int patientId, int psychiatristId)
     {
         try
         {
-            var patient = await _context.Patients.FirstOrDefaultAsync( x => x.Id == patientId );
+            Patient? patient = await _context.Patients.FirstOrDefaultAsync( x => x.Id == patientId );
             if (patient == null)
             {
                 return false;
@@ -54,16 +84,16 @@ public class PatientRepository : IPatientRepository
     {
         try
         {
-            var medicineEntity = await _context.Medicines
+            Medicine? medicineEntity = await _context.Medicines
                 .Where( x => x.Id == medicineId )
                 .FirstOrDefaultAsync();
 
-            var patientMedicine = new PatientMedicine()
+            PatientMedicine relationship = new PatientMedicine()
             {
                 Medicine = medicineEntity,
                 Patient = patient
             };
-            await _context.AddAsync( patientMedicine );
+            await _context.AddAsync( relationship );
 
             await _context.AddAsync( patient );
             return await Save();
@@ -87,30 +117,11 @@ public class PatientRepository : IPatientRepository
         }
     }
 
-    public async Task<bool> CheckDuplicate(PatientDTO patient)
-    {
-        try
-        {
-            var patients = await _context.Patients.ToListAsync();
-            var patientDuplicate = patients.Where( x => x.Email == patient.Email ).FirstOrDefault();
-            if (patientDuplicate != null)
-            {
-                return true;
-            }
-
-            return false;
-        }
-        catch (Exception)
-        {
-            throw;
-        }
-    }
-
     public async Task<bool> Save()
     {
         try
         {
-            var savedEntity = await _context.SaveChangesAsync();
+            int savedEntity = await _context.SaveChangesAsync();
             return savedEntity > 0 ? true : false;
         }
         catch (Exception)
@@ -124,7 +135,7 @@ public class PatientRepository : IPatientRepository
     {
         try
         {
-            var patient = await _context.Patients.Where( p => p.Id == id ).FirstOrDefaultAsync();
+            Patient? patient = await _context.Patients.Where( p => p.Id == id ).FirstOrDefaultAsync();
 
             return patient;
         }
@@ -138,7 +149,7 @@ public class PatientRepository : IPatientRepository
     {
         try
         {
-            var patient = await _context.Patients.Where( p => p.Name == name ).FirstOrDefaultAsync();
+            Patient? patient = await _context.Patients.Where( p => p.Name == name ).FirstOrDefaultAsync();
 
             return patient;
         }
@@ -152,16 +163,17 @@ public class PatientRepository : IPatientRepository
     {
         try
         {
-            var patient = await _context.Patients.Where( x => x.Id == id ).FirstOrDefaultAsync();
+            Patient? patient = await _context.Patients.Where( x => x.Id == id ).FirstOrDefaultAsync();
             if (patient == null)
             {
                 return null;
             }
 
-            var patientMedicines = await _context.PatientMedicines
+            List<Medicine> patientMedicines = await _context.PatientMedicines
                 .Where( x => x.PatientId == id )
                 .Select( x => x.Medicine )
                 .ToListAsync();
+
             if (patientMedicines == null)
             {
                 return null;
@@ -217,14 +229,14 @@ public class PatientRepository : IPatientRepository
     {
         try
         {
-            var patient = await GetPatientById( id );
+            Patient patient = await GetPatientById( id );
             if (!await PatientExists( patient.Id ))
             {
                 return null;
             }
 
-            var patientPsychologist = await _context.Psychologists
-                .Where(x => x.Id == patient.PsychologistId)
+            Psychologist? patientPsychologist = await _context.Psychologists
+                .Where( x => x.Id == patient.PsychologistId )
                 .FirstOrDefaultAsync();
 
             return patientPsychologist;
@@ -239,17 +251,35 @@ public class PatientRepository : IPatientRepository
     {
         try
         {
-            var patient = await GetPatientById( id );
+            Patient patient = await GetPatientById( id );
             if (!await PatientExists( patient.Id ))
             {
                 return null;
             }
-            var patientPsychiatrist = await _context.Psychiatrists
+            Psychiatrist? patientPsychiatrist = await _context.Psychiatrists
                 .Where( x => x.Id == patient.PsychiatristId )
                 .FirstOrDefaultAsync();
-            
 
             return patientPsychiatrist;
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
+    public async Task<bool> CheckDuplicate(PatientDTO patient)
+    {
+        try
+        {
+            List<Patient> patients = await _context.Patients.ToListAsync();
+            Patient? patientDuplicate = patients.Where( x => x.Email == patient.Email ).FirstOrDefault();
+            if (patientDuplicate != null)
+            {
+                return true;
+            }
+
+            return false;
         }
         catch (Exception)
         {

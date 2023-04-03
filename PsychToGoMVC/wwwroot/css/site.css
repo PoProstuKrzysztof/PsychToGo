@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@600&display=swap');
-
 @media (min-width: 480px) {
     html {
         font-size: 12px;
@@ -11,10 +9,11 @@
 }
 
 html {
-    font-size: 16px;
+    font-size: 17px;
     position: relative;
     min-height: 100%;
     background: #FFFFFF;
+
 }
 
 body::-webkit-scrollbar {
@@ -33,7 +32,8 @@ body::-webkit-scrollbar {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Lexend', sans-serif;
+    color: #FA5656;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .header {
@@ -41,6 +41,7 @@ body::-webkit-scrollbar {
     top: 0;
     left: 0;
     width: 100%;
+    min-height: 70px;
     padding: 10px 32.5%;
     background: #00274d;
     display: flex;
@@ -48,6 +49,8 @@ body::-webkit-scrollbar {
     align-items: center;
     z-index: 100;
 }
+
+
 
 .navbar a::after {
     content: '';
@@ -71,12 +74,15 @@ body::-webkit-scrollbar {
 .navbar a {
     position: relative;
     font-size: 16px;
-    color: #FFFFFF;
     text-decoration: none;
     font-weight: 900;
     margin-right: 12px;
     margin-bottom: 5px;
+    color:oldlace;
+    
 }
+
+
 
 .background {
     width: 100%;
@@ -158,13 +164,12 @@ body::-webkit-scrollbar {
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
     border-bottom-left-radius: 20px;
-    color: aliceblue;
 }
 
 .log-box .btn {
     width: 100%;
     height: 45px;
-    background: #64567a;
+    background: #c84444;
     color: white;
     border: none;
     outline: none;
@@ -180,8 +185,9 @@ body::-webkit-scrollbar {
 
 .form-box .input-box {
     width: 300px;
-    height: 90px;
+    height: 95px;
     border-bottom: 2px solid white;
+   
     margin: 30px 0;
 }
 
@@ -192,7 +198,7 @@ body::-webkit-scrollbar {
     border: none;
     outline: none;
     font-size: 16px;
-    color: black;
+    color: aliceblue;
     font-weight: 500;
     padding-right: 28px;
 }
@@ -222,8 +228,7 @@ body::-webkit-scrollbar {
 input[type=text], select, textarea {
     width: 100%;
     border-radius: 4px;
-    box-sizing: border-box;
-    margin-top: 6px;
+    box-sizing: border-box;    
     margin-bottom: 16px;
     resize: vertical;
 }
@@ -237,12 +242,6 @@ input[type=submit] {
     cursor: pointer;
 }
 
-form-group ul li{
-    font-weight:700;
+form-group ul li {
+    font-weight: 700;
 }
-
-input[type=submit]:hover {
-    background-color: #45a049;
-}
-
-    

@@ -20,10 +20,9 @@ public class UsersController : Controller
     [ProducesResponseType( StatusCodes.Status200OK )]
     public async Task<IActionResult> Login([FromBody] LoginRequestDTO loginRequest)
     {
-        var loginResponse = await _repository.Login( loginRequest );
+        LoginResponseDTO loginResponse = await _repository.Login( loginRequest );
         if (loginResponse.User == null || string.IsNullOrEmpty( loginResponse.Token ))
         {
-            
             return BadRequest( new { message = "Username or password is incorrect" } );
         }
         return Ok( loginResponse );
@@ -40,7 +39,7 @@ public class UsersController : Controller
             return BadRequest( new { message = "Username already exists" } );
         }
 
-        var user = await _repository.Register( registrationRequest );
+        UserDTO user = await _repository.Register( registrationRequest );
         if (user == null)
         {
             return BadRequest( new { message = "Error while registering" } );

@@ -27,12 +27,12 @@ public class PatientControllerTests
     public async Task PatientController_GetAllPatients_ReturnOK()
     {
         //Arrange
-        var patients = A.Fake<ICollection<PatientDTO>>();
-        var patientsList = A.Fake<List<PatientDTO>>();
+        ICollection<PatientDTO> patients = A.Fake<ICollection<PatientDTO>>();
+        List<PatientDTO> patientsList = A.Fake<List<PatientDTO>>();
         A.CallTo( () => _mapper.Map<List<PatientDTO>>( patients ) ).Returns( patientsList );
-        var controller = new PatientController( _patientRepository, _mapper, _psychiatristRepository, _psychologistRepository );
+        PatientController controller = new PatientController( _patientRepository, _mapper, _psychiatristRepository, _psychologistRepository );
         //Act
-        var result = await controller.GetAllPatients();
+        IActionResult result = await controller.GetAllPatients();
 
         //Assert
         result.Should().NotBeNull();

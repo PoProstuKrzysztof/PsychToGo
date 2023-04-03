@@ -20,7 +20,7 @@ public class MedicineRepository : IMedicineRepository
     {
         try
         {
-            var entitySaved = await _context.SaveChangesAsync();
+            int entitySaved = await _context.SaveChangesAsync();
             return entitySaved > 0 ? true : false;
         }
         catch (Exception)
@@ -33,8 +33,8 @@ public class MedicineRepository : IMedicineRepository
     {
         try
         {
-            var medicines = await _context.Medicines.ToListAsync();
-            var medicineDuplicate = medicines
+            List<Medicine> medicines = await _context.Medicines.ToListAsync();
+            Medicine? medicineDuplicate = medicines
                 .Where( x => x.Name.TrimEnd().ToLower() == medicine.Name.TrimEnd().ToLower() )
                 .FirstOrDefault();
 
@@ -82,7 +82,7 @@ public class MedicineRepository : IMedicineRepository
     {
         try
         {
-            var expireDate = await _context.Medicines
+            DateTime expireDate = await _context.Medicines
                 .Where( x => x.Id == medicineId )
                 .Select( x => x.ExpireDate )
                 .FirstOrDefaultAsync();
@@ -91,7 +91,7 @@ public class MedicineRepository : IMedicineRepository
                 return null;
             }
 
-            var expireDateFormat = expireDate.ToString( "yyyy-MM-dd" );
+            string expireDateFormat = expireDate.ToString( "yyyy-MM-dd" );
             return expireDateFormat;
         }
         catch (Exception)
@@ -131,7 +131,7 @@ public class MedicineRepository : IMedicineRepository
     {
         try
         {
-            var medicine = await _context.Medicines.Where( x => x.Id == id ).FirstOrDefaultAsync();
+            Medicine? medicine = await _context.Medicines.Where( x => x.Id == id ).FirstOrDefaultAsync();
             if (medicine == null)
             {
                 return false;

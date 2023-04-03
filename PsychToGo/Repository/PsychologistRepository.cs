@@ -21,7 +21,7 @@ public class PsychologistsRepository : IPsychologistRepository
     {
         try
         {
-            var savedEntity = await _context.SaveChangesAsync();
+            int savedEntity = await _context.SaveChangesAsync();
             return savedEntity > 0 ? true : false;
         }
         catch (Exception)
@@ -34,8 +34,8 @@ public class PsychologistsRepository : IPsychologistRepository
     {
         try
         {
-            var psychologists = await _context.Psychologists.ToListAsync();
-            var psychologistDuplicate = psychologists
+            List<Psychologist> psychologists = await _context.Psychologists.ToListAsync();
+            Psychologist? psychologistDuplicate = psychologists
                 .Where( x => x.Email == psychologist.Email )
                 .FirstOrDefault();
 
@@ -70,7 +70,7 @@ public class PsychologistsRepository : IPsychologistRepository
     {
         try
         {
-            var findPsychologist = await _context.Psychologists.Where( x => x.Id == id ).FirstOrDefaultAsync();
+            Psychologist? findPsychologist = await _context.Psychologists.Where( x => x.Id == id ).FirstOrDefaultAsync();
 
             return findPsychologist;
         }
@@ -84,7 +84,7 @@ public class PsychologistsRepository : IPsychologistRepository
     {
         try
         {
-            var psychologistPatients = await _context.Patients
+            List<Patient> psychologistPatients = await _context.Patients
                 .Where( x => x.PsychologistId == id )
                 .Select( p => p )
                 .ToListAsync();

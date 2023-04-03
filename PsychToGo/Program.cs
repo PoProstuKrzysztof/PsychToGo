@@ -11,7 +11,7 @@ using PsychToGo.Models.Identity;
 using PsychToGo.Repository;
 using System.Text;
 
-var builder = WebApplication.CreateBuilder( args );
+WebApplicationBuilder builder = WebApplication.CreateBuilder( args );
 
 //CACHING
 builder.Services.AddControllers( options =>
@@ -71,7 +71,7 @@ builder.Services.AddSwaggerGen( options =>
     } );
 } );
 
-var key = builder.Configuration.GetValue<string>( "ApiSettings:Secret" );
+string? key = builder.Configuration.GetValue<string>( "ApiSettings:Secret" );
 
 builder.Services.AddAuthentication( options =>
 {
@@ -94,21 +94,21 @@ builder.Services.AddAuthentication( options =>
 builder.Services.AddDbContext<AppDbContext>( options =>
 {
     options.UseSqlServer( builder.Configuration.GetConnectionString( "DefaultConnection" ),
-        o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery) );
+        o => o.UseQuerySplittingBehavior( QuerySplittingBehavior.SplitQuery ) );
 } );
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 if (args.Length == 1 && args[0].ToLower() == "seeddata")
     SeedData( app );
 
 void SeedData(IHost app)
 {
-    var scopedFactory = app.Services.GetService<IServiceScopeFactory>();
+    IServiceScopeFactory? scopedFactory = app.Services.GetService<IServiceScopeFactory>();
 
-    using (var scope = scopedFactory.CreateScope())
+    using (IServiceScope scope = scopedFactory.CreateScope())
     {
-        var service = scope.ServiceProvider.GetService<DataSeed>();
+        DataSeed? service = scope.ServiceProvider.GetService<DataSeed>();
         service.SeedDataContext();
     }
 }

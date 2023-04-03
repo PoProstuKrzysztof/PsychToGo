@@ -27,7 +27,7 @@ public class MedicineController : Controller
     [ProducesResponseType( StatusCodes.Status400BadRequest )]
     public async Task<IActionResult> GetMedicines()
     {
-        var medicines = await _medicineRepository.GetMedicines();
+        ICollection<Medicine> medicines = await _medicineRepository.GetMedicines();
         if (!ModelState.IsValid)
         {
             return BadRequest();
@@ -53,7 +53,7 @@ public class MedicineController : Controller
             return BadRequest( ModelState );
         }
 
-        var inStock = await _medicineRepository.GetMedicineInStock( medicineId );
+        int inStock = await _medicineRepository.GetMedicineInStock( medicineId );
 
         return Ok( inStock );
     }
@@ -74,7 +74,7 @@ public class MedicineController : Controller
             return BadRequest( ModelState );
         }
 
-        var medicineExpireDate = await _medicineRepository.GetMedicineExpireDate( medicineId );
+        string medicineExpireDate = await _medicineRepository.GetMedicineExpireDate( medicineId );
         if (medicineExpireDate == null)
         {
             return NotFound();
@@ -94,7 +94,7 @@ public class MedicineController : Controller
             return NotFound();
         }
 
-        var medicine = await _medicineRepository.GetMedicine( id );
+        Medicine medicine = await _medicineRepository.GetMedicine( id );
         if (medicine == null)
         {
             return NotFound();
@@ -128,7 +128,7 @@ public class MedicineController : Controller
             return BadRequest( ModelState );
         }
 
-        var medicine = _mapper.Map<Medicine>( newMedicine );
+        Medicine medicine = _mapper.Map<Medicine>( newMedicine );
         medicine.Category = await _medicineCategoryRepository.GetMedicineCategoryById( newMedicine.CategoryId );
         if (!await _medicineRepository.CreateMedicine( newMedicine.CategoryId, medicine ))
         {
@@ -165,7 +165,7 @@ public class MedicineController : Controller
             return BadRequest();
         }
 
-        var medicine = _mapper.Map<Medicine>( updatedMedicine );
+        Medicine medicine = _mapper.Map<Medicine>( updatedMedicine );
 
         medicine.Category = await _medicineCategoryRepository.GetMedicineCategoryById( updatedMedicine.CategoryId );
 
@@ -189,7 +189,7 @@ public class MedicineController : Controller
             return NotFound();
         }
 
-        var medicineToDelete = await _medicineRepository.GetMedicine( medicineId );
+        Medicine medicineToDelete = await _medicineRepository.GetMedicine( medicineId );
         if (medicineToDelete == null)
         {
             return NotFound();

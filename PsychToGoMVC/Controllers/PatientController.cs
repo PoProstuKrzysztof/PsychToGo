@@ -63,7 +63,7 @@ public class PatientController : Controller
     [HttpGet]
     public async Task<IActionResult> PatientProfileInfo()
     {
-        var patientAsUser = _httpContext.HttpContext.User?.FindFirst( ClaimTypes.Name );
+        Claim? patientAsUser = _httpContext.HttpContext.User?.FindFirst( ClaimTypes.Name );
 
         if (patientAsUser == null)
         {
@@ -84,9 +84,9 @@ public class PatientController : Controller
         patientParsedToPatientViewModel.Psychiatrists = new List<PsychiatristDTO>() { patientPsychiatrist };
         patientParsedToPatientViewModel.Psychologists = new List<PsychologistDTO>() {patientPsychologist };
 
-        var medicines = await client.GetAsync( client.BaseAddress + $"/{patientId}/medicines" );
-        var data = medicines.Content.ReadAsStringAsync().Result;
-        patientParsedToPatientViewModel.Medicines = JsonConvert.DeserializeObject<List<MedicineDTO>>( medicines.Content.ReadAsStringAsync().Result );
+        HttpResponseMessage medicines = await client.GetAsync( client.BaseAddress + $"/{patientId}/medicines" );
+        string medicinesData = medicines.Content.ReadAsStringAsync().Result;
+        patientParsedToPatientViewModel.Medicines = JsonConvert.DeserializeObject<List<MedicineDTO>>( medicinesData );
 
         return View( patientParsedToPatientViewModel );
     }
@@ -122,7 +122,7 @@ public class PatientController : Controller
             return RedirectToAction( "Index" );
         }
 
-        ModelState.AddModelError( "", $"An error occurred when creating patient" );
+        ModelState.AddModelError( "", $"An error occurred while creating patient" );
         return RedirectToAction( "CreatePatientMVC" );
     }
 
@@ -149,9 +149,20 @@ public class PatientController : Controller
         }
 
         //populate patient medicine list with medicines
-        var medicines = await client.GetAsync( client.BaseAddress + $"/{id}/medicines" );
-        var data = medicines.Content.ReadAsStringAsync().Result;
-        editedPatient.Medicines = JsonConvert.DeserializeObject<List<MedicineDTO>>( medicines.Content.ReadAsStringAsync().Result );
+        HttpResponseMessage medicines = await client.GetAsync( client.BaseAddress + $"/{id}/medicines" );
+        string medicinesContent = medicines.Content.ReadAsStringAsync().Result;        
+        editedPatient.Medicines = JsonConvert.DeserializeObject<List<MedicineDTO>>( medicinesContent );
+        
+        //get patient psychologist
+        HttpResponseMessage psychologist = await client.GetAsync( client.BaseAddress + $"/{id}/psychologist" );
+        string psychologistContent = psychologist.Content.ReadAsStringAsync().Result;
+        editedPatient.Psychologists = JsonConvert.DeserializeObject<List<PsychologistDTO>>( psychologistContent );
+        
+        //get patient psychiatrist
+        HttpResponseMessage psychiatrist = await client.GetAsync( client.BaseAddress + $"/{id}/psychologist" );
+        string psychiatristContent = psychiatrist.Content.ReadAsStringAsync().Result;
+        editedPatient.Psychiatrists = JsonConvert.DeserializeObject<List<PsychiatristDTO>>( psychiatristContent );
+
         return View( editedPatient );
     }
 
@@ -180,7 +191,7 @@ public class PatientController : Controller
         {
             return RedirectToAction( "Index" );
         }
-        ModelState.AddModelError( "", $"An error occurred when editing patient" );
+        ModelState.AddModelError( "", $"An error occurred while editing patient" );
         return View( pvm );
     }
 
@@ -214,12 +225,12 @@ public class PatientController : Controller
         {
             return RedirectToAction( "GetPsychologistPatients", "Psychologist" );
         }
-        ModelState.AddModelError( "", $"An error occurred when assignit psychiatrist to patient" );
+        ModelState.AddModelError( "", $"An error occurred when assigning psychiatrist to patient" );
         return View( patient );
     }
 
     [HttpGet]
-    public async Task<IActionResult> AssignMedicine([FromRoute] int id)
+    public async Task<IActionResult> AssignMedicineMVC([FromRoute] int id)
     {
         PatientViewModel? patient = await _patientService.CreateParsedPatientInstance( id );
         if (patient == null)
@@ -234,7 +245,7 @@ public class PatientController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> AssignMedicine(PatientViewModel patient)
+    public async Task<IActionResult> AssignMedicineMVC(PatientViewModel patient)
     {
         Patient? assignedPatient = await _patientService.CreatePatientInstance( patient );
 
@@ -242,13 +253,13 @@ public class PatientController : Controller
 
         StringContent content = new StringContent( data, Encoding.UTF8, "application/json" );
         HttpResponseMessage response = client.
-            PutAsync( client.BaseAddress + $"/AssignPsychiatrist?patientId={assignedPatient.Id}&psychiatristId={assignedPatient.PsychiatristId}", content ).Result;
+            PutAsync( client.BaseAddress + $"/AssignMedicine?patientId={assignedPatient.Id}&medicineId={patient.MedicinesId.FirstOrDefault()}", content ).Result;
 
         if (response.IsSuccessStatusCode)
         {
             return RedirectToAction( "GetPsychiatristPatients", "Psychiatrist" );
         }
-        ModelState.AddModelError( "", $"An error occurred when assignit psychiatrist to patient" );
+        ModelState.AddModelError( "", $"An error occurred when assigning medicine to patient" );
         return View( patient );
     }
 

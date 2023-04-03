@@ -31,7 +31,7 @@ public class UserRepository : IUserRepository
 
     public bool IsUniqueUser(string username)
     {
-        var user = _context.ApplicationUsers.FirstOrDefault( x => x.UserName == username );
+        AppUser? user = _context.ApplicationUsers.FirstOrDefault( x => x.UserName == username );
         if (user == null)
         {
             return true;
@@ -47,7 +47,7 @@ public class UserRepository : IUserRepository
     /// <returns></returns>
     public async Task<LoginResponseDTO> Login(LoginRequestDTO loginRequest)
     {
-        var user = _context.ApplicationUsers
+        AppUser? user = _context.ApplicationUsers
             .FirstOrDefault( x => x.UserName.ToLower() == loginRequest.UserName.ToLower() );
 
         bool isValidPassword = await _userManager.CheckPasswordAsync( user, loginRequest.Password );
@@ -70,11 +70,11 @@ public class UserRepository : IUserRepository
         }
 
         //generating JWT token
-        var roles = await _userManager.GetRolesAsync( user );
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes( secretKey );
+        IList<string> roles = await _userManager.GetRolesAsync( user );
+        JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+        byte[] key = Encoding.ASCII.GetBytes( secretKey );
 
-        var tokenDescriptor = new SecurityTokenDescriptor()
+        SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor()
         {
             Subject = new ClaimsIdentity( new Claim[]
             {
@@ -86,7 +86,7 @@ public class UserRepository : IUserRepository
             SigningCredentials = new( new SymmetricSecurityKey( key ), SecurityAlgorithms.HmacSha256Signature )
         };
 
-        var token = tokenHandler.CreateToken( tokenDescriptor );
+        SecurityToken token = tokenHandler.CreateToken( tokenDescriptor );
         LoginResponseDTO loginResponse = new LoginResponseDTO()
         {
             Token = tokenHandler.WriteToken( token ),
@@ -102,7 +102,7 @@ public class UserRepository : IUserRepository
     /// <param name="registrationRequest"></param>
     /// <returns></returns>
     [ValidateAntiForgeryToken]
-    public async Task<UserDTO> Register( RegistrationRequestDTO registrationRequest)
+    public async Task<UserDTO> Register(RegistrationRequestDTO registrationRequest)
     {
         AppUser user = new AppUser()
         {
@@ -116,12 +116,12 @@ public class UserRepository : IUserRepository
         try
         {
             //For development, change role name every time if you want to assign user to specific role
-            var result = await _userManager.CreateAsync( user, registrationRequest.Password );
+            IdentityResult result = await _userManager.CreateAsync( user, registrationRequest.Password );
             if (result.Succeeded)
             {
                 await _userManager.AddToRoleAsync( user, registrationRequest.Role );
 
-                var userToReturn = _context.ApplicationUsers.FirstOrDefault( u => u.UserName == registrationRequest.UserName );
+                AppUser? userToReturn = _context.ApplicationUsers.FirstOrDefault( u => u.UserName == registrationRequest.UserName );
                 return _mapper.Map<UserDTO>( userToReturn );
             }
         }

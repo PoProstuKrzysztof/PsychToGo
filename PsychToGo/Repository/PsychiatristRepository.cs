@@ -21,7 +21,7 @@ public class PsychiatristRepository : IPsychiatristRepository
     {
         try
         {
-            var savedEntity = await _context.SaveChangesAsync();
+            int savedEntity = await _context.SaveChangesAsync();
             return savedEntity > 0 ? true : false;
         }
         catch (Exception)
@@ -34,8 +34,8 @@ public class PsychiatristRepository : IPsychiatristRepository
     {
         try
         {
-            var psychiatrists = await _context.Psychiatrists.ToListAsync();
-            var psychiatristDuplicate = psychiatrists
+            List<Psychiatrist> psychiatrists = await _context.Psychiatrists.ToListAsync();
+            Psychiatrist? psychiatristDuplicate = psychiatrists
                 .Where( x => x.Email == psychiatrist.Email )
                 .FirstOrDefault();
 
@@ -70,7 +70,7 @@ public class PsychiatristRepository : IPsychiatristRepository
     {
         try
         {
-            var findPsychiatrist = await _context.Psychiatrists.Where( x => x.Id == id ).FirstOrDefaultAsync();
+            Psychiatrist? findPsychiatrist = await _context.Psychiatrists.Where( x => x.Id == id ).FirstOrDefaultAsync();
             if (findPsychiatrist == null)
             {
                 return null;
@@ -88,7 +88,7 @@ public class PsychiatristRepository : IPsychiatristRepository
     {
         try
         {
-            var psychiatristPatients = await _context.Patients
+            List<Patient> psychiatristPatients = await _context.Patients
                 .Where( x => x.PsychiatristId == id )
                 .Select( p => p )
                 .ToListAsync();

@@ -18,7 +18,7 @@ public class DataSeed
     {
         if (!_context.Psychiatrists.Any())
         {
-            var psychiatrist = new List<Psychiatrist>()
+            List<Psychiatrist> psychiatrist = new List<Psychiatrist>()
             {
                 new Psychiatrist()
                 {
@@ -45,7 +45,7 @@ public class DataSeed
 
         if (!_context.Psychologists.Any())
         {
-            var psychologists = new List<Psychologist>()
+            List<Psychologist> psychologists = new List<Psychologist>()
             {
                 new Psychologist()
 
@@ -75,7 +75,7 @@ public class DataSeed
 
         if (!_context.UserRoles.Any())
         {
-            var roles = new List<IdentityRole>()
+            List<IdentityRole> roles = new List<IdentityRole>()
             {
                 new IdentityRole()
                 {
@@ -104,7 +104,7 @@ public class DataSeed
 
         if (!_context.ApplicationUsers.Any())
         {
-            var appUsers = new List<AppUser>()
+            List<AppUser> appUsers = new List<AppUser>()
             {
                 new AppUser()
                 {
@@ -118,7 +118,7 @@ public class DataSeed
             PasswordHash = HashPassword("Admin123")
                 }
             };
-            foreach (var user in appUsers)
+            foreach (AppUser user in appUsers)
             {
                 _context.Users.Add( user );
             }
@@ -129,7 +129,7 @@ public class DataSeed
         }
         if (!_context.Patients.Any())
         {
-            var patients = new List<Patient>()
+            List<Patient> patients = new List<Patient>()
             {
                 new Patient()
                 {
@@ -160,7 +160,7 @@ public class DataSeed
 
         if (!_context.Medicines.Any())
         {
-            var medicines = new List<Medicine>()
+            List<Medicine> medicines = new List<Medicine>()
             {
                 new Medicine()
                 {
@@ -264,7 +264,7 @@ public class DataSeed
     /// <returns></returns>
     private string HashPassword(string password)
     {
-        var passwordHasher = new PasswordHasher<AppUser>();
+        PasswordHasher<AppUser> passwordHasher = new PasswordHasher<AppUser>();
         return passwordHasher.HashPassword( null, password );
     }
 }

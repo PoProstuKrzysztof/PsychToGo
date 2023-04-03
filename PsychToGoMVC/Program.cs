@@ -4,8 +4,8 @@ using PsychToGo.Data;
 using PsychToGoMVC.Services;
 using PsychToGoMVC.Services.Interfaces;
 
-var builder = WebApplication.CreateBuilder( args );
-var connectionString = builder.Configuration.GetConnectionString( "AppDbContextConnection" ) ?? throw new InvalidOperationException( "Connection string 'AppDbContextConnection' not found." );
+WebApplicationBuilder builder = WebApplication.CreateBuilder( args );
+string connectionString = builder.Configuration.GetConnectionString( "AppDbContextConnection" ) ?? throw new InvalidOperationException( "Connection string 'AppDbContextConnection' not found." );
 
 builder.Services.AddDbContext<AppDbContext>( options => options.UseSqlServer( connectionString ) );
 
@@ -35,7 +35,7 @@ builder.Services.AddSession( options =>
     options.Cookie.IsEssential = true;
 } );
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

@@ -21,8 +21,8 @@ public class MedicineCategoryRepository : IMedicineCategoryRepository
     {
         try
         {
-            var medicines = await _context.MedicinesCategories.ToListAsync();
-            var medicineCategoryDuplicate = medicines
+            List<MedicineCategory> medicines = await _context.MedicinesCategories.ToListAsync();
+            MedicineCategory? medicineCategoryDuplicate = medicines
                 .Where( x => x.Name.TrimEnd().ToLower() == medicineCategory.Name.TrimEnd().ToLower() )
                 .FirstOrDefault();
 
@@ -56,7 +56,7 @@ public class MedicineCategoryRepository : IMedicineCategoryRepository
     {
         try
         {
-            var savedEntity = await _context.SaveChangesAsync();
+            int savedEntity = await _context.SaveChangesAsync();
             return savedEntity > 0 ? true : false;
         }
         catch (Exception)
@@ -70,13 +70,13 @@ public class MedicineCategoryRepository : IMedicineCategoryRepository
     {
         try
         {
-            var category = await _context.MedicinesCategories.Where( s => s.Name == categoryName.ToLower() ).FirstOrDefaultAsync();
+            MedicineCategory? category = await _context.MedicinesCategories.Where( s => s.Name == categoryName.ToLower() ).FirstOrDefaultAsync();
             if (category == null)
             {
                 return null;
             }
 
-            var medicines = await _context.Medicines.Where( x => x.Category == category ).Select( m => m ).ToListAsync();
+            List<Medicine> medicines = await _context.Medicines.Where( x => x.Category == category ).Select( m => m ).ToListAsync();
             if (medicines == null)
             {
                 return null;

@@ -31,8 +31,7 @@ public interface IPatientRepository
 
     //Put
     Task<bool> UpdatePatient(Patient patient);
-
-    //Task<bool> UpdatePatientNoPsychiatrist(int psychologistId, Patient patient);
+    Task<bool> AssignMedicine(int patientId, int medicineId);
     Task<bool> AssignPsychiatrist(int patientId, int psychiatristId);
 
     //Delete

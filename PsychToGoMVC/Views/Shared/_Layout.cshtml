@@ -16,24 +16,27 @@
 <body>
 
     <header class="header">
+        
         <nav class="navbar">
-
+            
+            <a asp-controller="Home"  asp-action="Index">PsychToGo</a>
+            
             <!--For now all Register new user and other functionalities are like create new 
                 Patient are avaliable for all logged in users
             -->
 
-            <a asp-controller="Home" asp-action="Index">PsychToGo</a>
+            
             @if (httpAccessor.HttpContext.Session.GetString( "JWTToken" ) != null &&
             httpAccessor.HttpContext.Session.GetString( "JWTToken" ).ToString().Length > 0)
             {
                 <a asp-controller="Patient" asp-action="Index">Patients</a>
                 @if (User.IsInRole( "psychologist" ))
                 {
-                    <a class="btn btn-dark" asp-controller="Psychologist" asp-action="GetPsychologistPatients">Patients list</a>
+                    <a  asp-controller="Psychologist" asp-action="GetPsychologistPatients">Patients list</a>
                 }
                 @if(User.IsInRole("psychiatrist"))
                 {
-                    <a class="btn btn-dark" asp-controller="Psychiatrist" asp-action="GetPsychiatristPatients">Patients list</a>
+                    <a asp-controller="Psychiatrist" asp-action="GetPsychiatristPatients">Patients list</a>
 
                 }
                 @if (User.IsInRole( "patient" ))
