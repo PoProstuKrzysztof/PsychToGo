@@ -16,8 +16,6 @@ public class PatientController : Controller
     /// </summary>
     private readonly IPatientService _patientService;
 
-    private readonly IDataParsing<List<PatientViewModel>> _patientList;
-
     private Uri baseAdress = new Uri( "https://localhost:7291/api/Patient" );
     private HttpClient client = new HttpClient();
 

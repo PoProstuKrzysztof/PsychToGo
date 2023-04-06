@@ -6,13 +6,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>67f54a2a-c994-44a2-8e06-d35c8b2a7904</UserSecretsId>
     <PackageIcon>psychologist.png</PackageIcon>
+    <ApplicationIcon>emergency_medicine_clinic_pharmacy_heh_cross_sign_hospital_icon_210687.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="C:\Users\mrter\Downloads\psychologist.png">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
+    <Content Include="emergency_medicine_clinic_pharmacy_heh_cross_sign_hospital_icon_210687.ico" />
   </ItemGroup>
 
   <ItemGroup>
