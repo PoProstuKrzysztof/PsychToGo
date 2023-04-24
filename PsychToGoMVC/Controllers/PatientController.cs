@@ -16,36 +16,33 @@ public class PatientController : Controller
     /// </summary>
     private readonly IPatientService _patientService;
 
-    private Uri baseAdress = new Uri( "https://localhost:7291/api/Patient" );
-    private HttpClient client = new HttpClient();
+    //private Uri baseAdress = new Uri( "https://localhost:7291/api/Patient" );
+    private readonly HttpClient _client;
 
     private readonly IHttpContextAccessor _httpContext;
 
-    public PatientController(IPatientService patientService, IHttpContextAccessor httpContext)
+    public PatientController(IPatientService patientService, IHttpContextAccessor httpContext,
+        IHttpClientFactory httpClientFactory)
     {
         _patientService = patientService;
-        client = new HttpClient();
-        client.BaseAddress = baseAdress;
+        _client = httpClientFactory.CreateClient( "IPatientService" );
+        //_client.BaseAddress = baseAdress;
         _httpContext = httpContext;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        List<PatientViewModel> patients = new List<PatientViewModel>();
-        HttpResponseMessage response = client.GetAsync( client.BaseAddress + "/patients" ).Result;
+        HttpResponseMessage response = _client.GetAsync( requestUri: _client.BaseAddress + "/patients" ).Result;
         if (response.IsSuccessStatusCode)
         {
-            //var list = _patientList.DeserializeType( response );
-            string data = response.Content.ReadAsStringAsync().Result;
-            patients = JsonConvert.DeserializeObject<List<PatientViewModel>>( data );
+            var data = await response.Content.ReadFromJsonAsync<List<PatientViewModel>>();
+            return View( data ?? new List<PatientViewModel>() );
         }
         else
         {
-            ModelState.AddModelError( "", $"There are not patients" );
-            patients = Enumerable.Empty<PatientViewModel>().ToList();
+            ModelState.AddModelError( "", $"There are no patients" );
+            return View( Enumerable.Empty<PatientViewModel>() );
         }
-
-        return View( patients );
     }
 
     [HttpGet]
@@ -72,20 +69,20 @@ public class PatientController : Controller
         }
 
         //Getting patient, his psychologist and psychiatrist
-        List<PatientDTO> patients = await client.GetFromJsonAsync<List<PatientDTO>>( client.BaseAddress + "/patients" );
+        List<PatientDTO> patients = await _client.GetFromJsonAsync<List<PatientDTO>>( _client.BaseAddress + "/patients" );
 
         int patientId = patients.Where( x => x.Email.ToLower() == patientAsUser.Value.ToLower() )
             .Select( x => x.Id ).FirstOrDefault();
 
         //Finding patient psychologist and psychiatrist
-        PsychologistDTO patientPsychologist = await client.GetFromJsonAsync<PsychologistDTO>( client.BaseAddress + $"/{patientId}/psychologist" );
-        PsychiatristDTO patientPsychiatrist = await client.GetFromJsonAsync<PsychiatristDTO>( client.BaseAddress + $"/{patientId}/psychiatrist" );
+        PsychologistDTO patientPsychologist = await _client.GetFromJsonAsync<PsychologistDTO>( _client.BaseAddress + $"/{patientId}/psychologist" );
+        PsychiatristDTO patientPsychiatrist = await _client.GetFromJsonAsync<PsychiatristDTO>( _client.BaseAddress + $"/{patientId}/psychiatrist" );
 
         PatientViewModel patientParsedToPatientViewModel = await _patientService.CreateParsedPatientInstance( patientId );
         patientParsedToPatientViewModel.Psychiatrists = new List<PsychiatristDTO>() { patientPsychiatrist };
         patientParsedToPatientViewModel.Psychologists = new List<PsychologistDTO>() { patientPsychologist };
 
-        HttpResponseMessage medicines = await client.GetAsync( client.BaseAddress + $"/{patientId}/medicines" );
+        HttpResponseMessage medicines = await _client.GetAsync( _client.BaseAddress + $"/{patientId}/medicines" );
         string medicinesData = medicines.Content.ReadAsStringAsync().Result;
         patientParsedToPatientViewModel.Medicines = JsonConvert.DeserializeObject<List<MedicineDTO>>( medicinesData );
 
@@ -108,14 +105,14 @@ public class PatientController : Controller
         if (pvm.PsychiatristId == null)
         {
             //if not psychiatrist is assigned
-            response = client.
-                  PostAsync( client.BaseAddress + $"/createNOPSYCH?psychologistId={pvm.PsychologistId}", content ).Result;
+            response = _client.
+                  PostAsync( _client.BaseAddress + $"/createNOPSYCH?psychologistId={pvm.PsychologistId}", content ).Result;
         }
         else
         {
             //if psychiatrist is assigned
-            response = client.
-                PostAsync( client.BaseAddress + $"/create?psychologistId={pvm.PsychologistId}&psychiatristId={pvm.PsychiatristId}" +
+            response = _client.
+                PostAsync( _client.BaseAddress + $"/create?psychologistId={pvm.PsychologistId}&psychiatristId={pvm.PsychiatristId}" +
                 $"&medicineId={pvm.MedicinesId.First()}", content ).Result;
         }
 
@@ -131,7 +128,7 @@ public class PatientController : Controller
     [HttpGet]
     public IActionResult DeletePatient([FromRoute] int id)
     {
-        HttpResponseMessage response = client.DeleteAsync( client.BaseAddress + $"/{id}" ).Result;
+        HttpResponseMessage response = _client.DeleteAsync( _client.BaseAddress + $"/{id}" ).Result;
         if (response.IsSuccessStatusCode)
         {
             return RedirectToAction( "Index" );
@@ -151,13 +148,13 @@ public class PatientController : Controller
         }
 
         //populate patient medicine list with medicines
-        HttpResponseMessage medicines = await client.GetAsync( client.BaseAddress + $"/{id}/medicines" );
+        HttpResponseMessage medicines = await _client.GetAsync( _client.BaseAddress + $"/{id}/medicines" );
         string medicinesContent = medicines.Content.ReadAsStringAsync().Result;
         editedPatient.Medicines = JsonConvert.DeserializeObject<List<MedicineDTO>>( medicinesContent );
 
         //Finding patient psychologist and psychiatrist
-        PsychologistDTO? patientPsychologist = await client.GetFromJsonAsync<PsychologistDTO>( client.BaseAddress + $"/{id}/psychologist" );
-        PsychiatristDTO? patientPsychiatrist = await client.GetFromJsonAsync<PsychiatristDTO>( client.BaseAddress + $"/{id}/psychiatrist" );
+        PsychologistDTO? patientPsychologist = await _client.GetFromJsonAsync<PsychologistDTO>( _client.BaseAddress + $"/{id}/psychologist" );
+        PsychiatristDTO? patientPsychiatrist = await _client.GetFromJsonAsync<PsychiatristDTO>( _client.BaseAddress + $"/{id}/psychiatrist" );
 
         editedPatient.Psychiatrists = new List<PsychiatristDTO>() { patientPsychiatrist };
         editedPatient.Psychologists = new List<PsychologistDTO>() { patientPsychologist };
@@ -177,13 +174,13 @@ public class PatientController : Controller
         StringContent content = new StringContent( data, Encoding.UTF8, "application/json" );
         if (pvm.PsychiatristId == null)
         {
-            response = client.
-                 PutAsync( client.BaseAddress + $"/UpdateNoPsychiatrist/{pvm.Id}?psychologistId={pvm.PsychologistId}", content ).Result;
+            response = _client.
+                 PutAsync( _client.BaseAddress + $"/UpdateNoPsychiatrist/{pvm.Id}?psychologistId={pvm.PsychologistId}", content ).Result;
         }
         else
         {
-            response = client.
-                PutAsync( client.BaseAddress + $"/{pvm.Id}?psychologistId={pvm.PsychologistId}&psychiatristId={pvm.PsychiatristId}" +
+            response = _client.
+                PutAsync( _client.BaseAddress + $"/{pvm.Id}?psychologistId={pvm.PsychologistId}&psychiatristId={pvm.PsychiatristId}" +
                 $"&medicineId={pvm.MedicinesId}", content ).Result;
         }
 
@@ -218,8 +215,8 @@ public class PatientController : Controller
         string data = JsonConvert.SerializeObject( assignedPatient );
 
         StringContent content = new StringContent( data, Encoding.UTF8, "application/json" );
-        HttpResponseMessage response = client.
-            PutAsync( client.BaseAddress + $"/AssignPsychiatrist?patientId={assignedPatient.Id}" +
+        HttpResponseMessage response = _client.
+            PutAsync( _client.BaseAddress + $"/AssignPsychiatrist?patientId={assignedPatient.Id}" +
             $"&psychiatristId={assignedPatient.PsychiatristId}", content ).Result;
 
         if (response.IsSuccessStatusCode)
@@ -253,8 +250,8 @@ public class PatientController : Controller
         string data = JsonConvert.SerializeObject( assignedPatient );
 
         StringContent content = new StringContent( data, Encoding.UTF8, "application/json" );
-        HttpResponseMessage response = client.
-            PutAsync( client.BaseAddress + $"/AssignMedicine?patientId={assignedPatient.Id}" +
+        HttpResponseMessage response = _client.
+            PutAsync( _client.BaseAddress + $"/AssignMedicine?patientId={assignedPatient.Id}" +
             $"&medicineId={patient.MedicinesId.FirstOrDefault()}", content ).Result;
 
         if (response.IsSuccessStatusCode)

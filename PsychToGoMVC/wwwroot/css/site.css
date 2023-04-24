@@ -13,7 +13,6 @@ html {
     position: relative;
     min-height: 100%;
     background: #FFFFFF;
-
 }
 
 body::-webkit-scrollbar {
@@ -32,7 +31,7 @@ body::-webkit-scrollbar {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    color: #FA5656;
+    color: #feb05b;
     font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -49,8 +48,6 @@ body::-webkit-scrollbar {
     align-items: center;
     z-index: 100;
 }
-
-
 
 .navbar a::after {
     content: '';
@@ -78,11 +75,8 @@ body::-webkit-scrollbar {
     font-weight: 900;
     margin-right: 12px;
     margin-bottom: 5px;
-    color:oldlace;
-    
+    color: oldlace;
 }
-
-
 
 .background {
     width: 100%;
@@ -187,7 +181,6 @@ body::-webkit-scrollbar {
     width: 300px;
     height: 95px;
     border-bottom: 2px solid white;
-   
     margin: 30px 0;
 }
 
@@ -228,7 +221,7 @@ body::-webkit-scrollbar {
 input[type=text], select, textarea {
     width: 100%;
     border-radius: 4px;
-    box-sizing: border-box;    
+    box-sizing: border-box;
     margin-bottom: 16px;
     resize: vertical;
 }

@@ -24,7 +24,7 @@
                     @Html.DisplayNameFor(model => model.Name)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.LastName)
+                    Last name
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Email)
@@ -35,7 +35,7 @@
                 @if (User.IsInRole( "admin" ) || User.IsInRole( "psychologist" ) || User.IsInRole( "psychiatrist" ))
                 {
                     <th>
-                        @Html.DisplayNameFor(model => model.DateOfBirth)
+                        Date of birth
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.Address)

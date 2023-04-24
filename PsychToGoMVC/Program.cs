@@ -5,7 +5,8 @@ using PsychToGoMVC.Services;
 using PsychToGoMVC.Services.Interfaces;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder( args );
-string connectionString = builder.Configuration.GetConnectionString( "AppDbContextConnection" ) ?? throw new InvalidOperationException( "Connection string 'AppDbContextConnection' not found." );
+string connectionString = builder.Configuration.GetConnectionString( "AppDbContextConnection" )
+    ?? throw new InvalidOperationException( "Connection string 'AppDbContextConnection' not found." );
 
 builder.Services.AddDbContext<AppDbContext>( options => options.UseSqlServer( connectionString ) );
 
@@ -14,6 +15,11 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IPatientService, PatientService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+builder.Services.AddHttpClient<IPatientService, PatientService>( client =>
+{
+    client.BaseAddress = new Uri( builder.Configuration.GetValue<string>( "ApiBaseUrls:PatientsApi" ) );
+} );
 
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddAuthentication( CookieAuthenticationDefaults.AuthenticationScheme )
