@@ -13,18 +13,15 @@ public class PsychiatristController : Controller
     /// <summary>
     /// Base address to connect with api
     /// </summary>
-    private Uri baseAdress = new Uri( "https://localhost:7291/api/Psychiatrist" );
-
-    private HttpClient client = new HttpClient();
+    ///
+    private readonly HttpClient client = new HttpClient
+    {
+        BaseAddress = new Uri( "https://localhost:7291/api/Psychiatrist" )
+    };
 
     private readonly IHttpContextAccessor _httpContext;
 
-    public PsychiatristController(IHttpContextAccessor httpContext)
-    {
-        client = new HttpClient();
-        client.BaseAddress = baseAdress;
-        _httpContext = httpContext;
-    }
+    public PsychiatristController(IHttpContextAccessor httpContext) => _httpContext = httpContext;
 
     public IActionResult Index()
     {

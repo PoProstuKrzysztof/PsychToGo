@@ -10,20 +10,20 @@ public class MedicineController : Controller
     /// <summary>
     /// Base address to connect with api
     /// </summary>
-    private Uri baseAdress = new Uri( "https://localhost:7291/api/Medicine" );
-
-    private HttpClient client = new HttpClient();
+    ///
+    private readonly HttpClient _client = new HttpClient
+    {
+        BaseAddress = new Uri( "https://localhost:7291/api/Medicine" )
+    };
 
     public MedicineController()
     {
-        client = new HttpClient();
-        client.BaseAddress = baseAdress;
     }
 
     public IActionResult Index()
     {
         List<MedicineDTO> medicines = new List<MedicineDTO>();
-        HttpResponseMessage response = client.GetAsync( client.BaseAddress + "/list" ).Result;
+        HttpResponseMessage response = _client.GetAsync( _client.BaseAddress + "/list" ).Result;
         if (response.IsSuccessStatusCode)
         {
             string data = response.Content.ReadAsStringAsync().Result;
@@ -38,7 +38,6 @@ public class MedicineController : Controller
         return View( medicines );
     }
 
-    
     [HttpGet]
     public IActionResult CreateMedicineMVC()
     {
@@ -50,7 +49,7 @@ public class MedicineController : Controller
     {
         string data = JsonConvert.SerializeObject( mdo );
         StringContent content = new StringContent( data, Encoding.UTF8, "application/json" );
-        HttpResponseMessage response = client.PostAsync( client.BaseAddress + $"/create", content ).Result;
+        HttpResponseMessage response = _client.PostAsync( _client.BaseAddress + $"/create", content ).Result;
 
         if (response.IsSuccessStatusCode)
         {
@@ -63,7 +62,7 @@ public class MedicineController : Controller
     [HttpGet]
     public IActionResult DeleteMedicine([FromRoute] int id)
     {
-        HttpResponseMessage response = client.DeleteAsync( client.BaseAddress + $"/{id}" ).Result;
+        HttpResponseMessage response = _client.DeleteAsync( _client.BaseAddress + $"/{id}" ).Result;
         if (response.IsSuccessStatusCode)
         {
             return RedirectToAction( "Index" );
@@ -75,7 +74,7 @@ public class MedicineController : Controller
     [HttpGet]
     public async Task<IActionResult> EditMedicine([FromRoute] int id)
     {
-        MedicineDTO medicine = await client.GetFromJsonAsync<MedicineDTO>( client.BaseAddress + $"/{id}" );
+        MedicineDTO medicine = await _client.GetFromJsonAsync<MedicineDTO>( _client.BaseAddress + $"/{id}" );
         if (medicine == null)
         {
             return NotFound();
@@ -91,7 +90,7 @@ public class MedicineController : Controller
         string data = JsonConvert.SerializeObject( medicine );
 
         StringContent content = new StringContent( data, Encoding.UTF8, "application/json" );
-        HttpResponseMessage response = client.PutAsync( client.BaseAddress + $"/{medicine.Id}", content ).Result;
+        HttpResponseMessage response = _client.PutAsync( _client.BaseAddress + $"/{medicine.Id}", content ).Result;
         if (response.IsSuccessStatusCode)
         {
             return RedirectToAction( "Index" );

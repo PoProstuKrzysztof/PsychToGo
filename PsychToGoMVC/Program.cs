@@ -16,10 +16,6 @@ builder.Services.AddScoped<IPatientService, PatientService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-builder.Services.AddHttpClient<IPatientService, PatientService>( client =>
-{
-    client.BaseAddress = new Uri( builder.Configuration.GetValue<string>( "ApiBaseUrls:PatientsApi" ) );
-} );
 
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddAuthentication( CookieAuthenticationDefaults.AuthenticationScheme )

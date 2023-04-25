@@ -16,17 +16,16 @@ public class PatientController : Controller
     /// </summary>
     private readonly IPatientService _patientService;
 
-    //private Uri baseAdress = new Uri( "https://localhost:7291/api/Patient" );
-    private readonly HttpClient _client;
+    private readonly HttpClient _client = new HttpClient
+    {
+        BaseAddress = new Uri( "https://localhost:7291/api/Patient" )
+    };
 
     private readonly IHttpContextAccessor _httpContext;
 
-    public PatientController(IPatientService patientService, IHttpContextAccessor httpContext,
-        IHttpClientFactory httpClientFactory)
+    public PatientController(IPatientService patientService, IHttpContextAccessor httpContext)
     {
         _patientService = patientService;
-        _client = httpClientFactory.CreateClient( "IPatientService" );
-        //_client.BaseAddress = baseAdress;
         _httpContext = httpContext;
     }
 
@@ -48,13 +47,14 @@ public class PatientController : Controller
     [HttpGet]
     public async Task<IActionResult> CreatePatientMVC()
     {
-        PatientViewModel? newPatient = new PatientViewModel();
+        var newPatient = new PatientViewModel()
+        {
+            Psychologists = await _patientService.PsychologistsList(),
+            Psychiatrists = await _patientService.PsychiatristsList(),
+            Medicines = await _patientService.MedicinesList(),
+            MedicinesId = new List<int>()
+        };
 
-        //Populating patientviewmodel with models
-        newPatient.Psychologists = await _patientService.PsychologistsList();
-        newPatient.Psychiatrists = await _patientService.PsychiatristsList();
-        newPatient.Medicines = await _patientService.MedicinesList();
-        newPatient.MedicinesId = new List<int>();
         return View( newPatient );
     }
 
@@ -71,8 +71,10 @@ public class PatientController : Controller
         //Getting patient, his psychologist and psychiatrist
         List<PatientDTO> patients = await _client.GetFromJsonAsync<List<PatientDTO>>( _client.BaseAddress + "/patients" );
 
-        int patientId = patients.Where( x => x.Email.ToLower() == patientAsUser.Value.ToLower() )
-            .Select( x => x.Id ).FirstOrDefault();
+        int patientId = patients
+                .Where( x => x.Email.ToLower() == patientAsUser.Value.ToLower() )
+            .Select( x => x.Id )
+            .FirstOrDefault();
 
         //Finding patient psychologist and psychiatrist
         PsychologistDTO patientPsychologist = await _client.GetFromJsonAsync<PsychologistDTO>( _client.BaseAddress + $"/{patientId}/psychologist" );
@@ -94,12 +96,10 @@ public class PatientController : Controller
     public async Task<IActionResult> CreatePatientMVC(PatientViewModel pvm)
     {
         Patient? newPatient = await _patientService.CreatePatientInstance( pvm );
-
         string data = JsonConvert.SerializeObject( newPatient );
+        StringContent content = new StringContent( data, Encoding.UTF8, "application/json" );
 
         HttpResponseMessage response;
-
-        StringContent content = new StringContent( data, Encoding.UTF8, "application/json" );
 
         //Check if new patients should be created without psychiatrist and medicines
         if (pvm.PsychiatristId == null)
@@ -147,17 +147,26 @@ public class PatientController : Controller
             return RedirectToAction( "Index" );
         }
 
-        //populate patient medicine list with medicines
-        HttpResponseMessage medicines = await _client.GetAsync( _client.BaseAddress + $"/{id}/medicines" );
-        string medicinesContent = medicines.Content.ReadAsStringAsync().Result;
-        editedPatient.Medicines = JsonConvert.DeserializeObject<List<MedicineDTO>>( medicinesContent );
+        try
+        {
+            //populate patient medicine list with medicines
 
-        //Finding patient psychologist and psychiatrist
-        PsychologistDTO? patientPsychologist = await _client.GetFromJsonAsync<PsychologistDTO>( _client.BaseAddress + $"/{id}/psychologist" );
-        PsychiatristDTO? patientPsychiatrist = await _client.GetFromJsonAsync<PsychiatristDTO>( _client.BaseAddress + $"/{id}/psychiatrist" );
+            HttpResponseMessage medicines = await _client.GetAsync( _client.BaseAddress + $"/{id}/medicines" );
+            string medicinesContent = medicines.Content.ReadAsStringAsync().Result;
+            editedPatient.Medicines = JsonConvert.DeserializeObject<List<MedicineDTO>>( medicinesContent );
 
-        editedPatient.Psychiatrists = new List<PsychiatristDTO>() { patientPsychiatrist };
-        editedPatient.Psychologists = new List<PsychologistDTO>() { patientPsychologist };
+            //Finding patient psychologist and psychiatrist
+            PsychologistDTO? patientPsychologist = await _client.GetFromJsonAsync<PsychologistDTO>( _client.BaseAddress + $"/{id}/psychologist" );
+            PsychiatristDTO? patientPsychiatrist = await _client.GetFromJsonAsync<PsychiatristDTO>( _client.BaseAddress + $"/{id}/psychiatrist" );
+
+            editedPatient.Psychiatrists = new List<PsychiatristDTO>() { patientPsychiatrist };
+            editedPatient.Psychologists = new List<PsychologistDTO>() { patientPsychologist };
+        }
+        catch (Exception)
+        {
+            ModelState.AddModelError( "", "An error occured with api parsing" );
+            return BadRequest( ModelState );
+        }
 
         return View( editedPatient );
     }
