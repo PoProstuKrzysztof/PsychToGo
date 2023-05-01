@@ -12,7 +12,7 @@ public class PsychologistController : Controller
     /// <summary>
     /// Base address to connect with api
     /// </summary>
-    private readonly HttpClient _client = new HttpClient
+    private readonly HttpClient client = new HttpClient
     {
         BaseAddress = new Uri( "https://localhost:7291/api/Psychologist" )
     };
@@ -22,7 +22,6 @@ public class PsychologistController : Controller
     public PsychologistController(IHttpContextAccessor httpContext)
     {
         _httpContext = httpContext;
-        client.BaseAddress = baseAdress;
     }
 
     public IActionResult Index()

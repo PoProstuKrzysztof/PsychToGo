@@ -7,16 +7,16 @@
 
 
 <head>
-    <link rel="stylesheet" href="~/PsychToGoMVC.styles.css" asp-append-version="true" />    
+    <link rel="stylesheet" href="~/PsychToGoMVC.styles.css" asp-append-version="true" />
 </head>
 
 <div class="container border p-5 mt-2">
     <h1 class="text-primary">Patients</h1>
     <hr />
     <p>
-        <a class="btn btn-outline-primary" asp-action="CreatePatientMVC">Create New</a>
+        <a class="btn btn-outline-primary" asp-action="CreatePatientMVC">Add</a>
     </p>
-    <table class="table table-hover border shadow-lg ">
+    <table class="table table-hover border shadow-lg text-black">
         <thead>
             <tr>
 
@@ -40,9 +40,13 @@
                     <th>
                         @Html.DisplayNameFor(model => model.Address)
                     </th>
-                    <th>
-                        Operations
-                    </th>
+                    @if (User.IsInRole( "admin" ))
+                    {
+                        <th>
+                            Operations
+                        </th>
+                    }
+                    
                 }
 
             </tr>
@@ -72,15 +76,19 @@
                         <td>
                             @Html.DisplayFor(modelItem => patient.Address)
                         </td>
-                        <td>
-                            <a class="btn btn-warning btn-sm" asp-action="EditPatient" asp-route-id="@patient.Id">Edit</a>
-                            <a class="btn btn-danger btn-sm" asp-action="DeletePatient" asp-route-id="@patient.Id">Delete</a>
-                        </td>
+                        @if (User.IsInRole( "admin" ))
+                        {
+                            <td>
+                                <a class="btn btn-warning btn-sm" asp-action="EditPatient" asp-route-id="@patient.Id">Edit</a>
+                                <a class="btn btn-danger btn-sm" asp-action="DeletePatient" asp-route-id="@patient.Id">Delete</a>
+                            </td>
+                        }
+
                     }
 
                 </tr>
             }
         </tbody>
     </table>
-    
+
 </div>

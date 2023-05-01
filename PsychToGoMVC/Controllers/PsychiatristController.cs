@@ -14,7 +14,7 @@ public class PsychiatristController : Controller
     /// Base address to connect with api
     /// </summary>
     ///
-    private readonly HttpClient client = new HttpClient
+    private readonly HttpClient _client = new HttpClient
     {
         BaseAddress = new Uri( "https://localhost:7291/api/Psychiatrist" )
     };
@@ -26,7 +26,7 @@ public class PsychiatristController : Controller
     public IActionResult Index()
     {
         List<PsychiatristDTO> psychiatrists = new List<PsychiatristDTO>();
-        HttpResponseMessage response = client.GetAsync( client.BaseAddress + "/list" ).Result;
+        HttpResponseMessage response = _client.GetAsync( _client.BaseAddress + "/list" ).Result;
         if (response.IsSuccessStatusCode)
         {
             string data = response.Content.ReadAsStringAsync().Result;
@@ -54,7 +54,7 @@ public class PsychiatristController : Controller
     {
         string data = JsonConvert.SerializeObject( pvm );
         StringContent content = new StringContent( data, Encoding.UTF8, "application/json" );
-        HttpResponseMessage response = client.PostAsync( client.BaseAddress + "/create", content ).Result;
+        HttpResponseMessage response = _client.PostAsync( _client.BaseAddress + "/create", content ).Result;
 
         if (response.IsSuccessStatusCode)
         {
@@ -68,7 +68,7 @@ public class PsychiatristController : Controller
     [Authorize( Roles = "admin" )]
     public IActionResult DeletePsychiatrist([FromRoute] int id)
     {
-        HttpResponseMessage response = client.DeleteAsync( client.BaseAddress + $"/{id}" ).Result;
+        HttpResponseMessage response = _client.DeleteAsync( _client.BaseAddress + $"/{id}" ).Result;
         if (response.IsSuccessStatusCode)
         {
             return RedirectToAction( "Index" );
@@ -81,7 +81,7 @@ public class PsychiatristController : Controller
     [Authorize( Roles = "admin" )]
     public async Task<IActionResult> EditPsychiatrist([FromRoute] int id)
     {
-        PsychiatristDTO psychiatrist = await client.GetFromJsonAsync<PsychiatristDTO>( client.BaseAddress + $"/{id}" );
+        PsychiatristDTO psychiatrist = await _client.GetFromJsonAsync<PsychiatristDTO>( _client.BaseAddress + $"/{id}" );
 
         if (psychiatrist == null)
         {
@@ -99,7 +99,7 @@ public class PsychiatristController : Controller
         string data = JsonConvert.SerializeObject( psychiatrist );
 
         StringContent content = new StringContent( data, Encoding.UTF8, "application/json" );
-        HttpResponseMessage response = client.PutAsync( client.BaseAddress + $"/{psychiatrist.Id}", content ).Result;
+        HttpResponseMessage response = _client.PutAsync( _client.BaseAddress + $"/{psychiatrist.Id}", content ).Result;
         if (response.IsSuccessStatusCode)
         {
             return RedirectToAction( "Index" );
@@ -120,13 +120,13 @@ public class PsychiatristController : Controller
             return BadRequest();
         }
 
-        List<PsychiatristDTO>? psychiatrists = await client.GetFromJsonAsync<List<PsychiatristDTO>>( client.BaseAddress + "/list" );
+        List<PsychiatristDTO>? psychiatrists = await _client.GetFromJsonAsync<List<PsychiatristDTO>>( _client.BaseAddress + "/list" );
 
         int? psychiatristId = psychiatrists
             .Where( x => x.Email.ToLower() == psychiatristAsuser.Value.ToLower() )
             .Select( x => x.Id ).FirstOrDefault();
 
-        List<Patient>? patients = await client.GetFromJsonAsync<List<Patient>>( client.BaseAddress + $"/{psychiatristId}/patients" );
+        List<Patient>? patients = await _client.GetFromJsonAsync<List<Patient>>( _client.BaseAddress + $"/{psychiatristId}/patients" );
         if (patients == null)
         {
             ModelState.AddModelError( "", "No patients assigned" );

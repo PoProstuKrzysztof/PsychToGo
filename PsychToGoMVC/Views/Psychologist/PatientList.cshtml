@@ -12,6 +12,11 @@
 <hr />
 
 <div class="container border-4 w-50">
+    @if (Model.Count == 0)
+    {
+        @Html.Display("There are not patients without psychiatrist")
+        ;
+    }
     <ol class="list-group list-group-numbered ">
         @foreach (var patient in Model)
         {
