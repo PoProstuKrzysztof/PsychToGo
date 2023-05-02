@@ -73,8 +73,81 @@ public class DataSeed
             _context.SaveChanges();
         };
 
-        if (!_context.UserRoles.Any())
+        if (!_context.ApplicationUsers.Any())
         {
+            List<AppUser> appUsers = new List<AppUser>()
+            {
+                new AppUser()
+                {
+            UserName = "admin@gmail.com",
+            Email = "admin@gmail.com",
+            NormalizedEmail = "ADMIN@GMAIL.COM",
+            Name = "Admin",
+            LastName = "Admin",
+            PasswordHash = HashPassword("Admin123"),
+                },
+                 new AppUser()
+                {
+            UserName = "mariusz.wilczyn@gmail.com",
+            Email = "mariusz.wilczyn@gmail.com",
+            NormalizedEmail = "MARIUSZ.WILCZYN@GMAIL.com",
+            Name = "Mariusz",
+            LastName = "Wilczyński",
+
+            PasswordHash = HashPassword("Test!23")
+                },
+                          new AppUser()
+                {
+            UserName = "antonina.malecka@gmail.com",
+            Email = "antonina.malecka@gmail.com",
+            NormalizedEmail = "ANTONINA.MALECKA@GMAIL.COM",
+            Name = "Antonina",
+            LastName = "Małecka",
+
+            PasswordHash = HashPassword("Test!23")
+                },
+                           new AppUser()
+                {
+            UserName = "lena.wozniak@gmail.com",
+            Email = "lena.wozniak@gmail.com",
+            NormalizedEmail = "LENA.WOZNIAK@GMAIL.COM",
+            Name = "Lena",
+            LastName = "Małecka",
+            PasswordHash = HashPassword("Test!23")
+                },
+                           new AppUser()
+                {
+            UserName = "patrycja.bednarska@gmail.com",
+            Email = "patrycja.bednarska@gmail.com",
+            NormalizedEmail = "PATRYCJA.BEDNARSKA@GMAIL.COM",
+            Name = "Patrycja",
+            LastName = "Bednarska",
+            PasswordHash = HashPassword("Test!23")
+                },
+                           new AppUser()
+                {
+            UserName = "maciej.kizug@gmail.com",
+            Email = "maciej.kizug@gmail.com",
+            NormalizedEmail = "MACIEJ.KIZUG@gmail.com",
+            Name = "Maciej",
+            LastName = "Kizug",
+            PasswordHash = HashPassword("Test!23")
+                },
+                                    new AppUser()
+                {
+            UserName = "jagoda.kow@gmail.com",
+            Email = "jagoda.kow@gmail.com",
+            NormalizedEmail = "JAGODA.KOW@GMAIL.COM",
+            Name = "Jagoda",
+            LastName = "Kowalik",
+            PasswordHash = HashPassword("Test!23")
+                }
+            };
+            foreach (AppUser user in appUsers)
+            {
+                _context.Users.Add( user );
+            }
+
             List<IdentityRole> roles = new List<IdentityRole>()
             {
                 new IdentityRole()
@@ -100,28 +173,43 @@ public class DataSeed
             };
             _context.Roles.AddRange( roles );
             _context.SaveChanges();
-        }
 
-        if (!_context.ApplicationUsers.Any())
-        {
-            List<AppUser> appUsers = new List<AppUser>()
+            List<IdentityUserRole<string>> userRoles = new List<IdentityUserRole<string>>();
+            userRoles.Add( new IdentityUserRole<string>
             {
-                new AppUser()
-                {
-            UserName = "admin@gmail.com",
-            Email = "admin@gmail.com",
-            NormalizedEmail = "ADMIN@GMAIL.COM",
-            Name = "Admin",
-            LastName = "Admin",
-
-            //Hashing passoword, class for this is at the end of this entire class
-            PasswordHash = HashPassword("Admin123")
-                }
-            };
-            foreach (AppUser user in appUsers)
+                UserId = appUsers[0].Id,
+                RoleId = roles.First( q => q.Name == "Admin" ).Id
+            } );
+            userRoles.Add( new IdentityUserRole<string>
             {
-                _context.Users.Add( user );
-            }
+                UserId = appUsers[1].Id,
+                RoleId = roles.First( q => q.Name == "PSYCHOLOGIST" ).Id
+            } );
+            userRoles.Add( new IdentityUserRole<string>
+            {
+                UserId = appUsers[2].Id,
+                RoleId = roles.First( q => q.Name == "PSYCHOLOGIST" ).Id
+            } );
+            userRoles.Add( new IdentityUserRole<string>
+            {
+                UserId = appUsers[3].Id,
+                RoleId = roles.First( q => q.Name == "PSYCHIATRIST" ).Id
+            } );
+            userRoles.Add( new IdentityUserRole<string>
+            {
+                UserId = appUsers[4].Id,
+                RoleId = roles.First( q => q.Name == "PSYCHIATRIST" ).Id
+            } );
+            userRoles.Add( new IdentityUserRole<string>
+            {
+                UserId = appUsers[5].Id,
+                RoleId = roles.First( q => q.Name == "PATIENT" ).Id
+            } );
+            userRoles.Add( new IdentityUserRole<string>
+            {
+                UserId = appUsers[6].Id,
+                RoleId = roles.First( q => q.Name == "PATIENT" ).Id
+            } );
 
             //Add more app users like psychologist/patient/psychiatrist
             _context.ApplicationUsers.AddRange( appUsers );
@@ -154,6 +242,7 @@ public class DataSeed
                     PsychologistId = 1
                 }
             };
+
             _context.Patients.AddRange( patients );
             _context.SaveChanges();
         }

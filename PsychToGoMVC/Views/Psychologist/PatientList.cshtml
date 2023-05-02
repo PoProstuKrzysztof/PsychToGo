@@ -14,8 +14,7 @@
 <div class="container border-4 w-50">
     @if (Model.Count == 0)
     {
-        @Html.Display("There are not patients without psychiatrist")
-        ;
+        <p class="text-center ">All your patients already have psychiatrist assigned.</p>
     }
     <ol class="list-group list-group-numbered ">
         @foreach (var patient in Model)

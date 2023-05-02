@@ -77,8 +77,10 @@ public class PatientController : Controller
             .FirstOrDefault();
 
         //Finding patient psychologist and psychiatrist
-        PsychologistDTO patientPsychologist = await _client.GetFromJsonAsync<PsychologistDTO>( _client.BaseAddress + $"/{patientId}/psychologist" );
-        PsychiatristDTO patientPsychiatrist = await _client.GetFromJsonAsync<PsychiatristDTO>( _client.BaseAddress + $"/{patientId}/psychiatrist" );
+        PsychologistDTO patientPsychologist = await _client.GetFromJsonAsync<PsychologistDTO>(
+            _client.BaseAddress + $"/{patientId}/psychologist" );
+        PsychiatristDTO patientPsychiatrist = await _client.GetFromJsonAsync<PsychiatristDTO>(
+            _client.BaseAddress + $"/{patientId}/psychiatrist" );
 
         PatientViewModel patientParsedToPatientViewModel = await _patientService.CreateParsedPatientInstance( patientId );
         patientParsedToPatientViewModel.Psychiatrists = new List<PsychiatristDTO>() { patientPsychiatrist };

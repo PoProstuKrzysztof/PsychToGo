@@ -1,4 +1,5 @@
-﻿using PsychToGo.DTO;
+﻿using Newtonsoft.Json;
+using PsychToGo.DTO;
 using PsychToGo.Models;
 using PsychToGoMVC.Models;
 using PsychToGoMVC.Services.Interfaces;
@@ -97,5 +98,10 @@ public class PatientService : IPatientService
         List<MedicineDTO>? medicines = await client.GetFromJsonAsync<List<MedicineDTO>>( medicinesAddress + $"/list" );
 
         return medicines;
+    }
+
+    public async Task<string> DeserializeObject<T>(T data)
+    {
+        return JsonConvert.SerializeObject( data );
     }
 }

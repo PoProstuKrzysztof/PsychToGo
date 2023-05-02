@@ -37,8 +37,10 @@ public class AuthController : Controller
             JwtSecurityToken jwt = handler.ReadJwtToken( model.Token );
             //Reading JWT token with claims
             ClaimsIdentity identity = new ClaimsIdentity( CookieAuthenticationDefaults.AuthenticationScheme );
-            identity.AddClaim( new Claim( ClaimTypes.Name, jwt.Claims.FirstOrDefault( u => u.Type == "unique_name" ).Value ) );
-            identity.AddClaim( new Claim( ClaimTypes.Role, jwt.Claims.FirstOrDefault( u => u.Type == "role" ).Value ) );
+            identity.AddClaim( new Claim( ClaimTypes.Name,
+                jwt.Claims.FirstOrDefault( u => u.Type == "unique_name" ).Value ) );
+            identity.AddClaim( new Claim( ClaimTypes.Role,
+                jwt.Claims.FirstOrDefault( u => u.Type == "role" ).Value ) );
 
             ClaimsPrincipal principal = new ClaimsPrincipal( identity );
             await HttpContext.SignInAsync( CookieAuthenticationDefaults.AuthenticationScheme, principal );
