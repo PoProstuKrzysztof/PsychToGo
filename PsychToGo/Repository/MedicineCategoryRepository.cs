@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using PsychToGo.Data;
-using PsychToGo.DTO;
-using PsychToGo.Interfaces;
-using PsychToGo.Models;
+using PsychToGo.API.Data;
+using PsychToGo.API.DTO;
+using PsychToGo.API.Interfaces;
+using PsychToGo.API.Models;
 
-namespace PsychToGo.Repository;
+namespace PsychToGo.API.Repository;
 
 public class MedicineCategoryRepository : IMedicineCategoryRepository
 {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace PsychToGo.Models.Identity;
+namespace PsychToGo.API.Models.Identity;
 
 public class AppUser : IdentityUser
 {

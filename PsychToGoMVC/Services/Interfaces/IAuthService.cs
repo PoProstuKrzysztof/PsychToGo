@@ -1,6 +1,6 @@
-﻿using PsychToGo.DTO;
+﻿using PsychToGo.API.DTO;
 
-namespace PsychToGoMVC.Services.Interfaces;
+namespace PsychToGo.Client.Services.Interfaces;
 
 public interface IAuthService
 {

@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using PsychToGo.Data;
-using PsychToGo.Models;
-using PsychToGo.Models.Identity;
+using PsychToGo.API.Data;
+using PsychToGo.API.Models;
+using PsychToGo.API.Models.Identity;
 
-namespace PsychToGo;
+namespace PsychToGo.API;
 
 public class DataSeed
 {

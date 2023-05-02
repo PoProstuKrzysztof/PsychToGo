@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using PsychToGo.Models;
-using PsychToGo.Models.Identity;
+using PsychToGo.API.Models;
+using PsychToGo.API.Models.Identity;
 
-namespace PsychToGo.Data;
+namespace PsychToGo.API.Data;
 
 public class AppDbContext : IdentityDbContext<AppUser>
 {

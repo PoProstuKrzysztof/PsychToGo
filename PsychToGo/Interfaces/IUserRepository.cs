@@ -1,6 +1,6 @@
-﻿using PsychToGo.DTO;
+﻿using PsychToGo.API.DTO;
 
-namespace PsychToGo.Interfaces;
+namespace PsychToGo.API.Interfaces;
 
 public interface IUserRepository
 {

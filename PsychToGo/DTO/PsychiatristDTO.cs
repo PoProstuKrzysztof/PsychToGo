@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
-namespace PsychToGo.DTO;
+namespace PsychToGo.API.DTO;
 
 public class PsychiatristDTO
 {

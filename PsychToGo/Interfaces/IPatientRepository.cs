@@ -1,7 +1,7 @@
-﻿using PsychToGo.DTO;
-using PsychToGo.Models;
+﻿using PsychToGo.API.DTO;
+using PsychToGo.API.Models;
 
-namespace PsychToGo.Interfaces;
+namespace PsychToGo.API.Interfaces;
 
 public interface IPatientRepository
 {
@@ -31,7 +31,9 @@ public interface IPatientRepository
 
     //Put
     Task<bool> UpdatePatient(Patient patient);
+
     Task<bool> AssignMedicine(int patientId, int medicineId);
+
     Task<bool> AssignPsychiatrist(int patientId, int psychiatristId);
 
     //Delete

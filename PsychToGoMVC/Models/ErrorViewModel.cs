@@ -1,4 +1,4 @@
-namespace PsychToGoMVC.Models;
+namespace PsychToGo.Client.Models;
 
 public class ErrorViewModel
 {

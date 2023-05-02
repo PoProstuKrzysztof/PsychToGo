@@ -2,15 +2,15 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using PsychToGo.Data;
-using PsychToGo.DTO;
-using PsychToGo.Interfaces;
-using PsychToGo.Models.Identity;
+using PsychToGo.API.Data;
+using PsychToGo.API.DTO;
+using PsychToGo.API.Interfaces;
+using PsychToGo.API.Models.Identity;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace PsychToGo.Repository;
+namespace PsychToGo.API.Repository;
 
 public class UserRepository : IUserRepository
 {

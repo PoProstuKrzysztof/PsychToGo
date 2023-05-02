@@ -1,7 +1,7 @@
-﻿using PsychToGo.DTO;
-using PsychToGo.Models;
+﻿using PsychToGo.API.DTO;
+using PsychToGo.API.Models;
 
-namespace PsychToGo.Interfaces;
+namespace PsychToGo.API.Interfaces;
 
 public interface IMedicineCategoryRepository
 {

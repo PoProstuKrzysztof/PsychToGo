@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PsychToGoMVC.Models.PatientViewModel>
+﻿@model IEnumerable<PsychToGo.Client.Models.PatientViewModel>
 
 @{
     ViewData["Title"] = "Patients";
@@ -7,88 +7,110 @@
 
 
 <head>
-    <link rel="stylesheet" href="~/PsychToGoMVC.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/PsychToGo.Client.styles.css" asp-append-version="true" />
 </head>
 
-<div class="container border p-5 mt-2">
-    <h1 class="text-primary">Patients</h1>
-    <hr />
-    <p>
-        <a class="btn btn-outline-primary" asp-action="CreatePatientMVC">Add</a>
-    </p>
-    <table class="table table-hover border shadow-lg text-black">
-        <thead>
-            <tr>
+<form method="get" asp-action="Index">
 
-                <th>
-                    @Html.DisplayNameFor(model => model.Name)
-                </th>
-                <th>
-                    Last name
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Email)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Phone)
-                </th>
-                @if (User.IsInRole( "admin" ) || User.IsInRole( "psychologist" ) || User.IsInRole( "psychiatrist" ))
+    <div class="container p-2 m-2">
+    </div>
+    <h1 class="text-center">PATIENTS</h1>
+    <div class="search-box flex">
+        <div class="flex-1">
+            <select class="search-input" name="searchBy">
+                @foreach (var fields in ViewBag.SearchFields)
                 {
-                    <th>
-                        Date of birth
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Address)
-                    </th>
-                    @if (User.IsInRole( "admin" ))
-                    {
-                        <th>
-                            Operations
-                        </th>
-                    }
-                    
+                    <option value="@fields.Key">@fields.Value</option>
                 }
+            </select>
+        </div>
 
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var patient in Model)
-            {
+        <div class="flex-1">
+            <input type="search" id="search" class="search-input" placeholder="Search.." />
+        </div>
+
+        <div class="flex-1">
+            <button class="btn btn-dark">Search</button>
+            <a class="btn btn-danger" asp-action="Index">Clear all</a>
+        </div>
+        <hr />
+        <p>
+            <a class="btn btn-outline-primary" asp-action="CreatePatientMVC">Add</a>
+        </p>
+        <table class="table table-hover border shadow-lg text-black">
+            <thead>
                 <tr>
 
-                    <td>
-                        @Html.DisplayFor(modelItem => patient.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => patient.LastName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => patient.Email)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => patient.Phone)
-                    </td>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th>
+                        Last name
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Email)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Phone)
+                    </th>
                     @if (User.IsInRole( "admin" ) || User.IsInRole( "psychologist" ) || User.IsInRole( "psychiatrist" ))
                     {
-                        <td>
-                            @patient.DateOfBirth.ToString("yyyy-MM-dd")
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => patient.Address)
-                        </td>
+                        <th>
+                            Date of birth
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Address)
+                        </th>
                         @if (User.IsInRole( "admin" ))
                         {
-                            <td>
-                                <a class="btn btn-warning btn-sm" asp-action="EditPatient" asp-route-id="@patient.Id">Edit</a>
-                                <a class="btn btn-danger btn-sm" asp-action="DeletePatient" asp-route-id="@patient.Id">Delete</a>
-                            </td>
+                            <th>
+                                Operations
+                            </th>
                         }
 
                     }
 
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var patient in Model)
+                {
+                    <tr>
 
-</div>
+                        <td>
+                            @Html.DisplayFor(modelItem => patient.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => patient.LastName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => patient.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => patient.Phone)
+                        </td>
+                        @if (User.IsInRole( "admin" ) || User.IsInRole( "psychologist" ) || User.IsInRole( "psychiatrist" ))
+                        {
+                            <td>
+                                @patient.DateOfBirth.ToString("yyyy-MM-dd")
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => patient.Address)
+                            </td>
+                            @if (User.IsInRole( "admin" ))
+                            {
+                                <td>
+                                    <a class="btn btn-warning btn-sm" asp-action="EditPatient" asp-route-id="@patient.Id">Edit</a>
+                                    <a class="btn btn-danger btn-sm" asp-action="DeletePatient" asp-route-id="@patient.Id">Delete</a>
+                                </td>
+                            }
+
+                        }
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</form>

@@ -1,4 +1,4 @@
-﻿namespace PsychToGo.Models;
+﻿namespace PsychToGo.API.Models;
 
 public class PatientMedicine
 {

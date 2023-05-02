@@ -1,8 +1,8 @@
-﻿using PsychToGo.DTO;
-using PsychToGo.Models;
-using PsychToGoMVC.Models;
+﻿using PsychToGo.API.DTO;
+using PsychToGo.API.Models;
+using PsychToGo.Client.Models;
 
-namespace PsychToGoMVC.Services.Interfaces;
+namespace PsychToGo.Client.Services.Interfaces;
 
 public interface IPatientService
 {

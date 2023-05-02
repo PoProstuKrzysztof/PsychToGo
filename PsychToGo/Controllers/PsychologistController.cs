@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using PsychToGo.DTO;
-using PsychToGo.Interfaces;
-using PsychToGo.Models;
+using PsychToGo.API.DTO;
+using PsychToGo.API.Interfaces;
+using PsychToGo.API.Models;
 
-namespace PsychToGo.Controllers;
+namespace PsychToGo.API.Controllers;
 
 [Route( "api/[controller]" )]
 [ApiController]

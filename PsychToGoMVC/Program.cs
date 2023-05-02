@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
-using PsychToGo.Data;
-using PsychToGoMVC.Services;
-using PsychToGoMVC.Services.Interfaces;
+using PsychToGo.API.Data;
+using PsychToGo.Client.Services;
+using PsychToGo.Client.Services.Interfaces;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder( args );
 string connectionString = builder.Configuration.GetConnectionString( "AppDbContextConnection" )
@@ -15,7 +15,6 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IPatientService, PatientService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
 
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddAuthentication( CookieAuthenticationDefaults.AuthenticationScheme )

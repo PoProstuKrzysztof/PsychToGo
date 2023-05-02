@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using PsychToGo.DTO;
-using PsychToGo.Models;
+using PsychToGo.API.DTO;
+using PsychToGo.API.Models;
 using System.Security.Claims;
 using System.Text;
 
-namespace PsychToGoMVC.Controllers;
+namespace PsychToGo.Client.Controllers;
 
 public class PsychiatristController : Controller
 {
@@ -42,6 +42,7 @@ public class PsychiatristController : Controller
     }
 
     [HttpGet]
+    [Authorize( Roles = "admin" )]
     public IActionResult CreatePsychiatristMVC()
     {
         return View();

@@ -1,18 +1,20 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using PsychToGo.DTO;
-using PsychToGo.Models;
+using PsychToGo.API.DTO;
+using PsychToGo.API.Models;
+using System.Data;
 using System.Security.Claims;
 using System.Text;
 
-namespace PsychToGoMVC.Controllers;
+namespace PsychToGo.Client.Controllers;
 
 public class PsychologistController : Controller
 {
     /// <summary>
     /// Base address to connect with api
     /// </summary>
-    private readonly HttpClient client = new HttpClient
+    private readonly HttpClient client = new()
     {
         BaseAddress = new Uri( "https://localhost:7291/api/Psychologist" )
     };
@@ -26,7 +28,7 @@ public class PsychologistController : Controller
 
     public IActionResult Index()
     {
-        List<PsychologistDTO> psychologists = new List<PsychologistDTO>();
+        List<PsychologistDTO> psychologists;
         HttpResponseMessage response = client.GetAsync( client.BaseAddress + "/list" ).Result;
         if (response.IsSuccessStatusCode)
         {
@@ -43,17 +45,19 @@ public class PsychologistController : Controller
     }
 
     [HttpGet]
+    [Authorize( Roles = "admin" )]
     public IActionResult CreatePsychologistMVC()
     {
         return View();
     }
 
     [HttpPost]
+    [Authorize( Roles = "admin" )]
     [ValidateAntiForgeryToken]
     public IActionResult CreatePsychologistMVC(PsychologistDTO pvm)
     {
         string data = JsonConvert.SerializeObject( pvm );
-        StringContent content = new StringContent( data, Encoding.UTF8, "application/json" );
+        StringContent content = new( data, Encoding.UTF8, "application/json" );
         HttpResponseMessage response = client.PostAsync( client.BaseAddress + "/create", content ).Result;
 
         if (response.IsSuccessStatusCode)
@@ -64,6 +68,7 @@ public class PsychologistController : Controller
     }
 
     [HttpGet]
+    [Authorize( Roles = "admin" )]
     public IActionResult DeletePsychologist([FromRoute] int id)
     {
         HttpResponseMessage response = client.DeleteAsync( client.BaseAddress + $"/{id}" ).Result;
@@ -76,6 +81,7 @@ public class PsychologistController : Controller
     }
 
     [HttpGet]
+    [Authorize( Roles = "admin" )]
     public async Task<IActionResult> EditPsychologist([FromRoute] int id)
     {
         PsychologistDTO psychologist = await client.GetFromJsonAsync<PsychologistDTO>( client.BaseAddress + $"/{id}" );
@@ -89,12 +95,13 @@ public class PsychologistController : Controller
     }
 
     [HttpPost]
+    [Authorize( Roles = "admin" )]
     [ValidateAntiForgeryToken]
     public IActionResult EditPsychologist(PsychologistDTO psychologist)
     {
         string data = JsonConvert.SerializeObject( psychologist );
 
-        StringContent content = new StringContent( data, Encoding.UTF8, "application/json" );
+        StringContent content = new( data, Encoding.UTF8, "application/json" );
         HttpResponseMessage response = client.PutAsync( client.BaseAddress + $"/{psychologist.Id}", content ).Result;
         if (response.IsSuccessStatusCode)
         {

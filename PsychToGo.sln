@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PsychToGo", "PsychToGo\PsychToGo.csproj", "{7F864998-A50E-415B-BAB7-68CE9515673A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PsychToGo.API", "PsychToGo\PsychToGo.API.csproj", "{7F864998-A50E-415B-BAB7-68CE9515673A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PsychToGoMVC", "PsychToGoMVC\PsychToGoMVC.csproj", "{8A2767A5-2072-4D8B-91C8-EE4B762A5735}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PsychToGo.Client", "PsychToGoMVC\PsychToGo.Client.csproj", "{8A2767A5-2072-4D8B-91C8-EE4B762A5735}"
 	ProjectSection(ProjectDependencies) = postProject
 		{7F864998-A50E-415B-BAB7-68CE9515673A} = {7F864998-A50E-415B-BAB7-68CE9515673A}
 	EndProjectSection

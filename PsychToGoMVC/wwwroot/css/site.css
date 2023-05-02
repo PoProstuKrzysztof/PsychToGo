@@ -15,6 +15,36 @@ html {
     background: #FFFFFF;
 }
 
+.search-box {
+    margin: 10px 20px;
+    padding: 15px;
+    border-radius: 8px;
+    border: 2px solid #000000;
+}
+
+.flex {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+    .flex > div {
+        padding: 3px;
+    }
+
+.flex-1 {
+    flex: 1 auto;
+}
+
+.flex-2 {
+    flex: 2 auto;
+}
+
+.search-input {
+    padding: 4px 5px;
+    font-size: 105%;
+    border-radius: 9px;
+    border: 1px solid #000000;
+}
 
 body::-webkit-scrollbar {
     display: none;
@@ -109,7 +139,7 @@ body::-webkit-scrollbar {
 .container-homepage .logo {
     font-size: 90px;
     font-weight: 600;
-    color:#FFFFFF;
+    color: #FFFFFF;
 }
 
 .container-homepage {
@@ -175,7 +205,7 @@ body::-webkit-scrollbar {
 .form-box h2 {
     font-size: 38px;
     text-align: center;
-    color:#f2f2f2;
+    color: #f2f2f2;
 }
 
 .form-box .input-box {
@@ -203,7 +233,7 @@ body::-webkit-scrollbar {
     left: 0;
     transform: translateY(-50%);
     font-size: 16px;
-    color:aliceblue;
+    color: aliceblue;
     font-weight: 500;
     pointer-events: none;
 }
@@ -240,5 +270,3 @@ input[type=submit] {
 form-group ul li {
     font-weight: 700;
 }
-
-

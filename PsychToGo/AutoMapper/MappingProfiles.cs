@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using PsychToGo.DTO;
-using PsychToGo.Models;
-using PsychToGo.Models.Identity;
+using PsychToGo.API.DTO;
+using PsychToGo.API.Models;
+using PsychToGo.API.Models.Identity;
 
-namespace PsychToGo.AutoMapper;
+namespace PsychToGo.API.AutoMapper;
 
 public class MappingProfiles : Profile
 {

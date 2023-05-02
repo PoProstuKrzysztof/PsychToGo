@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PsychToGo.DTO;
+using PsychToGo.API.DTO;
 using System.ComponentModel.DataAnnotations;
 
-namespace PsychToGoMVC.Models;
+namespace PsychToGo.Client.Models;
 
 public class PatientViewModel
 {

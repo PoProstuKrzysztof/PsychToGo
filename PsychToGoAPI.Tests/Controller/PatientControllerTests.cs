@@ -2,9 +2,9 @@
 using FakeItEasy;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
-using PsychToGo.Controllers;
-using PsychToGo.DTO;
-using PsychToGo.Interfaces;
+using PsychToGo.API.Controllers;
+using PsychToGo.API.DTO;
+using PsychToGo.API.Interfaces;
 
 namespace PsychToGoAPI.Tests.Controller;
 
@@ -30,7 +30,10 @@ public class PatientControllerTests
         ICollection<PatientDTO> patients = A.Fake<ICollection<PatientDTO>>();
         List<PatientDTO> patientsList = A.Fake<List<PatientDTO>>();
         A.CallTo( () => _mapper.Map<List<PatientDTO>>( patients ) ).Returns( patientsList );
-        PatientController controller = new PatientController( _patientRepository, _mapper, _psychiatristRepository, _psychologistRepository );
+        PatientController controller = new( _patientRepository,
+            _mapper,
+            _psychiatristRepository,
+            _psychologistRepository );
         //Act
         IActionResult result = await controller.GetAllPatients();
 

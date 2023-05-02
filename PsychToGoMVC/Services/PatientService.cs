@@ -1,22 +1,20 @@
-﻿using Newtonsoft.Json;
-using PsychToGo.DTO;
-using PsychToGo.Models;
-using PsychToGoMVC.Models;
-using PsychToGoMVC.Services.Interfaces;
+﻿using PsychToGo.API.DTO;
+using PsychToGo.API.Models;
+using PsychToGo.Client.Models;
+using PsychToGo.Client.Services.Interfaces;
 
-namespace PsychToGoMVC.Services;
+namespace PsychToGo.Client.Services;
 
 public class PatientService : IPatientService
 {
-    private Uri baseAddress = new Uri( "https://localhost:7291/api/Patient" );
-    private Uri psychiatristAddress = new Uri( "https://localhost:7291/api/Psychiatrist" );
-    private Uri psychologistAddress = new Uri( "https://localhost:7291/api/Psychologist" );
-    private Uri medicinesAddress = new Uri( "https://localhost:7291/api/Medicine" );
-    private HttpClient client = new HttpClient();
+    private readonly Uri baseAddress = new( "https://localhost:7291/api/Patient" );
+    private readonly Uri psychiatristAddress = new( "https://localhost:7291/api/Psychiatrist" );
+    private readonly Uri psychologistAddress = new( "https://localhost:7291/api/Psychologist" );
+    private readonly Uri medicinesAddress = new( "https://localhost:7291/api/Medicine" );
+    private readonly HttpClient client = new();
 
     public PatientService()
     {
-        client = new HttpClient();
         client.BaseAddress = baseAddress;
     }
 
@@ -29,7 +27,7 @@ public class PatientService : IPatientService
 
         if (psychiatrist == null)
         {
-            PatientViewModel parsedPatientNoPsychiatrist = new PatientViewModel()
+            PatientViewModel parsedPatientNoPsychiatrist = new()
             {
                 Name = findPatient.Name,
                 LastName = findPatient.LastName,
@@ -46,7 +44,7 @@ public class PatientService : IPatientService
 
         List<Medicine>? medicines = await client.GetFromJsonAsync<List<Medicine>>( client.BaseAddress + $"/{id}/medicines" );
 
-        PatientViewModel parsedPatient = new PatientViewModel()
+        PatientViewModel parsedPatient = new()
         {
             Name = findPatient.Name,
             LastName = findPatient.LastName,
@@ -65,7 +63,7 @@ public class PatientService : IPatientService
 
     public async Task<Patient> CreatePatientInstance(PatientViewModel pvm)
     {
-        Patient newPatient = new Patient()
+        Patient newPatient = new()
         {
             Id = pvm.Id,
             Name = pvm.Name,
@@ -98,10 +96,5 @@ public class PatientService : IPatientService
         List<MedicineDTO>? medicines = await client.GetFromJsonAsync<List<MedicineDTO>>( medicinesAddress + $"/list" );
 
         return medicines;
-    }
-
-    public async Task<string> DeserializeObject<T>(T data)
-    {
-        return JsonConvert.SerializeObject( data );
     }
 }

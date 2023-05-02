@@ -2,12 +2,12 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using PsychToGo.DTO;
-using PsychToGoMVC.Services.Interfaces;
+using PsychToGo.API.DTO;
+using PsychToGo.Client.Services.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-namespace PsychToGoMVC.Controllers;
+namespace PsychToGo.Client.Controllers;
 
 public class AuthController : Controller
 {

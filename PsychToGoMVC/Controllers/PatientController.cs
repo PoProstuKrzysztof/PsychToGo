@@ -1,13 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using PsychToGo.DTO;
-using PsychToGo.Models;
-using PsychToGoMVC.Models;
-using PsychToGoMVC.Services.Interfaces;
+using PsychToGo.API.DTO;
+using PsychToGo.API.Models;
+using PsychToGo.Client.Models;
+using PsychToGo.Client.Services.Interfaces;
 using System.Security.Claims;
 using System.Text;
 
-namespace PsychToGoMVC.Controllers;
+namespace PsychToGo.Client.Controllers;
 
 public class PatientController : Controller
 {
@@ -16,7 +17,7 @@ public class PatientController : Controller
     /// </summary>
     private readonly IPatientService _patientService;
 
-    private readonly HttpClient _client = new HttpClient
+    private readonly HttpClient _client = new()
     {
         BaseAddress = new Uri( "https://localhost:7291/api/Patient" )
     };
@@ -29,8 +30,19 @@ public class PatientController : Controller
         _httpContext = httpContext;
     }
 
-    public async Task<IActionResult> Index()
+    [Route( "patient/index" )]
+    [Authorize( Roles = "admin" )]
+    public async Task<IActionResult> Index(string searchBy, string? searchString)
     {
+        ViewBag.SearchFields = new Dictionary<string, string>()
+        {
+            {nameof(PatientViewModel.Name),"Name" },
+            {nameof(PatientViewModel.Email),"Email" },
+            {nameof(PatientViewModel.Address),"Address" },
+            {nameof(PatientViewModel.DateOfBirth),"Date of Birth" },
+            {nameof(PatientViewModel.LastName),"Last Name" },
+        };
+
         HttpResponseMessage response = _client.GetAsync( requestUri: _client.BaseAddress + "/patients" ).Result;
         if (response.IsSuccessStatusCode)
         {
@@ -45,6 +57,7 @@ public class PatientController : Controller
     }
 
     [HttpGet]
+    [Authorize( Roles = "admin" )]
     public async Task<IActionResult> CreatePatientMVC()
     {
         var newPatient = new PatientViewModel()
@@ -94,12 +107,15 @@ public class PatientController : Controller
     }
 
     [HttpPost]
+    [Authorize( Roles = "admin" )]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CreatePatientMVC(PatientViewModel pvm)
     {
         Patient? newPatient = await _patientService.CreatePatientInstance( pvm );
         string data = JsonConvert.SerializeObject( newPatient );
-        StringContent content = new StringContent( data, Encoding.UTF8, "application/json" );
+        StringContent content = new( data,
+            Encoding.UTF8,
+            "application/json" );
 
         HttpResponseMessage response;
 
@@ -128,6 +144,7 @@ public class PatientController : Controller
     }
 
     [HttpGet]
+    [Authorize( Roles = "admin" )]
     public IActionResult DeletePatient([FromRoute] int id)
     {
         HttpResponseMessage response = _client.DeleteAsync( _client.BaseAddress + $"/{id}" ).Result;
@@ -140,6 +157,7 @@ public class PatientController : Controller
     }
 
     [HttpGet]
+    [Authorize( Roles = "admin" )]
     public async Task<IActionResult> EditPatient([FromRoute] int id)
     {
         PatientViewModel editedPatient = await _patientService.CreateParsedPatientInstance( id );
@@ -174,6 +192,7 @@ public class PatientController : Controller
     }
 
     [HttpPost]
+    [Authorize( Roles = "admin" )]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> EditPatient(PatientViewModel pvm)
     {
@@ -182,7 +201,9 @@ public class PatientController : Controller
         string data = JsonConvert.SerializeObject( updatedPatient );
         HttpResponseMessage response;
 
-        StringContent content = new StringContent( data, Encoding.UTF8, "application/json" );
+        StringContent content = new( data,
+            Encoding.UTF8,
+            "application/json" );
         if (pvm.PsychiatristId == null)
         {
             response = _client.
@@ -225,7 +246,10 @@ public class PatientController : Controller
 
         string data = JsonConvert.SerializeObject( assignedPatient );
 
-        StringContent content = new StringContent( data, Encoding.UTF8, "application/json" );
+        StringContent content = new( data,
+            Encoding.UTF8,
+            "application/json" );
+
         HttpResponseMessage response = _client.
             PutAsync( _client.BaseAddress + $"/AssignPsychiatrist?patientId={assignedPatient.Id}" +
             $"&psychiatristId={assignedPatient.PsychiatristId}", content ).Result;
@@ -260,7 +284,7 @@ public class PatientController : Controller
 
         string data = JsonConvert.SerializeObject( assignedPatient );
 
-        StringContent content = new StringContent( data, Encoding.UTF8, "application/json" );
+        StringContent content = new( data, Encoding.UTF8, "application/json" );
         HttpResponseMessage response = _client.
             PutAsync( _client.BaseAddress + $"/AssignMedicine?patientId={assignedPatient.Id}" +
             $"&medicineId={patient.MedicinesId.FirstOrDefault()}", content ).Result;

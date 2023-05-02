@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PsychToGo.DTO;
-using PsychToGo.Interfaces;
+using PsychToGo.API.DTO;
+using PsychToGo.API.Interfaces;
 
-namespace PsychToGo.Controllers;
+namespace PsychToGo.API.Controllers;
 
 [Route( "api/UsersAuthorize" )]
 [ApiController]

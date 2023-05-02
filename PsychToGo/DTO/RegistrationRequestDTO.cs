@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace PsychToGo.DTO;
+namespace PsychToGo.API.DTO;
 
 public class RegistrationRequestDTO
 {

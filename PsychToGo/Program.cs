@@ -4,11 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using PsychToGo;
-using PsychToGo.Data;
-using PsychToGo.Interfaces;
-using PsychToGo.Models.Identity;
-using PsychToGo.Repository;
+using PsychToGo.API;
+using PsychToGo.API.Data;
+using PsychToGo.API.Interfaces;
+using PsychToGo.API.Models.Identity;
+using PsychToGo.API.Repository;
 using System.Text;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder( args );

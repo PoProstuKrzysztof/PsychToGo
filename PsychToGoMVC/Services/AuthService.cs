@@ -1,18 +1,17 @@
 ﻿using Newtonsoft.Json;
-using PsychToGo.DTO;
-using PsychToGoMVC.Services.Interfaces;
+using PsychToGo.API.DTO;
+using PsychToGo.Client.Services.Interfaces;
 using System.Text;
 
-namespace PsychToGoMVC.Services;
+namespace PsychToGo.Client.Services;
 
 public class AuthService : IAuthService
 {
-    private Uri baseAdress = new Uri( "https://localhost:7291/api/UsersAuthorize" );
-    private HttpClient client = new HttpClient();
+    private readonly Uri baseAdress = new( "https://localhost:7291/api/UsersAuthorize" );
+    private readonly HttpClient client = new();
 
     public AuthService()
     {
-        client = new HttpClient();
         client.BaseAddress = baseAdress;
     }
 
@@ -26,7 +25,9 @@ public class AuthService : IAuthService
     {
         string data = JsonConvert.SerializeObject( userLogin );
 
-        StringContent content = new StringContent( data, Encoding.UTF8, "application/json" );
+        StringContent content = new( data,
+                                                  Encoding.UTF8,
+                                                  "application/json" );
 
         HttpResponseMessage response = client.PostAsync( client.BaseAddress + "/login", content ).Result;
         if (response.IsSuccessStatusCode)
@@ -49,9 +50,12 @@ public class AuthService : IAuthService
     {
         string data = JsonConvert.SerializeObject( userCreate );
 
-        StringContent content = new StringContent( data, Encoding.UTF8, "application/json" );
+        StringContent content = new( data,
+                                    Encoding.UTF8,
+                                    "application/json" );
 
-        HttpResponseMessage response = client.PostAsync( client.BaseAddress + "/register", content ).Result;
+        HttpResponseMessage response = client.PostAsync( client.BaseAddress + "/register",
+                                                        content ).Result;
         if (response.IsSuccessStatusCode)
         {
             string result = response.Content.ReadAsStringAsync().Result;

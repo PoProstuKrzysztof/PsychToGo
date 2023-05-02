@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using PsychToGo.DTO;
-using PsychToGo.Interfaces;
-using PsychToGo.Models;
+using PsychToGo.API.DTO;
+using PsychToGo.API.Interfaces;
+using PsychToGo.API.Models;
 
-namespace PsychToGo.Controllers;
+namespace PsychToGo.API.Controllers;
 
 [Route( "api/[controller]" )]
 [ApiController]
@@ -84,7 +84,7 @@ public class PatientController : Controller
             return NotFound();
         }
 
-        Patient patient = await (_patientRepository.GetPatientById( id ));
+        Patient patient = await _patientRepository.GetPatientById( id );
         if (patient == null)
         {
             return NotFound();
