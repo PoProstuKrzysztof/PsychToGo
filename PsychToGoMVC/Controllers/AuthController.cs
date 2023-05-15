@@ -49,9 +49,8 @@ public class AuthController : Controller
             return RedirectToAction( "Index", "Home" );
         }
 
-        ModelState.AddModelError( "", $"An error occurred while logging in" );
-
-        return RedirectToAction( "Index", "Home", ModelState );
+        ModelState.AddModelError( "", $"Invalid username or password" );
+        return RedirectToAction( "Index", "Home" );
     }
 
     [HttpGet]

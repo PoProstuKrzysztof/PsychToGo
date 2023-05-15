@@ -43,10 +43,13 @@ public class PatientController : Controller
             {nameof(PatientViewModel.LastName),"Last Name" },
         };
 
-        HttpResponseMessage response = _client.GetAsync( requestUri: _client.BaseAddress + "/patients" ).Result;
+        HttpResponseMessage response = _client.GetAsync( _client.BaseAddress + "/patients" ).Result;
         if (response.IsSuccessStatusCode)
         {
             var data = await response.Content.ReadFromJsonAsync<List<PatientViewModel>>();
+            data = await _patientService.GetFilteredPatients( searchBy, searchString );
+            ViewBag.CurrentSearchBy = searchBy;
+            ViewBag.CurrentSearchString = searchString;
             return View( data ?? new List<PatientViewModel>() );
         }
         else
@@ -72,6 +75,7 @@ public class PatientController : Controller
     }
 
     [HttpGet]
+    [Authorize( Roles = "patient" )]
     public async Task<IActionResult> PatientProfileInfo()
     {
         Claim? patientAsUser = _httpContext.HttpContext.User?.FindFirst( ClaimTypes.Name );
@@ -225,6 +229,7 @@ public class PatientController : Controller
     }
 
     [HttpGet]
+    [Authorize( Roles = "psychologist" )]
     public async Task<IActionResult> AssignPsychiatristMVC([FromRoute] int id)
     {
         PatientViewModel? patient = await _patientService.CreateParsedPatientInstance( id );
@@ -239,6 +244,7 @@ public class PatientController : Controller
     }
 
     [HttpPost]
+    [Authorize( Roles = "psychologist" )]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> AssignPsychiatristMVC(PatientViewModel patient)
     {
@@ -263,6 +269,7 @@ public class PatientController : Controller
     }
 
     [HttpGet]
+    [Authorize( Roles = "psychiatrist" )]
     public async Task<IActionResult> AssignMedicineMVC([FromRoute] int id)
     {
         PatientViewModel? patient = await _patientService.CreateParsedPatientInstance( id );
@@ -277,6 +284,7 @@ public class PatientController : Controller
     }
 
     [HttpPost]
+    [Authorize( Roles = "psychiatrist" )]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> AssignMedicineMVC(PatientViewModel patient)
     {

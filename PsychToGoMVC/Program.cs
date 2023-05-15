@@ -13,6 +13,7 @@ builder.Services.AddDbContext<AppDbContext>( options => options.UseSqlServer( co
 //Identity
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IPatientService, PatientService>();
+builder.Services.AddScoped<IPsychiatristService, PsychiatristService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 

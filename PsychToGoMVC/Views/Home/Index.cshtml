@@ -30,13 +30,14 @@
         {
             <div class="log-box">
                 <div class="form-box login">
-                    <form asp method="post">
+                    <form asp method="post" asp-antiforgery="true">
                         <h2>Log in</h2>
                         <div asp-validation-summary="All" class="text-danger"></div>
                         <div class="input-box">
 
                             <label>E-mail</label>
-                            <input asp-for="UserName" type="text" placeholder="E-mail..." required />
+                            <input asp-for="UserName" type="text" placeholder="E-mail..." value="@ViewBag.Login"required />
+
                            
                         </div>
 

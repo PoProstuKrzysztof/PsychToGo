@@ -2,7 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PsychToGo.API.DTO;
+using PsychToGo.API.Interfaces;
 using PsychToGo.API.Models;
+using PsychToGo.Client.Models;
+using PsychToGo.Client.Services.Interfaces;
 using System.Security.Claims;
 using System.Text;
 
@@ -10,10 +13,12 @@ namespace PsychToGo.Client.Controllers;
 
 public class PsychiatristController : Controller
 {
+    private readonly IPsychiatristService _service;
+
     /// <summary>
     /// Base address to connect with api
     /// </summary>
-    ///
+
     private readonly HttpClient _client = new HttpClient
     {
         BaseAddress = new Uri( "https://localhost:7291/api/Psychiatrist" )
@@ -23,22 +28,32 @@ public class PsychiatristController : Controller
 
     public PsychiatristController(IHttpContextAccessor httpContext) => _httpContext = httpContext;
 
-    public IActionResult Index()
+    [Route( "psychiatrist/index" )]
+    public async Task<IActionResult> Index(string searchBy, string? searchString)
     {
-        List<PsychiatristDTO> psychiatrists = new List<PsychiatristDTO>();
+        ViewBag.SearchFields = new Dictionary<string, string>()
+        {
+            {nameof(PsychiatristDTO.Name),"Name" },
+            {nameof(PsychiatristDTO.Email),"Email" },
+            {nameof(PsychiatristDTO.Address),"Address" },
+            {nameof(PsychiatristDTO.DateOfBirth),"Date of Birth" },
+            {nameof(PsychiatristDTO.LastName),"Last Name" },
+        };
+
         HttpResponseMessage response = _client.GetAsync( _client.BaseAddress + "/list" ).Result;
         if (response.IsSuccessStatusCode)
         {
-            string data = response.Content.ReadAsStringAsync().Result;
-            psychiatrists = JsonConvert.DeserializeObject<List<PsychiatristDTO>>( data );
+            var data = await response.Content.ReadFromJsonAsync<List<PsychiatristDTO>>();
+            data = await _service.GetFilteredPsychiatrists( searchBy, searchString );
+            ViewBag.CurrentSearchBy = searchBy;
+            ViewBag.CurrentSearchString = searchString;
+            return View( data ?? new List<PsychiatristDTO>() );
         }
         else
         {
             ModelState.AddModelError( "", $"There are no psychiatrists " );
-            psychiatrists = Enumerable.Empty<PsychiatristDTO>().ToList();
+            return View( Enumerable.Empty<PsychiatristDTO>().ToList() );
         }
-
-        return View( psychiatrists );
     }
 
     [HttpGet]
@@ -110,6 +125,7 @@ public class PsychiatristController : Controller
     }
 
     [HttpGet]
+    [Authorize( Roles = "psychiatrist" )]
     public async Task<IActionResult> GetPsychiatristPatients()
     {
         //Getting user e-mail here so It can locate his Id in database and view all his patients

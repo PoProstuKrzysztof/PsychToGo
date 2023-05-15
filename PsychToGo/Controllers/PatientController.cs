@@ -31,7 +31,6 @@ public class PatientController : Controller
         Psychiatrist? psychiatrist = await _patientRepository.GetPatientPsychiatrist( id );
         if (psychiatrist == null)
         {
-            // It was NotFound() keyword, but for CreatePatientInstance I had to change it to Ok()
             return Ok();
         }
 

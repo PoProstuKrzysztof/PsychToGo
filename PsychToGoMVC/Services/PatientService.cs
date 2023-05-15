@@ -1,21 +1,23 @@
-﻿using PsychToGo.API.DTO;
+﻿using Microsoft.AspNetCore.Mvc;
+using PsychToGo.API.DTO;
 using PsychToGo.API.Models;
 using PsychToGo.Client.Models;
 using PsychToGo.Client.Services.Interfaces;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace PsychToGo.Client.Services;
 
 public class PatientService : IPatientService
 {
-    private readonly Uri baseAddress = new( "https://localhost:7291/api/Patient" );
-    private readonly Uri psychiatristAddress = new( "https://localhost:7291/api/Psychiatrist" );
-    private readonly Uri psychologistAddress = new( "https://localhost:7291/api/Psychologist" );
-    private readonly Uri medicinesAddress = new( "https://localhost:7291/api/Medicine" );
+    private readonly Uri _baseAddress = new( "https://localhost:7291/api/Patient" );
+    private readonly Uri _psychiatristAddress = new( "https://localhost:7291/api/Psychiatrist" );
+    private readonly Uri _psychologistAddress = new( "https://localhost:7291/api/Psychologist" );
+    private readonly Uri _medicinesAddress = new( "https://localhost:7291/api/Medicine" );
     private readonly HttpClient client = new();
 
     public PatientService()
     {
-        client.BaseAddress = baseAddress;
+        client.BaseAddress = _baseAddress;
     }
 
     public async Task<PatientViewModel> CreateParsedPatientInstance(int id)
@@ -81,20 +83,61 @@ public class PatientService : IPatientService
 
     public async Task<ICollection<PsychiatristDTO>> PsychiatristsList()
     {
-        ICollection<PsychiatristDTO>? psychiatrists = await client.GetFromJsonAsync<ICollection<PsychiatristDTO>>( psychiatristAddress + $"/list" );
+        ICollection<PsychiatristDTO>? psychiatrists = await client.GetFromJsonAsync<ICollection<PsychiatristDTO>>( _psychiatristAddress + $"/list" );
         return psychiatrists;
     }
 
     public async Task<ICollection<PsychologistDTO>> PsychologistsList()
     {
-        ICollection<PsychologistDTO>? psychologists = await client.GetFromJsonAsync<ICollection<PsychologistDTO>>( psychologistAddress + $"/list" );
+        ICollection<PsychologistDTO>? psychologists = await client.GetFromJsonAsync<ICollection<PsychologistDTO>>( _psychologistAddress + $"/list" );
         return psychologists;
     }
 
     public async Task<ICollection<MedicineDTO>> MedicinesList()
     {
-        List<MedicineDTO>? medicines = await client.GetFromJsonAsync<List<MedicineDTO>>( medicinesAddress + $"/list" );
+        List<MedicineDTO>? medicines = await client.GetFromJsonAsync<List<MedicineDTO>>( _medicinesAddress + $"/list" );
 
         return medicines;
+    }
+
+    public async Task<List<PatientViewModel>> GetFilteredPatients(string searchBy, string searchString)
+    {
+        HttpResponseMessage response = client.GetAsync( client.BaseAddress + "/patients" ).Result;
+        var patientsList = await response.Content.ReadFromJsonAsync<List<PatientViewModel>>();
+        var matchingPatients = patientsList;
+        if (string.IsNullOrEmpty( searchBy ) || string.IsNullOrEmpty( searchString ))
+        {
+            return patientsList;
+        }
+
+        switch (searchBy)
+        {
+            case (nameof( PatientViewModel.Name )):
+                matchingPatients = patientsList.Where( x =>
+                (!string.IsNullOrEmpty( x.Name ) ? x.Name.Contains( searchString,
+                StringComparison.OrdinalIgnoreCase ) : true) ).ToList();
+                break;
+
+            case (nameof( PatientViewModel.Email )):
+                matchingPatients = patientsList.Where( x =>
+                (!string.IsNullOrEmpty( x.Email ) ? x.Email.Contains( searchString,
+                StringComparison.OrdinalIgnoreCase ) : true) ).ToList();
+                break;
+
+            case (nameof( PatientViewModel.Address )):
+                matchingPatients = patientsList.Where( x =>
+                (!string.IsNullOrEmpty( x.Address ) ? x.Address.Contains( searchString,
+                StringComparison.OrdinalIgnoreCase ) : true) ).ToList();
+                break;
+
+            case (nameof( PatientViewModel.DateOfBirth )):
+                matchingPatients = patientsList.Where( x =>
+                x.DateOfBirth == null || x.DateOfBirth.ToString( "dd MMMM yyyy" ).Contains( searchString,
+                StringComparison.OrdinalIgnoreCase ) ).ToList();
+                break;
+
+            default: matchingPatients = patientsList; break;
+        }
+        return matchingPatients.ToList();
     }
 }

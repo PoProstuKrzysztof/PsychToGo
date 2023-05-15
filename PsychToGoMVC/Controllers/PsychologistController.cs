@@ -112,6 +112,7 @@ public class PsychologistController : Controller
     }
 
     [HttpGet]
+    [Authorize( Roles = "psychologist" )]
     public async Task<IActionResult> GetPsychologistPatients()
     {
         //Getting user e-mail here so It can locate his Id in database and view all his patients

@@ -15,4 +15,7 @@ public interface IPatientService
     Task<ICollection<PsychiatristDTO>> PsychiatristsList();
 
     Task<ICollection<MedicineDTO>> MedicinesList();
+
+    Task<List<PatientViewModel>> GetFilteredPatients(string searchBy,
+        string searchString);
 }

@@ -17,16 +17,20 @@
     <h1 class="text-center">PATIENTS</h1>
     <div class="search-box flex">
         <div class="flex-1">
-            <select class="search-input" name="searchBy">
+            <select class="search-input" name="searchBy" >
                 @foreach (var fields in ViewBag.SearchFields)
                 {
+                    if(fields.Key == ViewBag.CurrentSearchBy)
+                    {
+                        <option value="@fields.Key" selected="selected">@fields.Value</option>
+                    }
                     <option value="@fields.Key">@fields.Value</option>
                 }
             </select>
         </div>
 
         <div class="flex-1">
-            <input type="search" id="search" class="search-input" placeholder="Search.." />
+            <input type="search" id="search" name="searchString"  value="@ViewBag.CurrentSearchString" class="search-input" placeholder="Search.." />
         </div>
 
         <div class="flex-1">
@@ -34,9 +38,13 @@
             <a class="btn btn-danger" asp-action="Index">Clear all</a>
         </div>
         <hr />
-        <p>
-            <a class="btn btn-outline-primary" asp-action="CreatePatientMVC">Add</a>
-        </p>
+        @if (User.IsInRole( "admin" ))
+        {
+            <p>
+                <a class="btn btn-outline-primary" asp-action="CreatePatientMVC">Add</a>
+            </p>
+        }
+        
         <table class="table table-hover border shadow-lg text-black">
             <thead>
                 <tr>
