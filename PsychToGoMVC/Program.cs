@@ -9,11 +9,13 @@ string connectionString = builder.Configuration.GetConnectionString( "AppDbConte
     ?? throw new InvalidOperationException( "Connection string 'AppDbContextConnection' not found." );
 
 builder.Services.AddDbContext<AppDbContext>( options => options.UseSqlServer( connectionString ) );
-
-//Identity
+//Services injection
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IPatientService, PatientService>();
 builder.Services.AddScoped<IPsychiatristService, PsychiatristService>();
+builder.Services.AddScoped<IPsychologistService, PsychologistService>();
+
+//Identity
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
@@ -43,7 +45,6 @@ WebApplication app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler( "/Home/Error" );
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 

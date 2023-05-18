@@ -100,7 +100,7 @@ public class PatientService : IPatientService
         return medicines;
     }
 
-    public async Task<List<PatientViewModel>> GetFilteredPatients(string searchBy, string searchString)
+    public async Task<List<PatientViewModel>> GetFilteredPatients(string? searchBy, string? searchString)
     {
         HttpResponseMessage response = client.GetAsync( client.BaseAddress + "/patients" ).Result;
         var patientsList = await response.Content.ReadFromJsonAsync<List<PatientViewModel>>();

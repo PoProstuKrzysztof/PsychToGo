@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PsychToGo.API.DTO;
 using PsychToGo.API.Models;
+using PsychToGo.Client.Services.Interfaces;
 using System.Data;
 using System.Security.Claims;
 using System.Text;
@@ -11,37 +12,49 @@ namespace PsychToGo.Client.Controllers;
 
 public class PsychologistController : Controller
 {
+    private readonly IPsychologistService _serivce;
+
     /// <summary>
     /// Base address to connect with api
     /// </summary>
-    private readonly HttpClient client = new()
+    private readonly HttpClient _client = new()
     {
         BaseAddress = new Uri( "https://localhost:7291/api/Psychologist" )
     };
 
     private readonly IHttpContextAccessor _httpContext;
 
-    public PsychologistController(IHttpContextAccessor httpContext)
+    public PsychologistController(IHttpContextAccessor httpContext, IPsychologistService service)
     {
         _httpContext = httpContext;
+        _serivce = service;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index(string? searchBy, string? searchString)
     {
-        List<PsychologistDTO> psychologists;
-        HttpResponseMessage response = client.GetAsync( client.BaseAddress + "/list" ).Result;
+        ViewBag.SearchFields = new Dictionary<string, string>
+        {
+            {nameof(PsychologistDTO.Name),"Name" },
+            {nameof(PsychologistDTO.Email),"Email" },
+            {nameof(PsychologistDTO.Address),"Address" },
+            {nameof(PsychologistDTO.DateOfBirth),"Date of Birth" },
+            {nameof(PsychologistDTO.LastName),"Last Name" },
+        };
+
+        HttpResponseMessage response = _client.GetAsync( _client.BaseAddress + "/list" ).Result;
         if (response.IsSuccessStatusCode)
         {
-            string data = response.Content.ReadAsStringAsync().Result;
-            psychologists = JsonConvert.DeserializeObject<List<PsychologistDTO>>( data );
+            var data = await response.Content.ReadFromJsonAsync<List<PsychologistDTO>>();
+            data = await _serivce.GetFilteredPsychologist( searchBy, searchString );
+            ViewBag.CurrentSearchBy = searchBy;
+            ViewBag.CurrentSearchString = searchString;
+            return View( data ?? new List<PsychologistDTO>() );
         }
         else
         {
             ModelState.AddModelError( "", $"There are not psychologists" );
-            psychologists = Enumerable.Empty<PsychologistDTO>().ToList();
+            return View( Enumerable.Empty<PsychologistDTO>().ToList() );
         }
-
-        return View( psychologists );
     }
 
     [HttpGet]
@@ -58,7 +71,7 @@ public class PsychologistController : Controller
     {
         string data = JsonConvert.SerializeObject( pvm );
         StringContent content = new( data, Encoding.UTF8, "application/json" );
-        HttpResponseMessage response = client.PostAsync( client.BaseAddress + "/create", content ).Result;
+        HttpResponseMessage response = _client.PostAsync( _client.BaseAddress + "/create", content ).Result;
 
         if (response.IsSuccessStatusCode)
         {
@@ -71,7 +84,7 @@ public class PsychologistController : Controller
     [Authorize( Roles = "admin" )]
     public IActionResult DeletePsychologist([FromRoute] int id)
     {
-        HttpResponseMessage response = client.DeleteAsync( client.BaseAddress + $"/{id}" ).Result;
+        HttpResponseMessage response = _client.DeleteAsync( _client.BaseAddress + $"/{id}" ).Result;
         if (response.IsSuccessStatusCode)
         {
             return RedirectToAction( "Index" );
@@ -84,7 +97,7 @@ public class PsychologistController : Controller
     [Authorize( Roles = "admin" )]
     public async Task<IActionResult> EditPsychologist([FromRoute] int id)
     {
-        PsychologistDTO psychologist = await client.GetFromJsonAsync<PsychologistDTO>( client.BaseAddress + $"/{id}" );
+        PsychologistDTO psychologist = await _client.GetFromJsonAsync<PsychologistDTO>( _client.BaseAddress + $"/{id}" );
 
         if (psychologist == null)
         {
@@ -102,7 +115,7 @@ public class PsychologistController : Controller
         string data = JsonConvert.SerializeObject( psychologist );
 
         StringContent content = new( data, Encoding.UTF8, "application/json" );
-        HttpResponseMessage response = client.PutAsync( client.BaseAddress + $"/{psychologist.Id}", content ).Result;
+        HttpResponseMessage response = _client.PutAsync( _client.BaseAddress + $"/{psychologist.Id}", content ).Result;
         if (response.IsSuccessStatusCode)
         {
             return RedirectToAction( "Index" );
@@ -124,12 +137,12 @@ public class PsychologistController : Controller
             return BadRequest();
         }
 
-        List<PsychologistDTO> psychologists = await client.GetFromJsonAsync<List<PsychologistDTO>>( client.BaseAddress + "/list" );
+        List<PsychologistDTO> psychologists = await _client.GetFromJsonAsync<List<PsychologistDTO>>( _client.BaseAddress + "/list" );
 
         int psychologistId = psychologists.Where( x => x.Email.ToLower() == psychologistAsUser.Value.ToLower() )
             .Select( x => x.Id ).FirstOrDefault();
 
-        List<Patient> patients = await client.GetFromJsonAsync<List<Patient>>( client.BaseAddress + $"/{psychologistId}/patients" );
+        List<Patient> patients = await _client.GetFromJsonAsync<List<Patient>>( _client.BaseAddress + $"/{psychologistId}/patients" );
         if (patients == null)
         {
             ModelState.AddModelError( "", "No patients assigned" );

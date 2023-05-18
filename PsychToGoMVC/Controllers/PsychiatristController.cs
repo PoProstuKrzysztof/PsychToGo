@@ -26,7 +26,11 @@ public class PsychiatristController : Controller
 
     private readonly IHttpContextAccessor _httpContext;
 
-    public PsychiatristController(IHttpContextAccessor httpContext) => _httpContext = httpContext;
+    public PsychiatristController(IHttpContextAccessor httpContext, IPsychiatristService service)
+    {
+        _service = service;
+        _httpContext = httpContext;
+    }
 
     [Route( "psychiatrist/index" )]
     public async Task<IActionResult> Index(string searchBy, string? searchString)

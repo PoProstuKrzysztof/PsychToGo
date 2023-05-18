@@ -58,39 +58,38 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <h4>Assigned Psychologists:</h4>
-                        <ul>
-                            @foreach (var psychologist in Model.Psychologists)
-                            {
-                                <li>Full name: @psychologist.Name @psychologist.LastName </li>
-                                <li>Telephone: @psychologist.Phone </li>
-                                <li>E-mail: @psychologist.Email</li>
-                            }
-                        </ul>
+
+                        @foreach (var psychologist in Model.Psychologists)
+                        {
+                            <span>Full name: @psychologist.Name @psychologist.LastName </span>
+                            <span>elephone: @psychologist.Phone </span>
+                            <span>E-mail: @psychologist.Email</span>
+                        }
+
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <h4>Assigned Psychiatrists:</h4>
-                        <ul>
-                            @foreach (var psychiatrist in Model.Psychiatrists)
-                            {
-                                <li>Full name: @psychiatrist.Name @psychiatrist.LastName </li>
-                                <li>Telephone: @psychiatrist.Phone </li>
-                                <li>E-mail: @psychiatrist.Email</li>
-                            }
-                        </ul>
+
+                        @foreach (var psychiatrist in Model.Psychiatrists)
+                        {
+                            <span>Full name: @psychiatrist.Name @psychiatrist.LastName</span>
+                            <span>Telephone: @psychiatrist.Phone</span>
+                            <span>E-mail: @psychiatrist.Email</span>
+                        }
+
                     </div>
                 </div>
                 <div class="col-md-4">
                     <h4>Assigned Medicines:</h4>
-                    <ul>
-                        @foreach (var medicine in Model.Medicines)
-                        {
-                            <li>Name of the medicine: @medicine.Name</li>
-                            <li>Daily dose: @medicine.DailyDose</li>
-                            <li>Expire date: @medicine.ExpireDate.ToString("yyyy-MM-dd")</li>
-                        }
-                    </ul>
+
+                    @foreach (var medicine in Model.Medicines)
+                    {
+                        <span>Name of the medicine: @medicine.Name</span>
+                        <span>Daily dose: @medicine.DailyDose</span>
+                        <span>Expire date: @medicine.ExpireDate.ToString("yyyy-MM-dd")</span>
+                    }
                 </div>
             </div>
         </div>
