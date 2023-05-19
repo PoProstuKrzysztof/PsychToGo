@@ -23,6 +23,7 @@ builder.Services.AddControllers( options =>
         } );
 } );
 
+//Service injection
 builder.Services.AddScoped<IPsychologistRepository, PsychologistsRepository>();
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
 builder.Services.AddScoped<IMedicineRepository, MedicineRepository>();
@@ -33,6 +34,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddAutoMapper( AppDomain.CurrentDomain.GetAssemblies() );
 builder.Services.AddTransient<DataSeed>();
 
+//Security
 builder.Services.AddIdentity<AppUser, IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddRoles<IdentityRole>()
@@ -102,18 +104,15 @@ WebApplication app = builder.Build();
 if (args.Length == 1 && args[0].ToLower() == "seeddata")
     SeedData( app );
 
-void SeedData(IHost app)
+static void SeedData(IHost app)
 {
     IServiceScopeFactory? scopedFactory = app.Services.GetService<IServiceScopeFactory>();
 
-    using (IServiceScope scope = scopedFactory.CreateScope())
-    {
-        DataSeed? service = scope.ServiceProvider.GetService<DataSeed>();
-        service.SeedDataContext();
-    }
+    using IServiceScope scope = scopedFactory.CreateScope();
+    DataSeed? service = scope.ServiceProvider.GetService<DataSeed>();
+    service.SeedDataContext();
 }
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

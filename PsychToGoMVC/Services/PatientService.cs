@@ -110,34 +110,22 @@ public class PatientService : IPatientService
             return patientsList;
         }
 
-        switch (searchBy)
+        matchingPatients = searchBy switch
         {
-            case (nameof( PatientViewModel.Name )):
-                matchingPatients = patientsList.Where( x =>
-                (!string.IsNullOrEmpty( x.Name ) ? x.Name.Contains( searchString,
-                StringComparison.OrdinalIgnoreCase ) : true) ).ToList();
-                break;
-
-            case (nameof( PatientViewModel.Email )):
-                matchingPatients = patientsList.Where( x =>
-                (!string.IsNullOrEmpty( x.Email ) ? x.Email.Contains( searchString,
-                StringComparison.OrdinalIgnoreCase ) : true) ).ToList();
-                break;
-
-            case (nameof( PatientViewModel.Address )):
-                matchingPatients = patientsList.Where( x =>
-                (!string.IsNullOrEmpty( x.Address ) ? x.Address.Contains( searchString,
-                StringComparison.OrdinalIgnoreCase ) : true) ).ToList();
-                break;
-
-            case (nameof( PatientViewModel.DateOfBirth )):
-                matchingPatients = patientsList.Where( x =>
-                x.DateOfBirth == null || x.DateOfBirth.ToString( "dd MMMM yyyy" ).Contains( searchString,
-                StringComparison.OrdinalIgnoreCase ) ).ToList();
-                break;
-
-            default: matchingPatients = patientsList; break;
-        }
+            (nameof( PatientViewModel.Name )) => patientsList.Where( x =>
+                            (!string.IsNullOrEmpty( x.Name ) ? x.Name.Contains( searchString,
+                            StringComparison.OrdinalIgnoreCase ) : true) ).ToList(),
+            (nameof( PatientViewModel.Email )) => patientsList.Where( x =>
+                            (!string.IsNullOrEmpty( x.Email ) ? x.Email.Contains( searchString,
+                            StringComparison.OrdinalIgnoreCase ) : true) ).ToList(),
+            (nameof( PatientViewModel.Address )) => patientsList.Where( x =>
+                            (!string.IsNullOrEmpty( x.Address ) ? x.Address.Contains( searchString,
+                            StringComparison.OrdinalIgnoreCase ) : true) ).ToList(),
+            (nameof( PatientViewModel.DateOfBirth )) => patientsList.Where( x =>
+                            x.DateOfBirth == null || x.DateOfBirth.ToString( "dd MMMM yyyy" ).Contains( searchString,
+                            StringComparison.OrdinalIgnoreCase ) ).ToList(),
+            _ => patientsList,
+        };
         return matchingPatients.ToList();
     }
 }

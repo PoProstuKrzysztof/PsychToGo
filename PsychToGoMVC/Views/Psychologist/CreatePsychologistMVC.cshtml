@@ -14,19 +14,23 @@
 
         <div>
             <label asp-for="Name" class="control-label">Name</label>
-            <input asp-for="Name" class="form-control" placeholder="Enter name" value="@Model.Name" type="text" required />
+            <input asp-for="Name" class="form-control" placeholder="Enter name" type="text" required />
             <span asp-validation-for="Name" class="text-danger"></span>
         </div>
 
         <div>
+
             <label asp-for="LastName" class="control-label">Last name</label>
-            <input asp-for="LastName" class="form-control" placeholder="Enter last name" value="@Model.LastName" type="text" required />
+            <input asp-for="LastName" class="form-control" placeholder="Enter last name" type="text" required />
             <span asp-validation-for="LastName" class="text-danger"></span>
         </div>
 
         <div>
             <label asp-for="Email" class="control-label">E-mail</label>
             <input asp-for="Email" class="form-control" placeholder="Enter e-mail" type="email" value="@Model.Email" required />
+            <input asp-for="Email" class="form-control" placeholder="Enter e-mail" type="email" required />
+
+
             <span asp-validation-for="Email" class="text-danger"></span>
         </div>
 

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PsychToGo.API.DTO;
 
-public class LoginRequestDTO
+public record LoginRequestDTO
 {
     [Required]
     [PersonalData]

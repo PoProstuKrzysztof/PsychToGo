@@ -1,13 +1,18 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json;
 using PsychToGo.API.DTO;
+using PsychToGo.API.Models;
+using PsychToGo.Client.Services.Interfaces;
 using System.Text;
 
 namespace PsychToGo.Client.Controllers;
 
 public class MedicineController : Controller
 {
+    private readonly IMedicineService _service;
+
     /// <summary>
     /// Base address to connect with api
     /// </summary>
@@ -17,26 +22,35 @@ public class MedicineController : Controller
         BaseAddress = new Uri( "https://localhost:7291/api/Medicine" )
     };
 
-    public MedicineController()
+    public MedicineController(IMedicineService service)
     {
+        _service = service;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index(string searchBy, string? searchString)
     {
-        List<MedicineDTO> medicines;
+        ViewBag.SearchFields = new Dictionary<string, string>
+        {
+            {nameof(MedicineDTO.Name), "Name"},
+            {nameof(MedicineDTO.ExpireDate), "Expire date"},
+            {nameof(MedicineDTO.InStock),"In stock" },
+            {nameof(MedicineDTO.ProductionDate),"Production date" }
+        };
+
         HttpResponseMessage response = _client.GetAsync( _client.BaseAddress + "/list" ).Result;
         if (response.IsSuccessStatusCode)
         {
-            string data = response.Content.ReadAsStringAsync().Result;
-            medicines = JsonConvert.DeserializeObject<List<MedicineDTO>>( data );
+            var data = await response.Content.ReadFromJsonAsync<List<MedicineDTO>>();
+            data = await _service.GetFilteredMedicines( searchBy, searchString );
+            ViewBag.CurrentSearchBy = searchBy;
+            ViewBag.CurrentSearchString = searchString;
+            return View( data ?? new List<MedicineDTO>() );
         }
         else
         {
-            medicines = Enumerable.Empty<MedicineDTO>().ToList();
             ModelState.AddModelError( "", $"There are not medicines" );
+            return View( Enumerable.Empty<MedicineDTO>().ToList() );
         }
-
-        return View( medicines );
     }
 
     [HttpGet]

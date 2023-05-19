@@ -19,7 +19,7 @@ public class PsychiatristController : Controller
     /// Base address to connect with api
     /// </summary>
 
-    private readonly HttpClient _client = new HttpClient
+    private readonly HttpClient _client = new()
     {
         BaseAddress = new Uri( "https://localhost:7291/api/Psychiatrist" )
     };
@@ -73,7 +73,7 @@ public class PsychiatristController : Controller
     public IActionResult CreatePsychiatristMVC(PsychiatristDTO pvm)
     {
         string data = JsonConvert.SerializeObject( pvm );
-        StringContent content = new StringContent( data, Encoding.UTF8, "application/json" );
+        StringContent content = new( data, Encoding.UTF8, "application/json" );
         HttpResponseMessage response = _client.PostAsync( _client.BaseAddress + "/create", content ).Result;
 
         if (response.IsSuccessStatusCode)
@@ -118,7 +118,7 @@ public class PsychiatristController : Controller
     {
         string data = JsonConvert.SerializeObject( psychiatrist );
 
-        StringContent content = new StringContent( data, Encoding.UTF8, "application/json" );
+        StringContent content = new( data, Encoding.UTF8, "application/json" );
         HttpResponseMessage response = _client.PutAsync( _client.BaseAddress + $"/{psychiatrist.Id}", content ).Result;
         if (response.IsSuccessStatusCode)
         {

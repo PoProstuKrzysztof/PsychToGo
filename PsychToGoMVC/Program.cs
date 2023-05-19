@@ -14,8 +14,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IPatientService, PatientService>();
 builder.Services.AddScoped<IPsychiatristService, PsychiatristService>();
 builder.Services.AddScoped<IPsychologistService, PsychologistService>();
+builder.Services.AddScoped<IMedicineService, MedicineService>();
 
-//Identity
+//Security
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
@@ -41,7 +42,6 @@ builder.Services.AddSession( options =>
 
 WebApplication app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler( "/Home/Error" );

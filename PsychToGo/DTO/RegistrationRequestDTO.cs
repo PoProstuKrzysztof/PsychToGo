@@ -2,7 +2,7 @@
 
 namespace PsychToGo.API.DTO;
 
-public class RegistrationRequestDTO
+public record RegistrationRequestDTO
 {
     [Required( ErrorMessage = "E-mail can't be blank" )]
     [EmailAddress( ErrorMessage = "E-mail should be in a proper format" )]

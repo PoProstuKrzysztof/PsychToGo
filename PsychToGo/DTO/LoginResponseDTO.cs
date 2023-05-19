@@ -1,6 +1,6 @@
 ﻿namespace PsychToGo.API.DTO;
 
-public class LoginResponseDTO
+public record LoginResponseDTO
 {
     public UserDTO User { get; set; }
     public string Token { get; set; }

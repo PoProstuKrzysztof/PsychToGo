@@ -6,16 +6,16 @@ namespace PsychToGo.Client.Services;
 public class PsychologistService : IPsychologistService
 {
     private readonly Uri _baseAddress = new( "https://localhost:7291/api/Psychologist" );
-    private readonly HttpClient client = new();
+    private readonly HttpClient _client = new();
 
     public PsychologistService()
     {
-        client.BaseAddress = _baseAddress;
+        _client.BaseAddress = _baseAddress;
     }
 
     public async Task<List<PsychologistDTO>> GetFilteredPsychologist(string searchBy, string searchString)
     {
-        HttpResponseMessage response = client.GetAsync( client.BaseAddress + "/list" ).Result;
+        HttpResponseMessage response = _client.GetAsync( _client.BaseAddress + "/list" ).Result;
         var psychologistList = await response.Content.ReadFromJsonAsync<List<PsychologistDTO>>();
         var matchingPsychologists = psychologistList;
         if (string.IsNullOrEmpty( searchBy ) || string.IsNullOrEmpty( searchString ))
@@ -23,34 +23,22 @@ public class PsychologistService : IPsychologistService
             return psychologistList;
         }
 
-        switch (searchBy)
+        matchingPsychologists = searchBy switch
         {
-            case (nameof( PsychologistDTO.Name )):
-                matchingPsychologists = psychologistList.Where( x =>
-                (!string.IsNullOrEmpty( x.Name ) ? x.Name.Contains( searchString,
-                StringComparison.OrdinalIgnoreCase ) : true) ).ToList();
-                break;
-
-            case (nameof( PsychologistDTO.Email )):
-                matchingPsychologists = psychologistList.Where( x =>
-                (!string.IsNullOrEmpty( x.Email ) ? x.Email.Contains( searchString,
-                StringComparison.OrdinalIgnoreCase ) : true) ).ToList();
-                break;
-
-            case (nameof( PsychologistDTO.Address )):
-                matchingPsychologists = psychologistList.Where( x =>
-                (!string.IsNullOrEmpty( x.Address ) ? x.Address.Contains( searchString,
-                StringComparison.OrdinalIgnoreCase ) : true) ).ToList();
-                break;
-
-            case (nameof( PsychologistDTO.DateOfBirth )):
-                matchingPsychologists = psychologistList.Where( x =>
-                x.DateOfBirth == null || x.DateOfBirth.ToString( "dd MMMM yyyy" ).Contains( searchString,
-                StringComparison.OrdinalIgnoreCase ) ).ToList();
-                break;
-
-            default: matchingPsychologists = psychologistList; break;
-        }
+            (nameof( PsychologistDTO.Name )) => psychologistList.Where( x =>
+                            (!string.IsNullOrEmpty( x.Name ) ? x.Name.Contains( searchString,
+                            StringComparison.OrdinalIgnoreCase ) : true) ).ToList(),
+            (nameof( PsychologistDTO.Email )) => psychologistList.Where( x =>
+                            (!string.IsNullOrEmpty( x.Email ) ? x.Email.Contains( searchString,
+                            StringComparison.OrdinalIgnoreCase ) : true) ).ToList(),
+            (nameof( PsychologistDTO.Address )) => psychologistList.Where( x =>
+                            (!string.IsNullOrEmpty( x.Address ) ? x.Address.Contains( searchString,
+                            StringComparison.OrdinalIgnoreCase ) : true) ).ToList(),
+            (nameof( PsychologistDTO.DateOfBirth )) => psychologistList.Where( x =>
+                            x.DateOfBirth == null || x.DateOfBirth.ToString( "dd MMMM yyyy" ).Contains( searchString,
+                            StringComparison.OrdinalIgnoreCase ) ).ToList(),
+            _ => psychologistList,
+        };
         return matchingPsychologists.ToList();
     }
 }

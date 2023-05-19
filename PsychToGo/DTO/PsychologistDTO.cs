@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PsychToGo.API.DTO;
 
-public class PsychologistDTO
+public record PsychologistDTO
 {
     [HiddenInput]
     public int Id { get; set; }

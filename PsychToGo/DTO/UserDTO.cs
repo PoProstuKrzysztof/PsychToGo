@@ -1,6 +1,6 @@
 ﻿namespace PsychToGo.API.DTO;
 
-public class UserDTO
+public record UserDTO
 {
     public Guid Id { get; set; }
 
