@@ -27,10 +27,7 @@
 
         <div>
             <label asp-for="Email" class="control-label">E-mail</label>
-            <input asp-for="Email" class="form-control" placeholder="Enter e-mail" type="email" value="@Model.Email" required />
             <input asp-for="Email" class="form-control" placeholder="Enter e-mail" type="email" required />
-
-
             <span asp-validation-for="Email" class="text-danger"></span>
         </div>
 

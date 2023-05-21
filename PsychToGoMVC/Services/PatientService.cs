@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using PsychToGo.API.DTO;
+﻿using PsychToGo.API.DTO;
 using PsychToGo.API.Models;
+using PsychToGo.Client.Enums;
 using PsychToGo.Client.Models;
 using PsychToGo.Client.Services.Interfaces;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace PsychToGo.Client.Services;
 
@@ -24,8 +23,11 @@ public class PatientService : IPatientService
     {
         Patient? findPatient = await client.GetFromJsonAsync<Patient>( client.BaseAddress + $"/{id}" );
 
-        PsychologistDTO psychologist = await client.GetFromJsonAsync<PsychologistDTO>( client.BaseAddress + $"/{id}/psychologist" );
-        PsychiatristDTO psychiatrist = await client.GetFromJsonAsync<PsychiatristDTO>( client.BaseAddress + $"/{id}/psychiatrist" );
+        PsychologistDTO psychologist = await client
+            .GetFromJsonAsync<PsychologistDTO>( client.BaseAddress + $"/{id}/psychologist" );
+
+        PsychiatristDTO psychiatrist = await client
+            .GetFromJsonAsync<PsychiatristDTO>( client.BaseAddress + $"/{id}/psychiatrist" );
 
         if (psychiatrist == null)
         {
@@ -83,19 +85,22 @@ public class PatientService : IPatientService
 
     public async Task<ICollection<PsychiatristDTO>> PsychiatristsList()
     {
-        ICollection<PsychiatristDTO>? psychiatrists = await client.GetFromJsonAsync<ICollection<PsychiatristDTO>>( _psychiatristAddress + $"/list" );
+        ICollection<PsychiatristDTO>? psychiatrists = await client
+            .GetFromJsonAsync<ICollection<PsychiatristDTO>>( _psychiatristAddress + $"/list" );
         return psychiatrists;
     }
 
     public async Task<ICollection<PsychologistDTO>> PsychologistsList()
     {
-        ICollection<PsychologistDTO>? psychologists = await client.GetFromJsonAsync<ICollection<PsychologistDTO>>( _psychologistAddress + $"/list" );
+        ICollection<PsychologistDTO>? psychologists = await client
+            .GetFromJsonAsync<ICollection<PsychologistDTO>>( _psychologistAddress + $"/list" );
         return psychologists;
     }
 
     public async Task<ICollection<MedicineDTO>> MedicinesList()
     {
-        List<MedicineDTO>? medicines = await client.GetFromJsonAsync<List<MedicineDTO>>( _medicinesAddress + $"/list" );
+        List<MedicineDTO>? medicines = await client
+            .GetFromJsonAsync<List<MedicineDTO>>( _medicinesAddress + $"/list" );
 
         return medicines;
     }
@@ -127,5 +132,44 @@ public class PatientService : IPatientService
             _ => patientsList,
         };
         return matchingPatients.ToList();
+    }
+
+    public List<PatientViewModel> GetSortedPatients(List<PatientViewModel> patients, string sortBy,
+        SortOrderOptions sortOrder)
+    {
+        if (string.IsNullOrEmpty( sortBy ))
+        {
+            return patients;
+        }
+
+        List<PatientViewModel> sortedPatients = (sortBy, sortOrder)
+            switch
+        {
+            (nameof( PatientViewModel.Name ), SortOrderOptions.ASC )
+            => patients.OrderBy( x => x.Name, StringComparer.OrdinalIgnoreCase )
+            .ToList(),
+
+            (nameof( PatientViewModel.Name ), SortOrderOptions.DESC )
+            => patients.OrderByDescending( x => x.Name, StringComparer.OrdinalIgnoreCase )
+            .ToList(),
+
+            (nameof( PatientViewModel.LastName ), SortOrderOptions.ASC )
+            => patients.OrderBy( x => x.LastName, StringComparer.OrdinalIgnoreCase )
+            .ToList(),
+
+            (nameof( PatientViewModel.LastName ), SortOrderOptions.DESC )
+            => patients.OrderByDescending( x => x.LastName, StringComparer.OrdinalIgnoreCase )
+            .ToList(),
+
+            (nameof( PatientViewModel.Email ), SortOrderOptions.ASC )
+            => patients.OrderBy( x => x.Email, StringComparer.OrdinalIgnoreCase )
+            .ToList(),
+
+            (nameof( PatientViewModel.Email ), SortOrderOptions.DESC )
+            => patients.OrderByDescending( x => x.Email, StringComparer.OrdinalIgnoreCase )
+            .ToList(),
+        };
+
+        return sortedPatients;
     }
 }

@@ -6,9 +6,12 @@
     ViewBag.CurrentUrl = "~/Psychiatrist/Index";
 }
 
+<head>
+    <link rel="stylesheet" href="~/PsychToGo.Client.styles.css" asp-append-version="true" />
+</head>
+
 <form method="get" asp-action="index">
-    <div class="container border p-2 mt-2">
-    </div>
+
     <h1 class="text-center">PSYCHIATRISTS</h1>
     <div class="search-box flex">
         <div class="flex-1">
@@ -55,13 +58,14 @@
                     @if (User.IsInRole( "admin" ))
                     {
                         <th>
-                            Date of birth
+                            Date of Birth
+                        </th>
+                        <th>
+                            Age
                         </th>
                         <th>
                             @Html.DisplayNameFor(model => model.Address)
                         </th>
-
-
                         <th>
                             Operations
                         </th>
@@ -88,6 +92,9 @@
                         {
                             <td>
                                 @psychiatrist.DateOfBirth.ToString("yyyy-MM-dd")
+                            </td>
+                            <td>
+                                @Math.Round((DateTime.Now - psychiatrist.DateOfBirth).TotalDays / 365.25)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => psychiatrist.Address)

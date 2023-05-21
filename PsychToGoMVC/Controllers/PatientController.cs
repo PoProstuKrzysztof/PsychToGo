@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PsychToGo.API.DTO;
 using PsychToGo.API.Models;
+using PsychToGo.Client.Enums;
 using PsychToGo.Client.Models;
 using PsychToGo.Client.Services.Interfaces;
 using System.Security.Claims;
@@ -30,9 +31,14 @@ public class PatientController : Controller
         _httpContext = httpContext;
     }
 
+    /// <summary>
+    /// Displaying list of patients, with sorting and searching functionality, default option for sorting is ascending
+    /// </summary>
     [Route( "patient/index" )]
     [Authorize( Roles = "admin" )]
-    public async Task<IActionResult> Index(string searchBy, string? searchString)
+    public async Task<IActionResult> Index(string searchBy, string? searchString,
+        string sortBy = nameof( PatientViewModel.Name ),
+        SortOrderOptions sortOrder = SortOrderOptions.ASC)
     {
         ViewBag.SearchFields = new Dictionary<string, string>()
         {
@@ -46,10 +52,16 @@ public class PatientController : Controller
         HttpResponseMessage response = _client.GetAsync( _client.BaseAddress + "/patients" ).Result;
         if (response.IsSuccessStatusCode)
         {
+            //Searching
             var data = await response.Content.ReadFromJsonAsync<List<PatientViewModel>>();
             data = await _patientService.GetFilteredPatients( searchBy, searchString );
             ViewBag.CurrentSearchBy = searchBy;
             ViewBag.CurrentSearchString = searchString;
+
+            //Sorting
+            var sortedPersons = _patientService.GetSortedPatients( data, sortBy, sortOrder );
+            ViewBag.CurrentSortBy = sortBy;
+            ViewBag.CurrentSortOrder = sortOrder.ToString();
             return View( data ?? new List<PatientViewModel>() );
         }
         else
@@ -96,6 +108,7 @@ public class PatientController : Controller
         //Finding patient psychologist and psychiatrist
         PsychologistDTO patientPsychologist = await _client.GetFromJsonAsync<PsychologistDTO>(
             _client.BaseAddress + $"/{patientId}/psychologist" );
+
         PsychiatristDTO patientPsychiatrist = await _client.GetFromJsonAsync<PsychiatristDTO>(
             _client.BaseAddress + $"/{patientId}/psychiatrist" );
 

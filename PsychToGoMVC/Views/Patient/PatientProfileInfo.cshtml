@@ -62,7 +62,9 @@
                         @foreach (var psychologist in Model.Psychologists)
                         {
                             <span>Full name: @psychologist.Name @psychologist.LastName </span>
-                            <span>elephone: @psychologist.Phone </span>
+                            <br />
+                            <span>Telephone: @psychologist.Phone </span>
+                            <br />
                             <span>E-mail: @psychologist.Email</span>
                         }
 
@@ -75,8 +77,10 @@
                         @foreach (var psychiatrist in Model.Psychiatrists)
                         {
                             <span>Full name: @psychiatrist.Name @psychiatrist.LastName</span>
-                            <span>Telephone: @psychiatrist.Phone</span>
+                            <br />
+                            <span>Telephone: @psychiatrist.Phone</span><br/>
                             <span>E-mail: @psychiatrist.Email</span>
+                            <br />
                         }
 
                     </div>
@@ -86,9 +90,11 @@
 
                     @foreach (var medicine in Model.Medicines)
                     {
-                        <span>Name of the medicine: @medicine.Name</span>
-                        <span>Daily dose: @medicine.DailyDose</span>
+                        <span>Name of the medicine: @medicine.Name</span><br/>
+                        <span>Daily dose: @medicine.DailyDose</span><br/>
                         <span>Expire date: @medicine.ExpireDate.ToString("yyyy-MM-dd")</span>
+
+                        <br />
                     }
                 </div>
             </div>

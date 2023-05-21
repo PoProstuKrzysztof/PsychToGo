@@ -7,9 +7,10 @@
     ViewBag.CurrentUrl = "~/Medicines/Index";
 }
 
+<head>
+    <link rel="stylesheet" href="~/PsychToGo.Client.styles.css" asp-append-version="true" />
+</head>
 
-<div class="container border p-2 mt-2">
-</div>
 
 <form method="get" asp-action="Index">
     <h1 class="text-center">MEDICINES</h1>
@@ -25,13 +26,7 @@
                     <option value="@fields.Key">@fields.Value</option>
                 }
             </select>
-        </div>
-
-        <div class="flex-1">
             <input type="search" id="search" name="searchString" value="@ViewBag.CurrentSearchString" class="search-input" placeholder="Search.." />
-        </div>
-
-        <div class="flex-1">
             <button class="btn btn-dark">Search</button>
             <a class="btn btn-danger" asp-action="Index">Clear all</a>
         </div>

@@ -1,4 +1,5 @@
-﻿@model IEnumerable<PsychToGo.Client.Models.PatientViewModel>
+﻿@using PsychToGo.Client.Enums;
+@model IEnumerable<PsychToGo.Client.Models.PatientViewModel>
 
 @{
     ViewData["Title"] = "Patients";
@@ -12,12 +13,11 @@
 
 <form method="get" asp-action="Index">
 
-    <div class="container p-2 m-2">
-    </div>
     <h1 class="text-center">PATIENTS</h1>
     <div class="search-box flex">
         <div class="flex-1">
             <select class="search-input" name="searchBy">
+
                 @foreach (var fields in ViewBag.SearchFields)
                 {
                     if (fields.Key == ViewBag.CurrentSearchBy)
@@ -35,17 +35,37 @@
         @if (User.IsInRole( "admin" ))
         {
             <p>
-                <a class="btn btn-outline-primary" asp-action="CreatePatientMVC">Add</a>
+                <a  class="btn btn-outline-primary" asp-action="CreatePatientMVC">Add</a>
             </p>
         }
-        
+
         <table class="table table-hover border shadow-lg text-black">
             <thead>
+                <!-- Here I use sorting as link-->
                 <tr>
+                    @if(ViewBag.CurrentSortBy == nameof(PatientViewModel.Name) && ViewBag.CurrentSortOrder == SortOrderOptions.ASC.ToString())
+                    {
+                        <th>
+                            <a href="~/patient/index?searchBy=@ViewBag.CurrentSearchBy&
+                            searchString=@ViewBag.CurrentSearchString&sortBy=@nameof(PatientViewModel.Name)&sortOrder=@nameof(SortOrderOptions.DESC)">@Html.DisplayNameFor(model => model.Name)</a>
+                        </th>
+                    }
+                    else if (ViewBag.CurrentSortBy == nameof( PatientViewModel.Name ) && ViewBag.CurrentSortOrder == SortOrderOptions.DESC.ToString())
+                    {
+                        <th>
+                            <a href="~/patient/index?searchBy=@ViewBag.CurrentSearchBy&
+                            searchString=@ViewBag.CurrentSearchString&sortBy=@nameof(PatientViewModel.Name)&sortOrder=@nameof(SortOrderOptions.ASC)">@Html.DisplayNameFor(model => model.Name)</a>
+                        </th>
+                    }
+                    else
+                    {
+                        <th>
+                            <a href="~/patient/index?searchBy=@ViewBag.CurrentSearchBy&
+                            searchString=@ViewBag.CurrentSearchString&sortBy=@nameof(PatientViewModel.Name)&sortOrder=@nameof(SortOrderOptions.ASC)">@Html.DisplayNameFor(model => model.Name)</a>
+                        </th>
+                    }
 
-                    <th>
-                        @Html.DisplayNameFor(model => model.Name)
-                    </th>
+                    
                     <th>
                         Last name
                     </th>
@@ -58,7 +78,10 @@
                     @if (User.IsInRole( "admin" ) || User.IsInRole( "psychologist" ) || User.IsInRole( "psychiatrist" ))
                     {
                         <th>
-                            Date of birth
+                            Date of Birth
+                        </th>
+                        <th>
+                            Age
                         </th>
                         <th>
                             @Html.DisplayNameFor(model => model.Address)
@@ -95,6 +118,9 @@
                         {
                             <td>
                                 @patient.DateOfBirth.ToString("yyyy-MM-dd")
+                            </td>
+                            <td>
+                                @Math.Round((DateTime.Now - patient.DateOfBirth).TotalDays / 365.25)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => patient.Address)

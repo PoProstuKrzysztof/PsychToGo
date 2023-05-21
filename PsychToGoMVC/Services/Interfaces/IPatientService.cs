@@ -1,5 +1,6 @@
 ﻿using PsychToGo.API.DTO;
 using PsychToGo.API.Models;
+using PsychToGo.Client.Enums;
 using PsychToGo.Client.Models;
 
 namespace PsychToGo.Client.Services.Interfaces;
@@ -18,4 +19,6 @@ public interface IPatientService
 
     Task<List<PatientViewModel>> GetFilteredPatients(string searchBy,
         string searchString);
+
+    List<PatientViewModel> GetSortedPatients(List<PatientViewModel> patients, string sortBy, SortOrderOptions sortOrder);
 }
