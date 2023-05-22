@@ -24,6 +24,7 @@ By default, the psychologist is assigned to the patient. When it's necessary, th
 + Prescribing medicine
 + Assigning psychiatrist to patient
 + CRUD Operations on patients/psychiatrists/psychologists/medicines
++ Caching
 
 # Data seed instructions 🌱
 It works with your local SQL server for now, so you have to connect it to the program and then seed data by adding migration and applying it.
