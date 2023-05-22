@@ -168,6 +168,8 @@ public class PatientService : IPatientService
             (nameof( PatientViewModel.Email ), SortOrderOptions.DESC )
             => patients.OrderByDescending( x => x.Email, StringComparer.OrdinalIgnoreCase )
             .ToList(),
+
+            _ => patients
         };
 
         return sortedPatients;

@@ -11,6 +11,7 @@ using System.Text;
 
 namespace PsychToGo.Client.Controllers;
 
+[Route( "psychiatrists" )]
 public class PsychiatristController : Controller
 {
     private readonly IPsychiatristService _service;

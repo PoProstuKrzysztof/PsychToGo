@@ -11,6 +11,7 @@ using System.Text;
 
 namespace PsychToGo.Client.Controllers;
 
+[Route( "patients" )]
 public class PatientController : Controller
 {
     /// <summary>
@@ -34,7 +35,7 @@ public class PatientController : Controller
     /// <summary>
     /// Displaying list of patients, with sorting and searching functionality, default option for sorting is ascending
     /// </summary>
-    [Route( "patient/index" )]
+    [Route( "index" )]
     [Authorize( Roles = "admin" )]
     public async Task<IActionResult> Index(string searchBy, string? searchString,
         string sortBy = nameof( PatientViewModel.Name ),
@@ -62,7 +63,7 @@ public class PatientController : Controller
             var sortedPersons = _patientService.GetSortedPatients( data, sortBy, sortOrder );
             ViewBag.CurrentSortBy = sortBy;
             ViewBag.CurrentSortOrder = sortOrder.ToString();
-            return View( data ?? new List<PatientViewModel>() );
+            return View( sortedPersons ?? new List<PatientViewModel>() );
         }
         else
         {
@@ -221,6 +222,7 @@ public class PatientController : Controller
         StringContent content = new( data,
             Encoding.UTF8,
             "application/json" );
+
         if (pvm.PsychiatristId == null)
         {
             response = _client.

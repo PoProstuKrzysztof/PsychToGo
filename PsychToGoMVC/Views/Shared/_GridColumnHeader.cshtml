@@ -1,0 +1,22 @@
+﻿@using PsychToGo.Client.Enums;
+@if (ViewBag.CurrentSortBy == ViewBag.ColumnName && ViewBag.CurrentSortOrder == SortOrderOptions.ASC.ToString())
+{
+    <th>
+        <a href="~/patient/index?searchBy=@ViewBag.CurrentSearchBy&
+        searchString=@ViewBag.CurrentSearchString&sortBy=@ViewBag.ColumnName&sortOrder=@nameof(SortOrderOptions.DESC)">@ViewBag.Display</a>
+    </th>
+}
+else if (ViewBag.CurrentSortBy == ViewBag.ColumnName && ViewBag.CurrentSortOrder == SortOrderOptions.DESC.ToString())
+{
+    <th>
+        <a href="~/patient/index?searchBy=@ViewBag.CurrentSearchBy&
+        searchString=@ViewBag.CurrentSearchString&sortBy=@ViewBag.ColumnName&sortOrder=@nameof(SortOrderOptions.ASC)">@ViewBag.Display</a>
+    </th>
+}
+else
+{
+    <th>
+        <a href="~/patient/index?searchBy=@ViewBag.CurrentSearchBy&
+        searchString=@ViewBag.CurrentSearchString&sortBy=@ViewBag.ColumnName&sortOrder=@nameof(SortOrderOptions.ASC)">@ViewBag.Display</a>
+    </th>
+}

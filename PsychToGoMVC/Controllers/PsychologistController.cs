@@ -10,6 +10,7 @@ using System.Text;
 
 namespace PsychToGo.Client.Controllers;
 
+[Route( "psychologists" )]
 public class PsychologistController : Controller
 {
     private readonly IPsychologistService _serivce;

@@ -32,7 +32,7 @@
             <a class="btn btn-danger" asp-action="Index">Clear all</a>
         </div>
         <hr />
-        @if (User.IsInRole( "admin" ))
+        @if (User.IsInRole("admin"))
         {
             <p>
                 <a  class="btn btn-outline-primary" asp-action="CreatePatientMVC">Add</a>
@@ -41,37 +41,24 @@
 
         <table class="table table-hover border shadow-lg text-black">
             <thead>
-                <!-- Here I use sorting as link-->
+                <!-- Here I use sorting as with partial view-->
                 <tr>
-                    @if(ViewBag.CurrentSortBy == nameof(PatientViewModel.Name) && ViewBag.CurrentSortOrder == SortOrderOptions.ASC.ToString())
-                    {
-                        <th>
-                            <a href="~/patient/index?searchBy=@ViewBag.CurrentSearchBy&
-                            searchString=@ViewBag.CurrentSearchString&sortBy=@nameof(PatientViewModel.Name)&sortOrder=@nameof(SortOrderOptions.DESC)">@Html.DisplayNameFor(model => model.Name)</a>
-                        </th>
-                    }
-                    else if (ViewBag.CurrentSortBy == nameof( PatientViewModel.Name ) && ViewBag.CurrentSortOrder == SortOrderOptions.DESC.ToString())
-                    {
-                        <th>
-                            <a href="~/patient/index?searchBy=@ViewBag.CurrentSearchBy&
-                            searchString=@ViewBag.CurrentSearchString&sortBy=@nameof(PatientViewModel.Name)&sortOrder=@nameof(SortOrderOptions.ASC)">@Html.DisplayNameFor(model => model.Name)</a>
-                        </th>
-                    }
-                    else
-                    {
-                        <th>
-                            <a href="~/patient/index?searchBy=@ViewBag.CurrentSearchBy&
-                            searchString=@ViewBag.CurrentSearchString&sortBy=@nameof(PatientViewModel.Name)&sortOrder=@nameof(SortOrderOptions.ASC)">@Html.DisplayNameFor(model => model.Name)</a>
-                        </th>
-                    }
+                    @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData){
+                    {"ColumnName", nameof(PatientViewModel.Name)},
+                    {"Display", "Name"},
+                    })
 
-                    
-                    <th>
-                        Last name
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Email)
-                    </th>
+                    @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData){
+                    {"ColumnName", nameof(PatientViewModel.LastName)},
+                    {"Display", "Last name"},
+                    })
+
+                    @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData){
+                    {"ColumnName", nameof(PatientViewModel.Email)},
+                    {"Display", "Email"},
+                    })
+
+                   
                     <th>
                         @Html.DisplayNameFor(model => model.Phone)
                     </th>

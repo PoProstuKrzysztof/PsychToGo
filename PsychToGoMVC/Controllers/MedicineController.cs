@@ -9,6 +9,7 @@ using System.Text;
 
 namespace PsychToGo.Client.Controllers;
 
+[Route( "medicines" )]
 public class MedicineController : Controller
 {
     private readonly IMedicineService _service;

@@ -17,6 +17,10 @@ html {
     background: #FFFFFF;
 }
 
+th {
+    width: 10%;
+}
+
 .search-box {
     margin: 20px 20px;
     padding: 30px;
