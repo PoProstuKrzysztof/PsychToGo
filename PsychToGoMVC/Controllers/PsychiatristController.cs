@@ -32,7 +32,6 @@ public class PsychiatristController : Controller
         _httpContext = httpContext;
     }
 
-    [Route( "index" )]
     public async Task<IActionResult> Index(string searchBy, string? searchString)
     {
         ViewBag.SearchFields = new Dictionary<string, string>()
@@ -105,7 +104,7 @@ public class PsychiatristController : Controller
 
         if (psychiatrist == null)
         {
-            return NotFound();
+            return RedirectToAction( "Index" );
         }
 
         return View( psychiatrist );

@@ -100,7 +100,7 @@ public class MedicineController : Controller
         MedicineDTO medicine = await _client.GetFromJsonAsync<MedicineDTO>( _client.BaseAddress + $"/{id}" );
         if (medicine == null)
         {
-            return NotFound();
+            return RedirectToAction( "Index" );
         }
 
         return View( medicine );

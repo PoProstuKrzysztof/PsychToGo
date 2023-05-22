@@ -34,8 +34,8 @@ public class PatientController : Controller
     /// <summary>
     /// Displaying list of patients, with sorting and searching functionality, default option for sorting is ascending
     /// </summary>
-    [Route( "index" )]
     [Authorize( Roles = "admin" )]
+    [ResponseCache( CacheProfileName = "Cache60" )]
     public async Task<IActionResult> Index(string searchBy, string? searchString,
         string sortBy = nameof( PatientViewModel.Name ),
         SortOrderOptions sortOrder = SortOrderOptions.ASC)
@@ -106,14 +106,20 @@ public class PatientController : Controller
             .FirstOrDefault();
 
         //Finding patient psychologist and psychiatrist
+
         PsychologistDTO patientPsychologist = await _client.GetFromJsonAsync<PsychologistDTO>(
             _client.BaseAddress + $"/{patientId}/psychologist" );
 
-        PsychiatristDTO patientPsychiatrist = await _client.GetFromJsonAsync<PsychiatristDTO>(
-            _client.BaseAddress + $"/{patientId}/psychiatrist" );
-
+        HttpResponseMessage psychiatrist = await _client.GetAsync( _client.BaseAddress + $"/{patientId}/psychiatrist" );
         PatientViewModel patientParsedToPatientViewModel = await _patientService.CreateParsedPatientInstance( patientId );
-        patientParsedToPatientViewModel.Psychiatrists = new List<PsychiatristDTO>() { patientPsychiatrist };
+        if (psychiatrist.IsSuccessStatusCode)
+        {
+            patientParsedToPatientViewModel.Psychiatrists = JsonConvert.
+                DeserializeObject<List<PsychiatristDTO>>( psychiatrist.Content.ReadAsStringAsync().Result );
+        }
+
+        //PsychiatristDTO? patientPsychiatrist = await _client.GetFromJsonAsync<PsychiatristDTO>(
+        //_client.BaseAddress + $"/{patientId}/psychiatrist" );
         patientParsedToPatientViewModel.Psychologists = new List<PsychologistDTO>() { patientPsychologist };
 
         HttpResponseMessage medicines = await _client.GetAsync( _client.BaseAddress + $"/{patientId}/medicines" );
@@ -198,6 +204,8 @@ public class PatientController : Controller
 
             editedPatient.Psychiatrists = new List<PsychiatristDTO>() { patientPsychiatrist };
             editedPatient.Psychologists = new List<PsychologistDTO>() { patientPsychologist };
+            ViewBag.PsychologistFullName = $"{patientPsychologist.Name} {patientPsychologist.LastName}";
+            ViewBag.PsychiatristFullName = $"{patientPsychiatrist.Name} {patientPsychiatrist.LastName}";
         }
         catch (Exception)
         {

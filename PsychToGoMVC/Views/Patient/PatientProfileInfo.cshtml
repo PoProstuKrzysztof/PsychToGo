@@ -70,33 +70,51 @@
 
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <h4>Assigned Psychiatrists:</h4>
+                @if (Model.Psychiatrists != null)
+                {
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <h4>Assigned Psychiatrists:</h4>
 
-                        @foreach (var psychiatrist in Model.Psychiatrists)
+                            @foreach (var psychiatrist in Model.Psychiatrists)
+                            {
+                                <span>Full name: @psychiatrist.Name @psychiatrist.LastName</span>
+                                <br />
+                                <span>Telephone: @psychiatrist.Phone</span>
+
+                                <br />
+                                <span>E-mail: @psychiatrist.Email</span>
+                                <br />
+                            }
+
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <h4>Assigned Medicines:</h4>
+
+                        @foreach (var medicine in Model.Medicines)
                         {
-                            <span>Full name: @psychiatrist.Name @psychiatrist.LastName</span>
+                            <span>Name of the medicine: @medicine.Name</span>
+
                             <br />
-                            <span>Telephone: @psychiatrist.Phone</span><br/>
-                            <span>E-mail: @psychiatrist.Email</span>
+                            <span>Daily dose: @medicine.DailyDose</span>
+
+                            <br />
+                            <span>Expire date: @medicine.ExpireDate.ToString("yyyy-MM-dd")</span>
+
                             <br />
                         }
-
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <h4>Assigned Medicines:</h4>
-
-                    @foreach (var medicine in Model.Medicines)
-                    {
-                        <span>Name of the medicine: @medicine.Name</span><br/>
-                        <span>Daily dose: @medicine.DailyDose</span><br/>
-                        <span>Expire date: @medicine.ExpireDate.ToString("yyyy-MM-dd")</span>
-
-                        <br />
-                    }
-                </div>
+                }
+                else
+                {
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <h4>Assigned Psychiatrists:</h4>
+                            <span>Psychiatrist not assigned</span>                           
+                        </div>
+                    </div>
+                }
             </div>
         </div>
     </div>

@@ -28,7 +28,7 @@
         <div>
             <label asp-for="Email" class="control-label">E-mail</label>
             <input asp-for="Email" class="form-control" placeholder="Enter e-mail" type="email" required />
-            <span asp-validation-for="Email" class="text-danger"></span>
+            
         </div>
 
         <div>
@@ -51,7 +51,7 @@
 
         <div>
             <button class="btn btn-outline-primary" asp-action="CreatePsychologistMVC">Create</button>
-            <a class="btn btn-outline-primary" asp-action="Index" asp-controller="Psychologist">List</a>
+            <a class="btn btn-primary" asp-action="Index" asp-controller="Psychologist">List</a>
         </div>
 
     </form>

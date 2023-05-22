@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using PsychToGo.API.DTO;
 using PsychToGo.API.Interfaces;
 using PsychToGo.API.Models;
+using ProtoBuf.Serializers;
 
 namespace PsychToGo.API.Controllers;
 
@@ -47,7 +48,6 @@ public class PatientController : Controller
         {
             return Ok();
         }
-
         return Ok( _mapper.Map<PsychologistDTO>( psychologist ) );
     }
 

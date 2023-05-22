@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PsychToGo.API.Data;
+using PsychToGo.Client.Extensions;
 using PsychToGo.Client.Services;
 using PsychToGo.Client.Services.Interfaces;
 
@@ -8,37 +10,22 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder( args );
 string connectionString = builder.Configuration.GetConnectionString( "AppDbContextConnection" )
     ?? throw new InvalidOperationException( "Connection string 'AppDbContextConnection' not found." );
 
-builder.Services.AddDbContext<AppDbContext>( options => options.UseSqlServer( connectionString ) );
-//Services injection
-builder.Services.AddControllersWithViews();
-builder.Services.AddScoped<IPatientService, PatientService>();
-builder.Services.AddScoped<IPsychiatristService, PsychiatristService>();
-builder.Services.AddScoped<IPsychologistService, PsychologistService>();
-builder.Services.AddScoped<IMedicineService, MedicineService>();
+builder.Services.AddDbContext<AppDbContext>( options =>
+options.UseSqlServer( connectionString ) );
 
-//Security
-builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
-builder.Services.AddDistributedMemoryCache();
-builder.Services.AddAuthentication( CookieAuthenticationDefaults.AuthenticationScheme )
-    .AddCookie( options =>
-    {
-        options.Cookie.HttpOnly = true;
-        options.AccessDeniedPath = "/Auth/AccessDenied";
-        options.LoginPath = "/Auth/Login";
-
-        options.ExpireTimeSpan = TimeSpan.FromMinutes( 15 );
-
-        options.SlidingExpiration = true;
-    } );
-
-builder.Services.AddSession( options =>
+//CACHING
+builder.Services.AddControllers( options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes( 10 );
-    options.Cookie.HttpOnly = true;
-    options.Cookie.IsEssential = true;
+    options.CacheProfiles.Add( "Cache60",
+        new CacheProfile()
+        {
+            Duration = 60
+        } );
 } );
+
+//I'm using service injections through this method, all services are in Extension folder
+builder.Services.ConfigureServices();
+builder.Services.ConfigureSecurity();
 
 WebApplication app = builder.Build();
 

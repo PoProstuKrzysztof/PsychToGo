@@ -39,19 +39,23 @@
 
         <label asp-for="Address" class="control-label">Address</label>
         <input asp-for="Address" class="form-control" value="@Model.Address" />
-        
 
-        <label asp-for="Psychologists" class="control-label"></label>
-        <input asp-for="Psychologists" class="form-control" value="@psychologist.Name @psychologist.LastName" readonly />
+        <label asp-for="Psychologists" class="control-label">Psychologist</label>
+        <input asp-for="PsychologistId" type="hidden" value="@psychologist?.Id" />
+        <div class="form-control">@ViewBag.PsychologistFullName</div>
 
-                    
-        <label asp-for="Psychiatrists" class="control-label"></label>
-        <input asp-for="Psychiatrists" class="form-control" value="@psychiatrist.Name @psychiatrist.LastName" readonly/>
+        <label asp-for="Psychiatrists" class="control-label">Psychiatrist</label>
+        <input asp-for="PsychiatristId" type="hidden" value="@psychiatrist?.Id" />
+        <div class="form-control">@ViewBag.PsychiatristFullName</div>
 
-        <label class="text-danger">Just for display. You can't edit medicines.'</label>
+        <label class="text-danger m-2">Just for display. You can't edit medicines.'</label>
         @Html.ListBoxFor(model => model.MedicinesId, new MultiSelectList(Model.Medicines, "Id","Name"))
 
-        <button asp-action="EditPatient" class="btn btn-outline-warning mt-2">Edit</button>
+        <div class="mt-2">
+            <button type="submit" class="btn btn-warning">Edit</button>
+            <a class="btn btn-primary" asp-action="Index">Back</a>
+        </div>
+
     </form>
 </body>
 

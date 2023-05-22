@@ -1,4 +1,5 @@
-﻿using PsychToGo.API.DTO;
+﻿using Newtonsoft.Json;
+using PsychToGo.API.DTO;
 using PsychToGo.API.Models;
 using PsychToGo.Client.Enums;
 using PsychToGo.Client.Models;
@@ -12,24 +13,23 @@ public class PatientService : IPatientService
     private readonly Uri _psychiatristAddress = new( "https://localhost:7291/api/Psychiatrist" );
     private readonly Uri _psychologistAddress = new( "https://localhost:7291/api/Psychologist" );
     private readonly Uri _medicinesAddress = new( "https://localhost:7291/api/Medicine" );
-    private readonly HttpClient client = new();
+    private readonly HttpClient _client = new();
 
     public PatientService()
     {
-        client.BaseAddress = _baseAddress;
+        _client.BaseAddress = _baseAddress;
     }
 
     public async Task<PatientViewModel> CreateParsedPatientInstance(int id)
     {
-        Patient? findPatient = await client.GetFromJsonAsync<Patient>( client.BaseAddress + $"/{id}" );
+        Patient? findPatient = await _client.GetFromJsonAsync<Patient>( _client.BaseAddress + $"/{id}" );
 
-        PsychologistDTO psychologist = await client
-            .GetFromJsonAsync<PsychologistDTO>( client.BaseAddress + $"/{id}/psychologist" );
+        PsychologistDTO psychologist = await _client
+            .GetFromJsonAsync<PsychologistDTO>( _client.BaseAddress + $"/{id}/psychologist" );
 
-        PsychiatristDTO psychiatrist = await client
-            .GetFromJsonAsync<PsychiatristDTO>( client.BaseAddress + $"/{id}/psychiatrist" );
+        HttpResponseMessage psychiatristCheck = await _client.GetAsync( _client.BaseAddress + $"/{id}/psychiatrist" );
 
-        if (psychiatrist == null)
+        if (psychiatristCheck.Content.Headers.ContentLength == 0)
         {
             PatientViewModel parsedPatientNoPsychiatrist = new()
             {
@@ -46,7 +46,10 @@ public class PatientService : IPatientService
             return parsedPatientNoPsychiatrist;
         }
 
-        List<Medicine>? medicines = await client.GetFromJsonAsync<List<Medicine>>( client.BaseAddress + $"/{id}/medicines" );
+        //Only if psychiatrist exist medicines can be searched for
+        List<Medicine>? medicines = await _client.GetFromJsonAsync<List<Medicine>>( _client.BaseAddress + $"/{id}/medicines" );
+        var psychiatrist = JsonConvert
+            .DeserializeObject<PsychiatristDTO>( psychiatristCheck.Content.ReadAsStringAsync().Result );
 
         PatientViewModel parsedPatient = new()
         {
@@ -85,21 +88,21 @@ public class PatientService : IPatientService
 
     public async Task<ICollection<PsychiatristDTO>> PsychiatristsList()
     {
-        ICollection<PsychiatristDTO>? psychiatrists = await client
+        ICollection<PsychiatristDTO>? psychiatrists = await _client
             .GetFromJsonAsync<ICollection<PsychiatristDTO>>( _psychiatristAddress + $"/list" );
         return psychiatrists;
     }
 
     public async Task<ICollection<PsychologistDTO>> PsychologistsList()
     {
-        ICollection<PsychologistDTO>? psychologists = await client
+        ICollection<PsychologistDTO>? psychologists = await _client
             .GetFromJsonAsync<ICollection<PsychologistDTO>>( _psychologistAddress + $"/list" );
         return psychologists;
     }
 
     public async Task<ICollection<MedicineDTO>> MedicinesList()
     {
-        List<MedicineDTO>? medicines = await client
+        List<MedicineDTO>? medicines = await _client
             .GetFromJsonAsync<List<MedicineDTO>>( _medicinesAddress + $"/list" );
 
         return medicines;
@@ -107,7 +110,7 @@ public class PatientService : IPatientService
 
     public async Task<List<PatientViewModel>> GetFilteredPatients(string? searchBy, string? searchString)
     {
-        HttpResponseMessage response = client.GetAsync( client.BaseAddress + "/patients" ).Result;
+        HttpResponseMessage response = _client.GetAsync( _client.BaseAddress + "/patients" ).Result;
         var patientsList = await response.Content.ReadFromJsonAsync<List<PatientViewModel>>();
         var matchingPatients = patientsList;
         if (string.IsNullOrEmpty( searchBy ) || string.IsNullOrEmpty( searchString ))

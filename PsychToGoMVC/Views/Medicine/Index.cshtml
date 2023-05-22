@@ -29,14 +29,12 @@
             <input type="search" id="search" name="searchString" value="@ViewBag.CurrentSearchString" class="search-input" placeholder="Search.." />
             <button class="btn btn-dark">Search</button>
             <a class="btn btn-danger" asp-action="Index">Clear all</a>
+            @if (User.IsInRole( "admin" ))
+            {
+                <a class="btn btn-primary" asp-action="CreateMedicineMVC">Create</a>
+            }
         </div>
-        <hr />
-        @if (User.IsInRole( "admin" ))
-        {
-            <p>
-                <a class="btn btn-outline-primary" asp-action="CreateMedicineMVC">Add</a>
-            </p>
-        }
+
 
 
         <table class="table table-hover border shadow-lg">
