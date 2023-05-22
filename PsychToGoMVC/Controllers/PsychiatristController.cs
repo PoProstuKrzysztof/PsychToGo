@@ -11,7 +11,6 @@ using System.Text;
 
 namespace PsychToGo.Client.Controllers;
 
-[Route( "psychiatrists" )]
 public class PsychiatristController : Controller
 {
     private readonly IPsychiatristService _service;
@@ -33,7 +32,7 @@ public class PsychiatristController : Controller
         _httpContext = httpContext;
     }
 
-    [Route( "psychiatrist/index" )]
+    [Route( "index" )]
     public async Task<IActionResult> Index(string searchBy, string? searchString)
     {
         ViewBag.SearchFields = new Dictionary<string, string>()

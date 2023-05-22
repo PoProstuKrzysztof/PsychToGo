@@ -11,7 +11,6 @@ using System.Text;
 
 namespace PsychToGo.Client.Controllers;
 
-[Route( "patients" )]
 public class PatientController : Controller
 {
     /// <summary>
