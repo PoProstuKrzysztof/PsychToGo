@@ -20,7 +20,7 @@ public class PatientRepository : IPatientRepository
     {
         try
         {
-            _context.Update( patient );
+            _context.Update(patient);
 
             return await Save();
         }
@@ -34,10 +34,10 @@ public class PatientRepository : IPatientRepository
     {
         try
         {
-            Patient? patientEntity = await _context.Patients.FirstOrDefaultAsync( x => x.Id == patientId );
+            Patient? patientEntity = await _context.Patients.FirstOrDefaultAsync(x => x.Id == patientId);
 
             Medicine? medicineEntity = await _context.Medicines
-                .Where( x => x.Id == medicineId )
+                .Where(x => x.Id == medicineId)
                 .FirstOrDefaultAsync();
 
             PatientMedicine relationship = new PatientMedicine()
@@ -46,7 +46,7 @@ public class PatientRepository : IPatientRepository
                 Patient = patientEntity
             };
 
-            await _context.AddAsync( relationship );
+            await _context.AddAsync(relationship);
 
             return await Save();
         }
@@ -64,13 +64,13 @@ public class PatientRepository : IPatientRepository
     {
         try
         {
-            Patient? patient = await _context.Patients.FirstOrDefaultAsync( x => x.Id == patientId );
+            Patient? patient = await _context.Patients.FirstOrDefaultAsync(x => x.Id == patientId);
             if (patient == null)
             {
                 return false;
             }
 
-            patient.Psychiatrist = await _context.Psychiatrists.FirstOrDefaultAsync( x => x.Id == psychiatristId );
+            patient.Psychiatrist = await _context.Psychiatrists.FirstOrDefaultAsync(x => x.Id == psychiatristId);
             return await Save();
         }
         catch (Exception)
@@ -85,7 +85,7 @@ public class PatientRepository : IPatientRepository
         try
         {
             Medicine? medicineEntity = await _context.Medicines
-                .Where( x => x.Id == medicineId )
+                .Where(x => x.Id == medicineId)
                 .FirstOrDefaultAsync();
 
             PatientMedicine relationship = new PatientMedicine()
@@ -93,9 +93,9 @@ public class PatientRepository : IPatientRepository
                 Medicine = medicineEntity,
                 Patient = patient
             };
-            await _context.AddAsync( relationship );
+            await _context.AddAsync(relationship);
 
-            await _context.AddAsync( patient );
+            await _context.AddAsync(patient);
             return await Save();
         }
         catch (Exception)
@@ -108,7 +108,7 @@ public class PatientRepository : IPatientRepository
     {
         try
         {
-            await _context.AddAsync( patient );
+            await _context.AddAsync(patient);
             return await Save();
         }
         catch (Exception)
@@ -135,7 +135,7 @@ public class PatientRepository : IPatientRepository
     {
         try
         {
-            Patient? patient = await _context.Patients.Where( p => p.Id == id ).FirstOrDefaultAsync();
+            Patient? patient = await _context.Patients.Where(p => p.Id == id).FirstOrDefaultAsync();
 
             return patient;
         }
@@ -149,7 +149,7 @@ public class PatientRepository : IPatientRepository
     {
         try
         {
-            Patient? patient = await _context.Patients.Where( p => p.Name == name ).FirstOrDefaultAsync();
+            Patient? patient = await _context.Patients.Where(p => p.Name == name).FirstOrDefaultAsync();
 
             return patient;
         }
@@ -163,15 +163,15 @@ public class PatientRepository : IPatientRepository
     {
         try
         {
-            Patient? patient = await _context.Patients.Where( x => x.Id == id ).FirstOrDefaultAsync();
+            Patient? patient = await _context.Patients.Where(x => x.Id == id).FirstOrDefaultAsync();
             if (patient == null)
             {
                 return null;
             }
 
             List<Medicine> patientMedicines = await _context.PatientMedicines
-                .Where( x => x.PatientId == id )
-                .Select( x => x.Medicine )
+                .Where(x => x.PatientId == id)
+                .Select(x => x.Medicine)
                 .ToListAsync();
 
             if (patientMedicines == null)
@@ -191,7 +191,7 @@ public class PatientRepository : IPatientRepository
     {
         try
         {
-            return await _context.Patients.OrderBy( x => x.Id ).ToListAsync();
+            return await _context.Patients.OrderBy(x => x.Id).ToListAsync();
         }
         catch (Exception)
         {
@@ -203,7 +203,7 @@ public class PatientRepository : IPatientRepository
     {
         try
         {
-            return await _context.Patients.AnyAsync( x => x.Id == id );
+            return await _context.Patients.AnyAsync(x => x.Id == id);
         }
         catch (Exception)
         {
@@ -216,7 +216,7 @@ public class PatientRepository : IPatientRepository
     {
         try
         {
-            _context.Remove( patient );
+            _context.Remove(patient);
             return await Save();
         }
         catch (Exception)
@@ -229,14 +229,14 @@ public class PatientRepository : IPatientRepository
     {
         try
         {
-            Patient patient = await GetPatientById( id );
-            if (!await PatientExists( patient.Id ))
+            Patient patient = await GetPatientById(id);
+            if (!await PatientExists(patient.Id))
             {
                 return null;
             }
 
             Psychologist? patientPsychologist = await _context.Psychologists
-                .Where( x => x.Id == patient.PsychologistId )
+                .Where(x => x.Id == patient.PsychologistId)
                 .FirstOrDefaultAsync();
 
             return patientPsychologist;
@@ -251,13 +251,13 @@ public class PatientRepository : IPatientRepository
     {
         try
         {
-            Patient patient = await GetPatientById( id );
-            if (!await PatientExists( patient.Id ))
+            Patient patient = await GetPatientById(id);
+            if (!await PatientExists(patient.Id))
             {
                 return null;
             }
             Psychiatrist? patientPsychiatrist = await _context.Psychiatrists
-                .Where( x => x.Id == patient.PsychiatristId )
+                .Where(x => x.Id == patient.PsychiatristId)
                 .FirstOrDefaultAsync();
 
             return patientPsychiatrist;
@@ -273,7 +273,7 @@ public class PatientRepository : IPatientRepository
         try
         {
             List<Patient> patients = await _context.Patients.ToListAsync();
-            Patient? patientDuplicate = patients.Where( x => x.Email == patient.Email ).FirstOrDefault();
+            Patient? patientDuplicate = patients.Where(x => x.Email == patient.Email).FirstOrDefault();
             if (patientDuplicate != null)
             {
                 return true;

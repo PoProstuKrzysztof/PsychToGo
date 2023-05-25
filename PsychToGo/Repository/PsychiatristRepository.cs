@@ -36,7 +36,7 @@ public class PsychiatristRepository : IPsychiatristRepository
         {
             List<Psychiatrist> psychiatrists = await _context.Psychiatrists.ToListAsync();
             Psychiatrist? psychiatristDuplicate = psychiatrists
-                .Where( x => x.Email == psychiatrist.Email )
+                .Where(x => x.Email == psychiatrist.Email)
                 .FirstOrDefault();
 
             if (psychiatristDuplicate != null)
@@ -56,7 +56,7 @@ public class PsychiatristRepository : IPsychiatristRepository
     {
         try
         {
-            await _context.AddAsync( psychiatrist );
+            await _context.AddAsync(psychiatrist);
             return await Save();
         }
         catch (Exception)
@@ -70,7 +70,7 @@ public class PsychiatristRepository : IPsychiatristRepository
     {
         try
         {
-            Psychiatrist? findPsychiatrist = await _context.Psychiatrists.Where( x => x.Id == id ).FirstOrDefaultAsync();
+            Psychiatrist? findPsychiatrist = await _context.Psychiatrists.Where(x => x.Id == id).FirstOrDefaultAsync();
             if (findPsychiatrist == null)
             {
                 return null;
@@ -89,8 +89,8 @@ public class PsychiatristRepository : IPsychiatristRepository
         try
         {
             List<Patient> psychiatristPatients = await _context.Patients
-                .Where( x => x.PsychiatristId == id )
-                .Select( p => p )
+                .Where(x => x.PsychiatristId == id)
+                .Select(p => p)
                 .ToListAsync();
             if (psychiatristPatients == null)
             {
@@ -109,7 +109,7 @@ public class PsychiatristRepository : IPsychiatristRepository
     {
         try
         {
-            return await _context.Psychiatrists.OrderBy( x => x.Id ).ToListAsync();
+            return await _context.Psychiatrists.OrderBy(x => x.Id).ToListAsync();
         }
         catch (Exception)
         {
@@ -121,7 +121,7 @@ public class PsychiatristRepository : IPsychiatristRepository
     {
         try
         {
-            return await _context.Psychiatrists.AnyAsync( x => x.Id == id );
+            return await _context.Psychiatrists.AnyAsync(x => x.Id == id);
         }
         catch (Exception)
         {
@@ -133,7 +133,7 @@ public class PsychiatristRepository : IPsychiatristRepository
     {
         try
         {
-            _context.Update( psychiatrist );
+            _context.Update(psychiatrist);
             return await Save();
         }
         catch (Exception)
@@ -147,7 +147,7 @@ public class PsychiatristRepository : IPsychiatristRepository
     {
         try
         {
-            _context.Remove( psychiatrist );
+            _context.Remove(psychiatrist);
             return await Save();
         }
         catch (Exception)

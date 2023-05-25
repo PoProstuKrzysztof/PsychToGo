@@ -35,7 +35,7 @@ public class MedicineRepository : IMedicineRepository
         {
             List<Medicine> medicines = await _context.Medicines.ToListAsync();
             Medicine? medicineDuplicate = medicines
-                .Where( x => x.Name.TrimEnd().ToLower() == medicine.Name.TrimEnd().ToLower() )
+                .Where(x => x.Name.TrimEnd().ToLower() == medicine.Name.TrimEnd().ToLower())
                 .FirstOrDefault();
 
             if (medicineDuplicate != null)
@@ -55,7 +55,7 @@ public class MedicineRepository : IMedicineRepository
     {
         try
         {
-            await _context.AddAsync( medicine );
+            await _context.AddAsync(medicine);
 
             return await Save();
         }
@@ -70,7 +70,7 @@ public class MedicineRepository : IMedicineRepository
     {
         try
         {
-            return await _context.Medicines.Where( x => x.Id == id ).FirstOrDefaultAsync();
+            return await _context.Medicines.Where(x => x.Id == id).FirstOrDefaultAsync();
         }
         catch (Exception)
         {
@@ -83,15 +83,15 @@ public class MedicineRepository : IMedicineRepository
         try
         {
             DateTime expireDate = await _context.Medicines
-                .Where( x => x.Id == medicineId )
-                .Select( x => x.ExpireDate )
+                .Where(x => x.Id == medicineId)
+                .Select(x => x.ExpireDate)
                 .FirstOrDefaultAsync();
-            if (expireDate.Equals( null ))
+            if (expireDate.Equals(null))
             {
                 return null;
             }
 
-            string expireDateFormat = expireDate.ToString( "yyyy-MM-dd" );
+            string expireDateFormat = expireDate.ToString("yyyy-MM-dd");
             return expireDateFormat;
         }
         catch (Exception)
@@ -105,8 +105,8 @@ public class MedicineRepository : IMedicineRepository
         try
         {
             return await _context.Medicines
-                .Where( x => x.Id == medicineId )
-                .Select( m => m.InStock )
+                .Where(x => x.Id == medicineId)
+                .Select(m => m.InStock)
                 .FirstOrDefaultAsync();
         }
         catch (Exception)
@@ -119,7 +119,7 @@ public class MedicineRepository : IMedicineRepository
     {
         try
         {
-            return await _context.Medicines.OrderBy( x => x.Id ).ToListAsync();
+            return await _context.Medicines.OrderBy(x => x.Id).ToListAsync();
         }
         catch (Exception)
         {
@@ -131,7 +131,7 @@ public class MedicineRepository : IMedicineRepository
     {
         try
         {
-            Medicine? medicine = await _context.Medicines.Where( x => x.Id == id ).FirstOrDefaultAsync();
+            Medicine? medicine = await _context.Medicines.Where(x => x.Id == id).FirstOrDefaultAsync();
             if (medicine == null)
             {
                 return false;
@@ -150,9 +150,9 @@ public class MedicineRepository : IMedicineRepository
     {
         try
         {
-            _context.Entry( medicine ).State = EntityState.Detached;
+            _context.Entry(medicine).State = EntityState.Detached;
             _context.ChangeTracker.Clear();
-            _context.Update( medicine );
+            _context.Update(medicine);
 
             return await Save();
         }
@@ -166,7 +166,7 @@ public class MedicineRepository : IMedicineRepository
     {
         try
         {
-            _context.Remove( medicine );
+            _context.Remove(medicine);
             return await Save();
         }
         catch (Exception)

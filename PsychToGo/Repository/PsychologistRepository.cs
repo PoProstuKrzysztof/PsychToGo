@@ -36,7 +36,7 @@ public class PsychologistsRepository : IPsychologistRepository
         {
             List<Psychologist> psychologists = await _context.Psychologists.ToListAsync();
             Psychologist? psychologistDuplicate = psychologists
-                .Where( x => x.Email == psychologist.Email )
+                .Where(x => x.Email == psychologist.Email)
                 .FirstOrDefault();
 
             if (psychologistDuplicate != null)
@@ -56,7 +56,7 @@ public class PsychologistsRepository : IPsychologistRepository
     {
         try
         {
-            await _context.AddAsync( psychologist );
+            await _context.AddAsync(psychologist);
             return await Save();
         }
         catch (Exception)
@@ -70,7 +70,7 @@ public class PsychologistsRepository : IPsychologistRepository
     {
         try
         {
-            Psychologist? findPsychologist = await _context.Psychologists.Where( x => x.Id == id ).FirstOrDefaultAsync();
+            Psychologist? findPsychologist = await _context.Psychologists.Where(x => x.Id == id).FirstOrDefaultAsync();
 
             return findPsychologist;
         }
@@ -85,8 +85,8 @@ public class PsychologistsRepository : IPsychologistRepository
         try
         {
             List<Patient> psychologistPatients = await _context.Patients
-                .Where( x => x.PsychologistId == id )
-                .Select( p => p )
+                .Where(x => x.PsychologistId == id)
+                .Select(p => p)
                 .ToListAsync();
             if (psychologistPatients == null)
             {
@@ -105,7 +105,7 @@ public class PsychologistsRepository : IPsychologistRepository
     {
         try
         {
-            return await _context.Psychologists.OrderBy( x => x.Id ).ToListAsync();
+            return await _context.Psychologists.OrderBy(x => x.Id).ToListAsync();
         }
         catch (Exception)
         {
@@ -117,7 +117,7 @@ public class PsychologistsRepository : IPsychologistRepository
     {
         try
         {
-            return await _context.Psychologists.AnyAsync( x => x.Id == id );
+            return await _context.Psychologists.AnyAsync(x => x.Id == id);
         }
         catch (Exception)
         {
@@ -130,7 +130,7 @@ public class PsychologistsRepository : IPsychologistRepository
     {
         try
         {
-            _context.Update( psychologist );
+            _context.Update(psychologist);
             return await Save();
         }
         catch (Exception)
@@ -144,7 +144,7 @@ public class PsychologistsRepository : IPsychologistRepository
     {
         try
         {
-            _context.Remove( psychologist );
+            _context.Remove(psychologist);
             return await Save();
         }
         catch (Exception)

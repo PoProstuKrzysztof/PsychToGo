@@ -23,7 +23,7 @@ public class MedicineCategoryRepository : IMedicineCategoryRepository
         {
             List<MedicineCategory> medicines = await _context.MedicinesCategories.ToListAsync();
             MedicineCategory? medicineCategoryDuplicate = medicines
-                .Where( x => x.Name.TrimEnd().ToLower() == medicineCategory.Name.TrimEnd().ToLower() )
+                .Where(x => x.Name.TrimEnd().ToLower() == medicineCategory.Name.TrimEnd().ToLower())
                 .FirstOrDefault();
 
             if (medicineCategoryDuplicate != null)
@@ -43,7 +43,7 @@ public class MedicineCategoryRepository : IMedicineCategoryRepository
     {
         try
         {
-            await _context.AddAsync( category );
+            await _context.AddAsync(category);
             return await Save();
         }
         catch (Exception)
@@ -70,13 +70,13 @@ public class MedicineCategoryRepository : IMedicineCategoryRepository
     {
         try
         {
-            MedicineCategory? category = await _context.MedicinesCategories.Where( s => s.Name == categoryName.ToLower() ).FirstOrDefaultAsync();
+            MedicineCategory? category = await _context.MedicinesCategories.Where(s => s.Name == categoryName.ToLower()).FirstOrDefaultAsync();
             if (category == null)
             {
                 return null;
             }
 
-            List<Medicine> medicines = await _context.Medicines.Where( x => x.Category == category ).Select( m => m ).ToListAsync();
+            List<Medicine> medicines = await _context.Medicines.Where(x => x.Category == category).Select(m => m).ToListAsync();
             if (medicines == null)
             {
                 return null;
@@ -98,7 +98,7 @@ public class MedicineCategoryRepository : IMedicineCategoryRepository
                 return null;
             }
 
-            return await _context.MedicinesCategories.Where( s => s.Name == categoryName.ToLower() ).FirstOrDefaultAsync();
+            return await _context.MedicinesCategories.Where(s => s.Name == categoryName.ToLower()).FirstOrDefaultAsync();
         }
         catch (Exception)
         {
@@ -115,7 +115,7 @@ public class MedicineCategoryRepository : IMedicineCategoryRepository
                 return null;
             }
 
-            return await _context.MedicinesCategories.Where( x => x.Id == categoryId ).FirstOrDefaultAsync();
+            return await _context.MedicinesCategories.Where(x => x.Id == categoryId).FirstOrDefaultAsync();
         }
         catch (Exception)
         {
@@ -127,7 +127,7 @@ public class MedicineCategoryRepository : IMedicineCategoryRepository
     {
         try
         {
-            return await _context.MedicinesCategories.OrderBy( x => x.Name ).ToListAsync();
+            return await _context.MedicinesCategories.OrderBy(x => x.Name).ToListAsync();
         }
         catch (Exception)
         {
@@ -139,7 +139,7 @@ public class MedicineCategoryRepository : IMedicineCategoryRepository
     {
         try
         {
-            return await _context.MedicinesCategories.AnyAsync( x => x.Name == categoryName );
+            return await _context.MedicinesCategories.AnyAsync(x => x.Name == categoryName);
         }
         catch (Exception)
         {
@@ -151,7 +151,7 @@ public class MedicineCategoryRepository : IMedicineCategoryRepository
     {
         try
         {
-            return await _context.MedicinesCategories.AnyAsync( x => x.Id == categoryId );
+            return await _context.MedicinesCategories.AnyAsync(x => x.Id == categoryId);
         }
         catch (Exception)
         {
@@ -163,7 +163,7 @@ public class MedicineCategoryRepository : IMedicineCategoryRepository
     {
         try
         {
-            _context.Update( medicineCategory );
+            _context.Update(medicineCategory);
             return await Save();
         }
         catch (Exception)
@@ -176,7 +176,7 @@ public class MedicineCategoryRepository : IMedicineCategoryRepository
     {
         try
         {
-            _context.Remove( medicineCategory );
+            _context.Remove(medicineCategory);
             return await Save();
         }
         catch (Exception)

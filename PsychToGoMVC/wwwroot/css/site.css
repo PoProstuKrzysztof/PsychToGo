@@ -11,10 +11,8 @@
 }
 
 html {
-    font-size: 17px;
-    position: relative;
+    font-size: 18px;
     min-height: 100%;
-    background: #FFFFFF;
 }
 
 th {
@@ -47,6 +45,22 @@ th {
     flex: 2 auto;
 }
 
+.logo-header {
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.logout-button {
+    font-size: 18px;
+    border: 2px solid #000000;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+    .logout-button:hover {
+        background-color: #003060;
+    }
+
 .search-input {
     padding: 5px 10px;
     margin: 0 0 8px 0;
@@ -71,22 +85,23 @@ body::-webkit-scrollbar {
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+    font-family: Verdana, sans-serif;
 }
 
 .header {
     position: sticky;
-    top: 0;
-    left: 0;
     width: 100%;
-    min-height: 70px;
-    padding: 10px 32.5%;
-    background: #00274d;
-    display: flex;
-    justify-content: space-between;
+    min-height: 50px;
+    max-height: 80px;
+    background: #9d8282;
+    display: inline-flex;
+    justify-content: space-around;
     align-items: center;
     z-index: 100;
+}
+
+a:hover {
+    color: #cec6c6;
 }
 
 .navbar a::after {
@@ -95,27 +110,27 @@ body::-webkit-scrollbar {
     bottom: -5px;
     left: 0;
     width: 100%;
-    height: 2px;
+    height: 3px;
     background: #FFFFFF;
     border-radius: 5px;
-    transform: translateY(10px);
+    transform: translateX(15px);
     opacity: 0;
-    transition: 0.7s;
+    transition: 0.8s;
 }
 
 .navbar a:hover::after {
-    transform: translateY(0);
-    opacity: 1;
+    transform: translateX(0);
+    opacity: 1.0;
 }
 
-.navbar a {
-    position: relative;
+.navbar, header a {
+    position: center;
     font-size: 16px;
     text-decoration: none;
-    font-weight: 900;
-    margin-right: 12px;
-    margin-bottom: 5px;
-    color: oldlace;
+    font-weight: 500;
+    padding-right: 10px;
+    margin: 0.8rem;
+    color: white;
 }
 
 .background {
@@ -124,14 +139,13 @@ body::-webkit-scrollbar {
     background: url('img/pexels-sindre-fs-1175136.jpg') no-repeat;
     background-size: cover;
     background-position: center;
-    filter: blur(5px);
-    transform: scale(1.03);
+    filter: blur(3px);
+    transform: scale(1.02);
 }
 
 .text-sci h2 {
     font-size: 35px;
     font-weight: 800;
-    color: aliceblue;
     background-color: brown;
     border: solid thick;
     padding: 15px;
@@ -148,12 +162,13 @@ body::-webkit-scrollbar {
 
 .container-homepage .logo {
     font-size: 90px;
-    font-weight: 600;
+    margin: 0px auto;
+    font-weight: 700;
     color: #FFFFFF;
 }
 
 .container-homepage {
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -162,8 +177,8 @@ body::-webkit-scrollbar {
     background: url('img/pexels-sindre-fs-1175136.jpg') no-repeat;
     background-size: cover;
     background-position: center;
-    border-radius: 30px;
-    margin-top: 15px;
+    border-radius: 20px;
+    margin-top: 30px;
 }
 
     .container-homepage .content {
@@ -194,7 +209,7 @@ body::-webkit-scrollbar {
     justify-content: center;
     align-items: center;
     background: transparent;
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(6px);
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
     border-bottom-left-radius: 20px;
@@ -202,18 +217,23 @@ body::-webkit-scrollbar {
 
 .log-box .btn {
     width: 100%;
-    height: 45px;
-    background: #c84444;
+    height: 50px;
+    background-color: #685151;
     color: white;
     border: none;
     outline: none;
     border-radius: 15px;
     font-weight: 500;
     box-shadow: 0 0 20px rgba(0,0,0,.5);
+    opacity: 1;
 }
 
+    .log-box .btn:hover {
+        opacity: 0.8;
+    }
+
 .form-box h2 {
-    font-size: 38px;
+    font-size: 40px;
     text-align: center;
     color: #f2f2f2;
 }
@@ -232,20 +252,19 @@ body::-webkit-scrollbar {
     border: none;
     outline: none;
     font-size: 16px;
-    color: #f2f2f2;
-    font-weight: 500;
-    padding-right: 28px;
+    color: #685151;
+    font-weight: 400;
+    padding-right: 20px;
 }
 
 .input-box label {
     position: relative;
-    top: 30%;
+    top: 40%;
     left: 0;
     transform: translateY(-50%);
-    font-size: 16px;
+    font-size: 17px;
     color: aliceblue;
     font-weight: 500;
-    pointer-events: none;
 }
 
 .container-form-create {
