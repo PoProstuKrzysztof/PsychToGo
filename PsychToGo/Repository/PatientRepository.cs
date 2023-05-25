@@ -34,7 +34,8 @@ public class PatientRepository : IPatientRepository
     {
         try
         {
-            Patient? patientEntity = await _context.Patients.FirstOrDefaultAsync(x => x.Id == patientId);
+            Patient? patientEntity = await _context.Patients.
+                FirstOrDefaultAsync(x => x.Id == patientId);
 
             Medicine? medicineEntity = await _context.Medicines
                 .Where(x => x.Id == medicineId)
@@ -64,13 +65,15 @@ public class PatientRepository : IPatientRepository
     {
         try
         {
-            Patient? patient = await _context.Patients.FirstOrDefaultAsync(x => x.Id == patientId);
+            Patient? patient = await _context.Patients
+                .FirstOrDefaultAsync(x => x.Id == patientId);
             if (patient == null)
             {
                 return false;
             }
 
-            patient.Psychiatrist = await _context.Psychiatrists.FirstOrDefaultAsync(x => x.Id == psychiatristId);
+            patient.Psychiatrist = await _context.Psychiatrists
+                .FirstOrDefaultAsync(x => x.Id == psychiatristId);
             return await Save();
         }
         catch (Exception)
@@ -149,7 +152,8 @@ public class PatientRepository : IPatientRepository
     {
         try
         {
-            Patient? patient = await _context.Patients.Where(p => p.Name == name).FirstOrDefaultAsync();
+            Patient? patient = await _context.Patients
+                .Where(p => p.Name == name).FirstOrDefaultAsync();
 
             return patient;
         }
@@ -163,7 +167,10 @@ public class PatientRepository : IPatientRepository
     {
         try
         {
-            Patient? patient = await _context.Patients.Where(x => x.Id == id).FirstOrDefaultAsync();
+            Patient? patient = await _context.Patients
+                .Where(x => x.Id == id)
+                .AsNoTracking().
+                FirstOrDefaultAsync();
             if (patient == null)
             {
                 return null;
@@ -171,6 +178,7 @@ public class PatientRepository : IPatientRepository
 
             List<Medicine> patientMedicines = await _context.PatientMedicines
                 .Where(x => x.PatientId == id)
+                .AsNoTracking()
                 .Select(x => x.Medicine)
                 .ToListAsync();
 
@@ -191,7 +199,10 @@ public class PatientRepository : IPatientRepository
     {
         try
         {
-            return await _context.Patients.OrderBy(x => x.Id).ToListAsync();
+            return await _context.Patients.
+                OrderBy(x => x.Id)
+                .AsNoTracking()
+                .ToListAsync();
         }
         catch (Exception)
         {
@@ -203,7 +214,8 @@ public class PatientRepository : IPatientRepository
     {
         try
         {
-            return await _context.Patients.AnyAsync(x => x.Id == id);
+            return await _context.Patients
+                .AnyAsync(x => x.Id == id);
         }
         catch (Exception)
         {
@@ -237,6 +249,7 @@ public class PatientRepository : IPatientRepository
 
             Psychologist? patientPsychologist = await _context.Psychologists
                 .Where(x => x.Id == patient.PsychologistId)
+                .AsNoTracking()
                 .FirstOrDefaultAsync();
 
             return patientPsychologist;
@@ -258,6 +271,7 @@ public class PatientRepository : IPatientRepository
             }
             Psychiatrist? patientPsychiatrist = await _context.Psychiatrists
                 .Where(x => x.Id == patient.PsychiatristId)
+                .AsNoTracking()
                 .FirstOrDefaultAsync();
 
             return patientPsychiatrist;
@@ -272,8 +286,9 @@ public class PatientRepository : IPatientRepository
     {
         try
         {
-            List<Patient> patients = await _context.Patients.ToListAsync();
-            Patient? patientDuplicate = patients.Where(x => x.Email == patient.Email).FirstOrDefault();
+            List<Patient> patients = await _context.Patients.AsNoTracking().ToListAsync();
+            Patient? patientDuplicate = patients.
+                Where(x => x.Email == patient.Email).FirstOrDefault();
             if (patientDuplicate != null)
             {
                 return true;

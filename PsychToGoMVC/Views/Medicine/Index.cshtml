@@ -94,9 +94,11 @@
                         </td>
                         @if (User.IsInRole( "admin" ))
                         {
-                            <td>
-                                <a class="btn btn-warning btn-sm" asp-action="EditMedicine" asp-route-id="@medicines.Id">Edit</a>
-                                <a class="btn btn-danger btn-sm" asp-action="DeleteMedicine" asp-route-id="@medicines.Id">Delete</a>
+                            <td class="operations-index">
+                                <a class="btn btn-info " asp-action="MedicineDetails" asp-route-id="@medicines.Id">Details</a>
+                                <a class="btn btn-warning" asp-action="EditMedicine" asp-route-id="@medicines.Id">Edit</a>
+                                <a class="btn btn-danger " asp-action="DeleteMedicine" asp-route-id="@medicines.Id">Delete</a>
+
                             </td>
                         }
                     </tr>

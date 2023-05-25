@@ -1,4 +1,7 @@
-﻿namespace PsychToGo.API.Models;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.InteropServices;
+
+namespace PsychToGo.API.Models;
 
 public class Psychologist
 {

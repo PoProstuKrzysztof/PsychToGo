@@ -34,7 +34,9 @@ public class PsychiatristRepository : IPsychiatristRepository
     {
         try
         {
-            List<Psychiatrist> psychiatrists = await _context.Psychiatrists.ToListAsync();
+            List<Psychiatrist> psychiatrists = await _context.Psychiatrists
+                .AsNoTracking()
+                .ToListAsync();
             Psychiatrist? psychiatristDuplicate = psychiatrists
                 .Where(x => x.Email == psychiatrist.Email)
                 .FirstOrDefault();
@@ -70,7 +72,9 @@ public class PsychiatristRepository : IPsychiatristRepository
     {
         try
         {
-            Psychiatrist? findPsychiatrist = await _context.Psychiatrists.Where(x => x.Id == id).FirstOrDefaultAsync();
+            Psychiatrist? findPsychiatrist = await _context.Psychiatrists
+                .Where(x => x.Id == id)
+                .FirstOrDefaultAsync();
             if (findPsychiatrist == null)
             {
                 return null;
@@ -109,7 +113,10 @@ public class PsychiatristRepository : IPsychiatristRepository
     {
         try
         {
-            return await _context.Psychiatrists.OrderBy(x => x.Id).ToListAsync();
+            return await _context.Psychiatrists
+                .OrderBy(x => x.Id)
+                .AsNoTracking()
+                .ToListAsync();
         }
         catch (Exception)
         {

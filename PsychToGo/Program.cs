@@ -12,33 +12,33 @@ using PsychToGo.API.Models.Identity;
 using PsychToGo.API.Repository;
 using System.Text;
 
-WebApplicationBuilder builder = WebApplication.CreateBuilder( args );
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 //CACHING
-builder.Services.AddControllers( options =>
+builder.Services.AddControllers(options =>
 {
-    options.CacheProfiles.Add( "Cache60",
+    options.CacheProfiles.Add("Cache60",
         new CacheProfile()
         {
             Duration = 60
-        } );
-} );
+        });
+});
 
 //I'm using service injections through this method, all services are in Extension folder
 
 builder.Services.ConfigureServices();
-builder.Services.ConfigureJWT( builder );
+builder.Services.ConfigureJWT(builder);
 
-builder.Services.AddDbContext<AppDbContext>( options =>
+builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    options.UseSqlServer( builder.Configuration.GetConnectionString( "DefaultConnection" ),
-        o => o.UseQuerySplittingBehavior( QuerySplittingBehavior.SplitQuery ) );
-} );
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
+        o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
+});
 
 WebApplication app = builder.Build();
 
 if (args.Length == 1 && args[0].ToLower() == "seeddata")
-    SeedData( app );
+    SeedData(app);
 
 static void SeedData(IHost app)
 {
@@ -52,7 +52,7 @@ static void SeedData(IHost app)
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    //app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();

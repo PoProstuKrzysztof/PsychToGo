@@ -11,7 +11,7 @@
 }
 
 html {
-    font-size: 18px;
+    font-size: 16px;
     min-height: 100%;
 }
 
@@ -19,6 +19,10 @@ th {
     width: 10%;
 }
 
+th > a{
+    text-decoration:none;
+    color:inherit;
+}
 .search-box {
     margin: 20px 20px;
     padding: 30px;
@@ -52,13 +56,14 @@ th {
 
 .logout-button {
     font-size: 18px;
-    border: 2px solid #000000;
+    border: 1px solid #000000;
+    background-color: #7c4c4c;
     border-radius: 10px;
     padding: 10px;
 }
 
     .logout-button:hover {
-        background-color: #003060;
+        opacity: 0.8;
     }
 
 .search-input {
@@ -93,9 +98,9 @@ body::-webkit-scrollbar {
     width: 100%;
     min-height: 50px;
     max-height: 80px;
-    background: #9d8282;
-    display: inline-flex;
-    justify-content: space-around;
+    background: #121431;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
     z-index: 100;
 }
@@ -111,7 +116,7 @@ a:hover {
     left: 0;
     width: 100%;
     height: 3px;
-    background: #FFFFFF;
+    background: #aa7852;
     border-radius: 5px;
     transform: translateX(15px);
     opacity: 0;
@@ -161,7 +166,7 @@ a:hover {
 }
 
 .container-homepage .logo {
-    font-size: 90px;
+    font-size: 80px;
     margin: 0px auto;
     font-weight: 700;
     color: #FFFFFF;
@@ -218,7 +223,7 @@ a:hover {
 .log-box .btn {
     width: 100%;
     height: 50px;
-    background-color: #685151;
+    background-color: #112133;
     color: white;
     border: none;
     outline: none;
@@ -233,7 +238,7 @@ a:hover {
     }
 
 .form-box h2 {
-    font-size: 40px;
+    font-size: 30px;
     text-align: center;
     color: #f2f2f2;
 }
@@ -252,7 +257,7 @@ a:hover {
     border: none;
     outline: none;
     font-size: 16px;
-    color: #685151;
+    color: white;
     font-weight: 400;
     padding-right: 20px;
 }
@@ -262,7 +267,7 @@ a:hover {
     top: 40%;
     left: 0;
     transform: translateY(-50%);
-    font-size: 17px;
+    font-size: 16px;
     color: aliceblue;
     font-weight: 500;
 }

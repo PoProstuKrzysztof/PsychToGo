@@ -155,4 +155,12 @@ public class PsychiatristController : Controller
 
         return View( "PatientList", patients );
     }
+
+
+    //[HttpGet]
+    //[Authorize(Roles = "admin")]
+    //public Task<IActionResult> PsychiatristDetails(int? id)
+    //{
+
+    //}
 }

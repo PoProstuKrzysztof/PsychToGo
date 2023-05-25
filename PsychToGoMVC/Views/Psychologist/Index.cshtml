@@ -101,9 +101,11 @@
                                 @Html.DisplayFor(modelItem => psychologist.Address)
                             </td>
 
-                            <td>
-                                <a class="btn btn-warning btn-sm" asp-action="EditPsychologist" asp-route-id="@psychologist.Id">Edit</a>
-                                <a class="btn btn-danger btn-sm" asp-action="DeletePsychologist" asp-route-id="@psychologist.Id">Delete</a>
+                            <td class="operations-index">
+                                <a class="btn btn-info" asp-action="PsychologistDetails" asp-route-id="@psychologist.Id">Details</a>
+                                <a class="btn btn-warning " asp-action="EditPsychologist" asp-route-id="@psychologist.Id">Edit</a>
+                                <a class="btn btn-danger " asp-action="DeletePsychologist" asp-route-id="@psychologist.Id">Delete</a>
+
                             </td>
                         }
 

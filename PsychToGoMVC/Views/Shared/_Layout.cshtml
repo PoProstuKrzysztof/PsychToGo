@@ -59,7 +59,7 @@
          @if (httpAccessor.HttpContext.Session.GetString("JWTToken") != null &&
          httpAccessor.HttpContext.Session.GetString("JWTToken").ToString().Length > 0)
         {
-            <a  asp-controller="Auth" asp-action="Logout">Logout</a>
+            <a  asp-controller="Auth" class="logout-button" asp-action="Logout">Logout</a>
         }
 
 

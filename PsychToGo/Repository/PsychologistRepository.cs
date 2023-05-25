@@ -105,7 +105,9 @@ public class PsychologistsRepository : IPsychologistRepository
     {
         try
         {
-            return await _context.Psychologists.OrderBy(x => x.Id).ToListAsync();
+            return await _context.Psychologists
+                .OrderBy(x => x.Id)
+                .ToListAsync();
         }
         catch (Exception)
         {

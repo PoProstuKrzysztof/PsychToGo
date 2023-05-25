@@ -98,9 +98,11 @@
                                 @Html.DisplayFor(modelItem => psychiatrist.Address)
                             </td>
 
-                            <td>
-                                <a class="btn btn-warning btn-sm" asp-action="EditPsychiatrist" asp-route-id="@psychiatrist.Id">Edit</a>
-                                <a class="btn btn-danger btn-sm" asp-action="DeletePsychiatrist" asp-route-id="@psychiatrist.Id">Delete</a>
+                            <td class="operations-index">
+                                <a class="btn btn-info " asp-action="PsychiatristDetails" asp-route-id="@psychiatrist.Id">Details</a>
+                                <a class="btn btn-warning " asp-action="EditPsychiatrist" asp-route-id="@psychiatrist.Id">Edit</a>
+                                <a class="btn btn-danger " asp-action="DeletePsychiatrist" asp-route-id="@psychiatrist.Id">Delete</a>
+
                             </td>
                         }
 

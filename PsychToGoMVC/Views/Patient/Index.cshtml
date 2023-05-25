@@ -30,7 +30,7 @@
             <input type="search" id="search" name="searchString" value="@ViewBag.CurrentSearchString" class="search-input" placeholder="Search.." />
             <button class="btn btn-dark">Search</button>
             <a class="btn btn-danger" asp-action="Index">Clear all</a>
-            @if (User.IsInRole( "admin" ))
+            @if (User.IsInRole("admin"))
             {
                 <a class="btn btn-primary" asp-action="CreatePatientMVC">Create</a>
             }
@@ -56,22 +56,13 @@
                     {"Display", "Email"},
                     })
 
-                   
-                    <th>
-                        @Html.DisplayNameFor(model => model.Phone)
-                    </th>
-                    @if (User.IsInRole( "admin" ) || User.IsInRole( "psychologist" ) || User.IsInRole( "psychiatrist" ))
+                    @if (User.IsInRole("admin") || User.IsInRole("psychologist") || User.IsInRole("psychiatrist"))
                     {
-                        <th>
-                            Date of Birth
-                        </th>
+
                         <th>
                             Age
                         </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Address)
-                        </th>
-                        @if (User.IsInRole( "admin" ))
+                        @if (User.IsInRole("admin"))
                         {
                             <th>
                                 Operations
@@ -96,25 +87,21 @@
                         <td>
                             @Html.DisplayFor(modelItem => patient.Email)
                         </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => patient.Phone)
-                        </td>
-                        @if (User.IsInRole( "admin" ) || User.IsInRole( "psychologist" ) || User.IsInRole( "psychiatrist" ))
+
+                        @if (User.IsInRole("admin") || User.IsInRole("psychologist") || User.IsInRole("psychiatrist"))
                         {
-                            <td>
-                                @patient.DateOfBirth.ToString("yyyy-MM-dd")
-                            </td>
+
                             <td>
                                 @Math.Round((DateTime.Now - patient.DateOfBirth).TotalDays / 365.25)
                             </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => patient.Address)
-                            </td>
-                            @if (User.IsInRole( "admin" ))
+
+                            @if (User.IsInRole("admin"))
                             {
-                                <td>
-                                    <a class="btn btn-warning btn-sm" asp-action="EditPatient" asp-route-id="@patient.Id">Edit</a>
-                                    <a class="btn btn-danger btn-sm" asp-action="DeletePatient" asp-route-id="@patient.Id">Delete</a>
+                                <td class="operations-index">
+                                    <a class="btn btn-info " asp-action="PatientDetails" asp-route-id="@patient.Id">Details</a>
+                                    <a class="btn btn-warning " asp-action="EditPatient" asp-route-id="@patient.Id">Edit</a>
+                                   <a class="btn btn-danger " asp-action="DeletePatient" asp-route-id="@patient.Id">Delete</a>
+
                                 </td>
                             }
 

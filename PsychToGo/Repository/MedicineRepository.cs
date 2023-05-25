@@ -70,7 +70,9 @@ public class MedicineRepository : IMedicineRepository
     {
         try
         {
-            return await _context.Medicines.Where(x => x.Id == id).FirstOrDefaultAsync();
+            return await _context.Medicines
+                .Where(x => x.Id == id)
+                .FirstOrDefaultAsync();
         }
         catch (Exception)
         {
@@ -86,10 +88,6 @@ public class MedicineRepository : IMedicineRepository
                 .Where(x => x.Id == medicineId)
                 .Select(x => x.ExpireDate)
                 .FirstOrDefaultAsync();
-            if (expireDate.Equals(null))
-            {
-                return null;
-            }
 
             string expireDateFormat = expireDate.ToString("yyyy-MM-dd");
             return expireDateFormat;
@@ -119,7 +117,10 @@ public class MedicineRepository : IMedicineRepository
     {
         try
         {
-            return await _context.Medicines.OrderBy(x => x.Id).ToListAsync();
+            return await _context.Medicines.
+                OrderBy(x => x.Id)
+                .AsNoTracking().
+                ToListAsync();
         }
         catch (Exception)
         {
@@ -131,7 +132,9 @@ public class MedicineRepository : IMedicineRepository
     {
         try
         {
-            Medicine? medicine = await _context.Medicines.Where(x => x.Id == id).FirstOrDefaultAsync();
+            Medicine? medicine = await _context.Medicines
+                .Where(x => x.Id == id)
+                .FirstOrDefaultAsync();
             if (medicine == null)
             {
                 return false;
