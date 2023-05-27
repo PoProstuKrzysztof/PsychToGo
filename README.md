@@ -1,5 +1,5 @@
 # PsychToGo 👨‍⚕️
-A web application for private therapy centers that organizes data flow within the organization for patients, psychiatrists, and psychologists. By sending patients to each other and giving prescriptions if necessary, psychiatrists and psychologists can collaborate with one another. 
+A web application for mental health centers that organizes data flow within the organization for patients, psychiatrists, and psychologists. By sending patients to each other and giving prescriptions if necessary, psychiatrists and psychologists can collaborate with one another. 
 
 # A brief description of how the application work 📑
 
