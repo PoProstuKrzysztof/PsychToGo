@@ -8,6 +8,10 @@
     table {
         width: 90%;
     }
+
+    .col-md-4 {
+        margin-bottom: 0;
+    }
 }
 
 html {
@@ -16,13 +20,14 @@ html {
 }
 
 th {
-    width: 10%;
+    width: 2%;
 }
 
-th > a{
-    text-decoration:none;
-    color:inherit;
-}
+    th > a {
+        text-decoration: none;
+        color: inherit;
+    }
+
 .search-box {
     margin: 20px 20px;
     padding: 30px;
@@ -303,4 +308,11 @@ input[type=submit] {
 
 form-group ul li {
     font-weight: 700;
+}
+
+.operations-index {
+    display:grid;
+    row-gap: 5px;
+   
+
 }

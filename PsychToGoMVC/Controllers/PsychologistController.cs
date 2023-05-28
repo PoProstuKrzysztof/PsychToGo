@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PsychToGo.API.DTO;
 using PsychToGo.API.Models;
+using PsychToGo.Client.Models;
+using PsychToGo.Client.Services;
 using PsychToGo.Client.Services.Interfaces;
 using System.Data;
 using System.Security.Claims;
@@ -19,7 +21,7 @@ public class PsychologistController : Controller
     /// </summary>
     private readonly HttpClient _client = new()
     {
-        BaseAddress = new Uri( "https://localhost:7291/api/Psychologist" )
+        BaseAddress = new Uri("https://localhost:7291/api/Psychologist")
     };
 
     private readonly IHttpContextAccessor _httpContext;
@@ -41,118 +43,135 @@ public class PsychologistController : Controller
             {nameof(PsychologistDTO.LastName),"Last Name" },
         };
 
-        HttpResponseMessage response = _client.GetAsync( _client.BaseAddress + "/list" ).Result;
+        HttpResponseMessage response = _client.GetAsync(_client.BaseAddress + "/list").Result;
         if (response.IsSuccessStatusCode)
         {
             var data = await response.Content.ReadFromJsonAsync<List<PsychologistDTO>>();
-            data = await _serivce.GetFilteredPsychologist( searchBy, searchString );
+            data = await _serivce.GetFilteredPsychologist(searchBy, searchString);
             ViewBag.CurrentSearchBy = searchBy;
             ViewBag.CurrentSearchString = searchString;
-            return View( data ?? new List<PsychologistDTO>() );
+            return View(data ?? new List<PsychologistDTO>());
         }
         else
         {
-            ModelState.AddModelError( "", $"There are not psychologists" );
-            return View( Enumerable.Empty<PsychologistDTO>().ToList() );
+            ModelState.AddModelError("", $"There are not psychologists");
+            return View(Enumerable.Empty<PsychologistDTO>().ToList());
         }
     }
 
     [HttpGet]
-    [Authorize( Roles = "admin" )]
+    [Authorize(Roles = "admin")]
     public IActionResult CreatePsychologistMVC()
     {
         return View();
     }
 
     [HttpPost]
-    [Authorize( Roles = "admin" )]
+    [Authorize(Roles = "admin")]
     [ValidateAntiForgeryToken]
     public IActionResult CreatePsychologistMVC(PsychologistDTO pvm)
     {
-        string data = JsonConvert.SerializeObject( pvm );
-        StringContent content = new( data, Encoding.UTF8, "application/json" );
-        HttpResponseMessage response = _client.PostAsync( _client.BaseAddress + "/create", content ).Result;
+        string data = JsonConvert.SerializeObject(pvm);
+        StringContent content = new(data, Encoding.UTF8, "application/json");
+        HttpResponseMessage response = _client.PostAsync(_client.BaseAddress + "/create", content).Result;
 
         if (response.IsSuccessStatusCode)
         {
-            return RedirectToAction( "Index" );
+            return RedirectToAction("Index");
         }
-        return View( pvm );
+        return View(pvm);
     }
 
     [HttpGet]
-    [Authorize( Roles = "admin" )]
+    [Authorize(Roles = "admin")]
     public IActionResult DeletePsychologist([FromRoute] int id)
     {
-        HttpResponseMessage response = _client.DeleteAsync( _client.BaseAddress + $"/{id}" ).Result;
+        HttpResponseMessage response = _client.DeleteAsync(_client.BaseAddress + $"/{id}").Result;
         if (response.IsSuccessStatusCode)
         {
-            return RedirectToAction( "Index" );
+            return RedirectToAction("Index");
         }
 
         return BadRequest();
     }
 
     [HttpGet]
-    [Authorize( Roles = "admin" )]
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> EditPsychologist([FromRoute] int id)
     {
-        PsychologistDTO psychologist = await _client.GetFromJsonAsync<PsychologistDTO>( _client.BaseAddress + $"/{id}" );
+        PsychologistDTO psychologist = await _client.GetFromJsonAsync<PsychologistDTO>(_client.BaseAddress + $"/{id}");
 
         if (psychologist == null)
         {
-            return RedirectToAction( "Index" );
+            return RedirectToAction("Index");
         }
 
-        return View( psychologist );
+        return View(psychologist);
     }
 
     [HttpPost]
-    [Authorize( Roles = "admin" )]
+    [Authorize(Roles = "admin")]
     [ValidateAntiForgeryToken]
     public IActionResult EditPsychologist(PsychologistDTO psychologist)
     {
-        string data = JsonConvert.SerializeObject( psychologist );
+        string data = JsonConvert.SerializeObject(psychologist);
 
-        StringContent content = new( data, Encoding.UTF8, "application/json" );
-        HttpResponseMessage response = _client.PutAsync( _client.BaseAddress + $"/{psychologist.Id}", content ).Result;
+        StringContent content = new(data, Encoding.UTF8, "application/json");
+        HttpResponseMessage response = _client.PutAsync(_client.BaseAddress + $"/{psychologist.Id}", content).Result;
         if (response.IsSuccessStatusCode)
         {
-            return RedirectToAction( "Index" );
+            return RedirectToAction("Index");
         }
-        ModelState.AddModelError( "", $"An error occurred when editing psychologists" );
-        return View( psychologist );
+        ModelState.AddModelError("", $"An error occurred when editing psychologists");
+        return View(psychologist);
     }
 
     [HttpGet]
-    [Authorize( Roles = "psychologist" )]
+    [Authorize(Roles = "psychologist")]
     public async Task<IActionResult> GetPsychologistPatients()
     {
         //Getting user e-mail here so It can locate his Id in database and view all his patients
 
-        Claim? psychologistAsUser = _httpContext.HttpContext.User?.FindFirst( ClaimTypes.Name );
+        Claim? psychologistAsUser = _httpContext.HttpContext.User?.FindFirst(ClaimTypes.Name);
 
         if (psychologistAsUser == null)
         {
             return BadRequest();
         }
 
-        List<PsychologistDTO> psychologists = await _client.GetFromJsonAsync<List<PsychologistDTO>>( _client.BaseAddress + "/list" );
+        List<PsychologistDTO> psychologists = await _client.GetFromJsonAsync<List<PsychologistDTO>>(_client.BaseAddress + "/list");
 
-        int psychologistId = psychologists.Where( x => x.Email.ToLower() == psychologistAsUser.Value.ToLower() )
-            .Select( x => x.Id ).FirstOrDefault();
+        int psychologistId = psychologists.Where(x => x.Email.ToLower() == psychologistAsUser.Value.ToLower())
+            .Select(x => x.Id).FirstOrDefault();
 
-        List<Patient> patients = await _client.GetFromJsonAsync<List<Patient>>( _client.BaseAddress + $"/{psychologistId}/patients" );
+        List<Patient> patients = await _client.GetFromJsonAsync<List<Patient>>(_client.BaseAddress + $"/{psychologistId}/patients");
         if (patients == null)
         {
-            ModelState.AddModelError( "", "No patients assigned" );
-            return View( ModelState );
+            ModelState.AddModelError("", "No patients assigned");
+            return View(ModelState);
         }
 
         //it shows only those patients which doesn't have assigned psychiatrist to them
-        return View( "PatientList",
+        return View("PatientList",
             patients.
-            Where( x => x.PsychiatristId == null )
-            .Select( x => x ).ToList() );
+            Where(x => x.PsychiatristId == null)
+            .Select(x => x).ToList());
+    }
+
+    [HttpGet]
+    [Authorize(Roles = "admin")]
+    public async Task<IActionResult> PsychologistDetails(int id)
+    {
+        PsychologistDTO? psychologist = await _client.GetFromJsonAsync<PsychologistDTO>(_client.BaseAddress + $"/{id}");
+
+        if (psychologist == null)
+        {
+            return NotFound();
+        }
+
+        var psychologistPatients = await _client.GetFromJsonAsync<ICollection<PatientDTO>>(_client.BaseAddress + $"/{id}/patients");
+        ViewBag.Patients = psychologistPatients;
+
+        return View(psychologist);
     }
 }
