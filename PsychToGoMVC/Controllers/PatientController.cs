@@ -17,7 +17,7 @@ public class PatientController : Controller
     /// <summary>
     /// Base address to connect with api
     /// </summary>
-    private readonly IPatientService _patientService;
+    private readonly IPatientService _service;
 
     private readonly HttpClient _client = new()
     {
@@ -28,7 +28,7 @@ public class PatientController : Controller
 
     public PatientController(IPatientService patientService, IHttpContextAccessor httpContext)
     {
-        _patientService = patientService;
+        _service = patientService;
         _httpContext = httpContext;
     }
 
@@ -55,15 +55,16 @@ public class PatientController : Controller
         {
             //Searching
             var data = await response.Content.ReadFromJsonAsync<List<PatientViewModel>>();
-            data = await _patientService.GetFilteredPatients(searchBy, searchString);
+            data = await _service.GetFilteredPatients(searchBy, searchString);
             ViewBag.CurrentSearchBy = searchBy;
             ViewBag.CurrentSearchString = searchString;
 
             //Sorting
-            var sortedPersons = _patientService.GetSortedPatients(data, sortBy, sortOrder);
+            var sortedPatients = _service.GetSortedPatients(data, sortBy, sortOrder);
             ViewBag.CurrentSortBy = sortBy;
             ViewBag.CurrentSortOrder = sortOrder.ToString();
-            return View(sortedPersons ?? new List<PatientViewModel>());
+            ViewBag.SortData = "patient";
+            return View(sortedPatients ?? new List<PatientViewModel>());
         }
         else
         {
@@ -78,9 +79,9 @@ public class PatientController : Controller
     {
         var newPatient = new PatientViewModel()
         {
-            Psychologists = await _patientService.PsychologistsList(),
-            Psychiatrists = await _patientService.PsychiatristsList(),
-            Medicines = await _patientService.MedicinesList(),
+            Psychologists = await _service.PsychologistsList(),
+            Psychiatrists = await _service.PsychiatristsList(),
+            Medicines = await _service.MedicinesList(),
             MedicinesId = new List<int>()
         };
 
@@ -104,8 +105,8 @@ public class PatientController : Controller
 
         int patientId = patients
                 .Where(x => x.Email.ToLower() == patientAsUser.Value.ToLower())
-            .Select(x => x.Id)
-            .FirstOrDefault();
+                .Select(x => x.Id)
+                .FirstOrDefault();
 
         //Finding patient psychologist and psychiatrist
 
@@ -113,7 +114,7 @@ public class PatientController : Controller
             _client.BaseAddress + $"/{patientId}/psychologist");
 
         //Creating parsed patient
-        PatientViewModel patientParsedToPatientViewModel = await _patientService.CreateParsedPatientInstance(patientId);
+        PatientViewModel patientParsedToPatientViewModel = await _service.CreateParsedPatientInstance(patientId);
 
         if (patientParsedToPatientViewModel.PsychologistId != null)
         {
@@ -137,7 +138,7 @@ public class PatientController : Controller
     [Authorize(Roles = "admin")]
     public async Task<IActionResult> PatientDetails(int id)
     {
-        var parsedPatient = await _patientService.CreateParsedPatientInstance(id);
+        var parsedPatient = await _service.CreateParsedPatientInstance(id);
 
         if (parsedPatient == null)
         {
@@ -148,7 +149,7 @@ public class PatientController : Controller
                     _client.BaseAddress + $"/{id}/psychologist");
 
         //Creating patient
-        PatientViewModel patientParsedToPatientViewModel = await _patientService.CreateParsedPatientInstance(id);
+        PatientViewModel patientParsedToPatientViewModel = await _service.CreateParsedPatientInstance(id);
 
         if (parsedPatient.PsychiatristId != null)
         {
@@ -174,7 +175,7 @@ public class PatientController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CreatePatientMVC(PatientViewModel pvm)
     {
-        Patient? newPatient = await _patientService.CreatePatientInstance(pvm);
+        Patient? newPatient = await _service.CreatePatientInstance(pvm);
         string data = JsonConvert.SerializeObject(newPatient);
         StringContent content = new(data,
             Encoding.UTF8,
@@ -223,7 +224,7 @@ public class PatientController : Controller
     [Authorize(Roles = "admin")]
     public async Task<IActionResult> EditPatient([FromRoute] int id)
     {
-        PatientViewModel editedPatient = await _patientService.CreateParsedPatientInstance(id);
+        PatientViewModel editedPatient = await _service.CreateParsedPatientInstance(id);
 
         if (editedPatient == null)
         {
@@ -261,7 +262,7 @@ public class PatientController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> EditPatient(PatientViewModel pvm)
     {
-        Patient? updatedPatient = await _patientService.CreatePatientInstance(pvm);
+        Patient? updatedPatient = await _service.CreatePatientInstance(pvm);
 
         string data = JsonConvert.SerializeObject(updatedPatient);
         HttpResponseMessage response;
@@ -294,14 +295,14 @@ public class PatientController : Controller
     [Authorize(Roles = "psychologist")]
     public async Task<IActionResult> AssignPsychiatristMVC([FromRoute] int id)
     {
-        PatientViewModel? patient = await _patientService.CreateParsedPatientInstance(id);
+        PatientViewModel? patient = await _service.CreateParsedPatientInstance(id);
         if (patient == null)
         {
             ModelState.AddModelError("", "Error has occured");
             return RedirectToAction("Index");
         }
 
-        patient.Psychiatrists = await _patientService.PsychiatristsList();
+        patient.Psychiatrists = await _service.PsychiatristsList();
         return View(patient);
     }
 
@@ -310,7 +311,7 @@ public class PatientController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> AssignPsychiatristMVC(PatientViewModel patient)
     {
-        Patient? assignedPatient = await _patientService.CreatePatientInstance(patient);
+        Patient? assignedPatient = await _service.CreatePatientInstance(patient);
 
         string data = JsonConvert.SerializeObject(assignedPatient);
 
@@ -334,14 +335,14 @@ public class PatientController : Controller
     [Authorize(Roles = "psychiatrist")]
     public async Task<IActionResult> AssignMedicineMVC([FromRoute] int id)
     {
-        PatientViewModel? patient = await _patientService.CreateParsedPatientInstance(id);
+        PatientViewModel? patient = await _service.CreateParsedPatientInstance(id);
         if (patient == null)
         {
             ModelState.AddModelError("", "Error has occured");
             return RedirectToAction("Index");
         }
 
-        patient.Medicines = await _patientService.MedicinesList();
+        patient.Medicines = await _service.MedicinesList();
         return View(patient);
     }
 
@@ -350,7 +351,7 @@ public class PatientController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> AssignMedicineMVC(PatientViewModel patient)
     {
-        Patient? assignedPatient = await _patientService.CreatePatientInstance(patient);
+        Patient? assignedPatient = await _service.CreatePatientInstance(patient);
 
         string data = JsonConvert.SerializeObject(assignedPatient);
 

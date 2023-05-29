@@ -4,6 +4,7 @@
 @{
     ViewData["Title"] = "Psychologists";
     ViewBag.CurrentUrl = "~/Psychologist/Index";
+    
 }
 
 <head>
@@ -28,7 +29,7 @@
             <input type="search" id="search" name="searchString" value="@ViewBag.CurrentSearchString" class="search-input" placeholder="Search.." />
             <button class="btn btn-dark">Search</button>
             <a class="btn btn-danger" asp-action="Index">Clear all</a>
-            @if (User.IsInRole( "admin" ))
+            @if (User.IsInRole("admin"))
             {
                 <a class="btn btn-primary" asp-action="CreatePsychologistMVC">Create</a>
             }
@@ -39,38 +40,32 @@
 
         <table class="table table-hover border shadow-lg">
             <thead>
+                <!-- Here I use sorting as with partial view-->
                 <tr>
+                    @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData){
+                    {"ColumnName", nameof(PsychologistDTO.Name)},
+                    {"Display", "Name"},
+                    })
 
-                    <th>
-                        @Html.DisplayNameFor(model => model.Name)
-                    </th>
-                    <th>
-                        Last name
-                    </th>
+                    @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData){
+                    {"ColumnName", nameof(PsychologistDTO.LastName)},
+                    {"Display", "Last name"},
+                    })
 
-                    <th>
-                        @Html.DisplayNameFor(model => model.Email)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Phone)
-                    </th>
-                    @if (User.IsInRole( "admin" ))
+                    @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData){
+                    {"ColumnName", nameof(PsychologistDTO.Email)},
+                    {"Display", "Email"},
+                    })
+
+                    @if (User.IsInRole("admin"))
                     {
-                        <th>
-                            Date of birth
-                        </th>
-                        <th>
-                            Age
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Address)
-                        </th>
 
+                            <th>
+                                Operations
+                            </th>
 
-                        <th>
-                            Operations
-                        </th>
                     }
+
                 </tr>
             </thead>
             <tbody>
@@ -86,20 +81,9 @@
                         <td>
                             @Html.DisplayFor(modelItem => psychologist.Email)
                         </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => psychologist.Phone)
-                        </td>
-                        @if (User.IsInRole( "admin" ))
+
+                        @if (User.IsInRole("admin"))
                         {
-                            <td>
-                                @psychologist.DateOfBirth.ToString("yyyy-MM-dd")
-                            </td>
-                            <td>
-                                @Math.Round((DateTime.Now - psychologist.DateOfBirth).TotalDays / 365.25)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => psychologist.Address)
-                            </td>
 
                             <td class="operations-index">
                                 <a class="btn btn-info" asp-action="PsychologistDetails" asp-route-id="@psychologist.Id">Details</a>

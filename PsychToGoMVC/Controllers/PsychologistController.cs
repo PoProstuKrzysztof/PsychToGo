@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PsychToGo.API.DTO;
 using PsychToGo.API.Models;
+using PsychToGo.Client.Enums;
 using PsychToGo.Client.Models;
 using PsychToGo.Client.Services;
 using PsychToGo.Client.Services.Interfaces;
@@ -32,7 +33,9 @@ public class PsychologistController : Controller
         _serivce = service;
     }
 
-    public async Task<IActionResult> Index(string? searchBy, string? searchString)
+    public async Task<IActionResult> Index(string? searchBy, string? searchString,
+        string sortBy = nameof(PsychologistDTO.Name),
+        SortOrderOptions sortOrder = SortOrderOptions.ASC)
     {
         ViewBag.SearchFields = new Dictionary<string, string>
         {
@@ -46,11 +49,19 @@ public class PsychologistController : Controller
         HttpResponseMessage response = _client.GetAsync(_client.BaseAddress + "/list").Result;
         if (response.IsSuccessStatusCode)
         {
+            //Searching
             var data = await response.Content.ReadFromJsonAsync<List<PsychologistDTO>>();
             data = await _serivce.GetFilteredPsychologist(searchBy, searchString);
             ViewBag.CurrentSearchBy = searchBy;
             ViewBag.CurrentSearchString = searchString;
-            return View(data ?? new List<PsychologistDTO>());
+
+            //Sorting
+            var sortedPsychologists = _serivce.GetSortedPsychologist(data, sortBy, sortOrder);
+            ViewBag.CurrentSortBy = sortBy;
+            ViewBag.CurrentSortOrder = sortOrder.ToString();
+            ViewBag.SortData = "psychologist";
+
+            return View(sortedPsychologists ?? new List<PsychologistDTO>());
         }
         else
         {

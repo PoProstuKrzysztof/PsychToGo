@@ -9,10 +9,10 @@ namespace PsychToGo.Client.Services;
 
 public class PatientService : IPatientService
 {
-    private readonly Uri _baseAddress = new( "https://localhost:7291/api/Patient" );
-    private readonly Uri _psychiatristAddress = new( "https://localhost:7291/api/Psychiatrist" );
-    private readonly Uri _psychologistAddress = new( "https://localhost:7291/api/Psychologist" );
-    private readonly Uri _medicinesAddress = new( "https://localhost:7291/api/Medicine" );
+    private readonly Uri _baseAddress = new("https://localhost:7291/api/Patient");
+    private readonly Uri _psychiatristAddress = new("https://localhost:7291/api/Psychiatrist");
+    private readonly Uri _psychologistAddress = new("https://localhost:7291/api/Psychologist");
+    private readonly Uri _medicinesAddress = new("https://localhost:7291/api/Medicine");
     private readonly HttpClient _client = new();
 
     public PatientService()
@@ -22,12 +22,12 @@ public class PatientService : IPatientService
 
     public async Task<PatientViewModel> CreateParsedPatientInstance(int id)
     {
-        Patient? findPatient = await _client.GetFromJsonAsync<Patient>( _client.BaseAddress + $"/{id}" );
+        Patient? findPatient = await _client.GetFromJsonAsync<Patient>(_client.BaseAddress + $"/{id}");
 
         PsychologistDTO psychologist = await _client
-            .GetFromJsonAsync<PsychologistDTO>( _client.BaseAddress + $"/{id}/psychologist" );
+            .GetFromJsonAsync<PsychologistDTO>(_client.BaseAddress + $"/{id}/psychologist");
 
-        HttpResponseMessage psychiatristCheck = await _client.GetAsync( _client.BaseAddress + $"/{id}/psychiatrist" );
+        HttpResponseMessage psychiatristCheck = await _client.GetAsync(_client.BaseAddress + $"/{id}/psychiatrist");
 
         if (psychiatristCheck.Content.Headers.ContentLength == 0)
         {
@@ -47,9 +47,9 @@ public class PatientService : IPatientService
         }
 
         //Only if psychiatrist exist medicines can be searched for
-        List<Medicine>? medicines = await _client.GetFromJsonAsync<List<Medicine>>( _client.BaseAddress + $"/{id}/medicines" );
+        List<Medicine>? medicines = await _client.GetFromJsonAsync<List<Medicine>>(_client.BaseAddress + $"/{id}/medicines");
         var psychiatrist = JsonConvert
-            .DeserializeObject<PsychiatristDTO>( psychiatristCheck.Content.ReadAsStringAsync().Result );
+            .DeserializeObject<PsychiatristDTO>(psychiatristCheck.Content.ReadAsStringAsync().Result);
 
         PatientViewModel parsedPatient = new()
         {
@@ -61,7 +61,7 @@ public class PatientService : IPatientService
             Phone = findPatient.Phone,
             PsychiatristId = psychiatrist.Id,
             PsychologistId = psychologist.Id,
-            MedicinesId = medicines.Select( m => m.Id ).ToList(),
+            MedicinesId = medicines.Select(m => m.Id).ToList(),
             Id = id
         };
 
@@ -89,49 +89,49 @@ public class PatientService : IPatientService
     public async Task<ICollection<PsychiatristDTO>> PsychiatristsList()
     {
         ICollection<PsychiatristDTO>? psychiatrists = await _client
-            .GetFromJsonAsync<ICollection<PsychiatristDTO>>( _psychiatristAddress + $"/list" );
+            .GetFromJsonAsync<ICollection<PsychiatristDTO>>(_psychiatristAddress + $"/list");
         return psychiatrists;
     }
 
     public async Task<ICollection<PsychologistDTO>> PsychologistsList()
     {
         ICollection<PsychologistDTO>? psychologists = await _client
-            .GetFromJsonAsync<ICollection<PsychologistDTO>>( _psychologistAddress + $"/list" );
+            .GetFromJsonAsync<ICollection<PsychologistDTO>>(_psychologistAddress + $"/list");
         return psychologists;
     }
 
     public async Task<ICollection<MedicineDTO>> MedicinesList()
     {
         List<MedicineDTO>? medicines = await _client
-            .GetFromJsonAsync<List<MedicineDTO>>( _medicinesAddress + $"/list" );
+            .GetFromJsonAsync<List<MedicineDTO>>(_medicinesAddress + $"/list");
 
         return medicines;
     }
 
     public async Task<List<PatientViewModel>> GetFilteredPatients(string? searchBy, string? searchString)
     {
-        HttpResponseMessage response = _client.GetAsync( _client.BaseAddress + "/patients" ).Result;
+        HttpResponseMessage response = _client.GetAsync(_client.BaseAddress + "/patients").Result;
         var patientsList = await response.Content.ReadFromJsonAsync<List<PatientViewModel>>();
         var matchingPatients = patientsList;
-        if (string.IsNullOrEmpty( searchBy ) || string.IsNullOrEmpty( searchString ))
+        if (string.IsNullOrEmpty(searchBy) || string.IsNullOrEmpty(searchString))
         {
             return patientsList;
         }
 
         matchingPatients = searchBy switch
         {
-            (nameof( PatientViewModel.Name )) => patientsList.Where( x =>
-                            (!string.IsNullOrEmpty( x.Name ) ? x.Name.Contains( searchString,
-                            StringComparison.OrdinalIgnoreCase ) : true) ).ToList(),
-            (nameof( PatientViewModel.Email )) => patientsList.Where( x =>
-                            (!string.IsNullOrEmpty( x.Email ) ? x.Email.Contains( searchString,
-                            StringComparison.OrdinalIgnoreCase ) : true) ).ToList(),
-            (nameof( PatientViewModel.Address )) => patientsList.Where( x =>
-                            (!string.IsNullOrEmpty( x.Address ) ? x.Address.Contains( searchString,
-                            StringComparison.OrdinalIgnoreCase ) : true) ).ToList(),
-            (nameof( PatientViewModel.DateOfBirth )) => patientsList.Where( x =>
-                            x.DateOfBirth == null || x.DateOfBirth.ToString( "dd MMMM yyyy" ).Contains( searchString,
-                            StringComparison.OrdinalIgnoreCase ) ).ToList(),
+            (nameof(PatientViewModel.Name)) => patientsList.Where(x =>
+                            (!string.IsNullOrEmpty(x.Name) ? x.Name.Contains(searchString,
+                            StringComparison.OrdinalIgnoreCase) : true)).ToList(),
+            (nameof(PatientViewModel.Email)) => patientsList.Where(x =>
+                            (!string.IsNullOrEmpty(x.Email) ? x.Email.Contains(searchString,
+                            StringComparison.OrdinalIgnoreCase) : true)).ToList(),
+            (nameof(PatientViewModel.Address)) => patientsList.Where(x =>
+                            (!string.IsNullOrEmpty(x.Address) ? x.Address.Contains(searchString,
+                            StringComparison.OrdinalIgnoreCase) : true)).ToList(),
+            (nameof(PatientViewModel.DateOfBirth)) => patientsList.Where(x =>
+                            x.DateOfBirth == null || x.DateOfBirth.ToString("dd MMMM yyyy").Contains(searchString,
+                            StringComparison.OrdinalIgnoreCase)).ToList(),
             _ => patientsList,
         };
         return matchingPatients.ToList();
@@ -140,7 +140,7 @@ public class PatientService : IPatientService
     public List<PatientViewModel> GetSortedPatients(List<PatientViewModel> patients, string sortBy,
         SortOrderOptions sortOrder)
     {
-        if (string.IsNullOrEmpty( sortBy ))
+        if (string.IsNullOrEmpty(sortBy))
         {
             return patients;
         }
@@ -148,28 +148,28 @@ public class PatientService : IPatientService
         List<PatientViewModel> sortedPatients = (sortBy, sortOrder)
             switch
         {
-            (nameof( PatientViewModel.Name ), SortOrderOptions.ASC )
-            => patients.OrderBy( x => x.Name, StringComparer.OrdinalIgnoreCase )
+            (nameof(PatientViewModel.Name), SortOrderOptions.ASC)
+            => patients.OrderBy(x => x.Name, StringComparer.OrdinalIgnoreCase)
             .ToList(),
 
-            (nameof( PatientViewModel.Name ), SortOrderOptions.DESC )
-            => patients.OrderByDescending( x => x.Name, StringComparer.OrdinalIgnoreCase )
+            (nameof(PatientViewModel.Name), SortOrderOptions.DESC)
+            => patients.OrderByDescending(x => x.Name, StringComparer.OrdinalIgnoreCase)
             .ToList(),
 
-            (nameof( PatientViewModel.LastName ), SortOrderOptions.ASC )
-            => patients.OrderBy( x => x.LastName, StringComparer.OrdinalIgnoreCase )
+            (nameof(PatientViewModel.LastName), SortOrderOptions.ASC)
+            => patients.OrderBy(x => x.LastName, StringComparer.OrdinalIgnoreCase)
             .ToList(),
 
-            (nameof( PatientViewModel.LastName ), SortOrderOptions.DESC )
-            => patients.OrderByDescending( x => x.LastName, StringComparer.OrdinalIgnoreCase )
+            (nameof(PatientViewModel.LastName), SortOrderOptions.DESC)
+            => patients.OrderByDescending(x => x.LastName, StringComparer.OrdinalIgnoreCase)
             .ToList(),
 
-            (nameof( PatientViewModel.Email ), SortOrderOptions.ASC )
-            => patients.OrderBy( x => x.Email, StringComparer.OrdinalIgnoreCase )
+            (nameof(PatientViewModel.Email), SortOrderOptions.ASC)
+            => patients.OrderBy(x => x.Email, StringComparer.OrdinalIgnoreCase)
             .ToList(),
 
-            (nameof( PatientViewModel.Email ), SortOrderOptions.DESC )
-            => patients.OrderByDescending( x => x.Email, StringComparer.OrdinalIgnoreCase )
+            (nameof(PatientViewModel.Email), SortOrderOptions.DESC)
+            => patients.OrderByDescending(x => x.Email, StringComparer.OrdinalIgnoreCase)
             .ToList(),
 
             _ => patients
