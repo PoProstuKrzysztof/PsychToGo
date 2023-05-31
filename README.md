@@ -14,6 +14,7 @@ By default, the psychologist is assigned to the patient. When it's necessary, th
 + JWT 
 + Entity Framework
 + HTML5, CSS, Boostrap 5
++ AutoMapper
 
 ##What has already been implemented 🔽
 + JWT Token
