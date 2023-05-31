@@ -1,4 +1,4 @@
-# PsychToGo 👨‍⚕️
+## PsychToGo 👨‍⚕️
 A web application for mental health centers that organizes data flow within the organization for patients, psychiatrists, and psychologists. By sending patients to each other and giving prescriptions if necessary, psychiatrists and psychologists can collaborate with one another. 
 
 # A brief description of how the application work 📑
@@ -7,7 +7,7 @@ The entire application will rely on an administrator to add new users. These use
 
 By default, the psychologist is assigned to the patient. When it's necessary, the psychologist has the option to place him under the care of a psychiatrist, who will write him a prescription for medicine. Since they will be able to collaborate based on the needs of the patient, this will make the work of the psychiatrist and psychologist much quicker and simpler.
 
-# Technologies used 💻
+## Technologies used 💻
 + C# 11
 + .NET 7 Framework
 + SQL 
@@ -29,5 +29,6 @@ By default, the psychologist is assigned to the patient. When it's necessary, th
 # Data seed instructions 🌱
 It works with your local SQL server for now, so you have to connect it to the program and then seed data by adding migration and applying it.
 
-To seed data, after you connect it to database, open package manger (Tools > NuGet Package manager). Then write "Add-migration InitialCreate", next write "Update-database" and then run seed data by clicking on the project in "Solution explorer" and "Open in terminal" at the end of the list. Run command "dotnet run seeddata", after seeding is done, you have to go into "DataSeed" class and go at the end of the file until you see commented code. Proceed as in instructions in code.
+To seed data, after you connect it to database, open package manger (Tools > NuGet Package manager). Then write "Add-migration InitialCreate", next write "Update-database" and then run seed data by clicking on the project in "Solution explorer" and "Open in terminal" at the end of the list.
+Run command "dotnet run seeddata", after seeding is done, you have to go into "DataSeed" class and go at the end of the file until you see commented code. Proceed as in instructions in code.
 (Sometimes seeddata after executing instructions doesn't work, In that case, simply restart your IDE )
