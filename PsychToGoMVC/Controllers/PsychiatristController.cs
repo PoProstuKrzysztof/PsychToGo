@@ -1,14 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
 using Newtonsoft.Json;
 using PsychToGo.API.DTO;
-using PsychToGo.API.Interfaces;
 using PsychToGo.API.Models;
 using PsychToGo.Client.Enums;
-using PsychToGo.Client.Models;
 using PsychToGo.Client.Services.Interfaces;
-using System.Globalization;
 using System.Security.Claims;
 using System.Text;
 

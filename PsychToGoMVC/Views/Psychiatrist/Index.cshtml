@@ -7,16 +7,14 @@
 
 }
 
-<head>
-    <link rel="stylesheet" href="~/PsychToGo.Client.styles.css" asp-append-version="true" />
-</head>
 
+<div class="table-list">
 <form method="get" asp-action="index">
 
-    <h1 class="text-center">PSYCHIATRISTS</h1>
-    <div class="search-box flex">
-        <div class="flex-1">
-            <select class="search-input" name="searchBy">
+    <h1 >PSYCHIATRISTS</h1>
+    <div >
+        <div >
+            <select  name="searchBy">
                 @foreach (var fields in ViewBag.SearchFields)
                 {
                     if (fields.Key == ViewBag.CurrentSearchBy)
@@ -27,11 +25,11 @@
                 }
             </select>
             <input type="search" id="search" name="searchString" value="@ViewBag.CurrentSearchString" class="search-input" placeholder="Search.." />
-            <button class="btn btn-dark">Search</button>
+            <button >Search</button>
             <a class="btn btn-danger" asp-action="Index">Clear all</a>
             @if (User.IsInRole("admin"))
             {
-                <a class="btn btn-primary" asp-action="CreatePsychiatristMVC">Create</a>
+                <a  asp-action="CreatePsychiatristMVC">Create</a>
             }
         </div>
 
@@ -39,7 +37,7 @@
 
         <table class="table table-hover border shadow-lg">
             <thead>
-                <!-- Here I use sorting as with partial view-->
+                <!-- Here I use sorting that is implemented in partial view-->
                 <tr>
                     @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData){
                     {"ColumnName", nameof(PsychiatristDTO.Name)},
@@ -85,9 +83,9 @@
                         {
 
                             <td class="operations-index">
-                                <a class="btn btn-info " asp-action="PsychiatristDetails" asp-route-id="@psychiatrist.Id">Details</a>
-                                <a class="btn btn-warning " asp-action="EditPsychiatrist" asp-route-id="@psychiatrist.Id">Edit</a>
-                                <a class="btn btn-danger " asp-action="DeletePsychiatrist" asp-route-id="@psychiatrist.Id">Delete</a>
+                                <a  asp-action="PsychiatristDetails" asp-route-id="@psychiatrist.Id">Details</a>
+                                <a asp-action="EditPsychiatrist" asp-route-id="@psychiatrist.Id">Edit</a>
+                                <a  asp-action="DeletePsychiatrist" asp-route-id="@psychiatrist.Id">Delete</a>
                             </td>
                         }
 
@@ -98,3 +96,4 @@
 
     </div>
 </form>
+</div>

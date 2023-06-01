@@ -36,4 +36,8 @@
     <ProjectReference Include="..\PsychToGo\PsychToGo.API.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Shared\Components\Medicines\" />
+  </ItemGroup>
+
 </Project>

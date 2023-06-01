@@ -7,111 +7,110 @@
     ViewBag.SortData = "patient";
 }
 
+<div class="table-list">
+    <form method="get" asp-action="Index">
 
-<head>
-    <link rel="stylesheet" href="~/PsychToGo.Client.styles.css" asp-append-version="true" />
-</head>
 
-<form method="get" asp-action="Index">
+        <h1 >PATIENTS</h1>
+        <div >
+            <div >
+                <select  name="searchBy">
 
-    <h1 class="text-center">PATIENTS</h1>
-    <div class="search-box flex">
-        <div class="flex-1">
-            <select class="search-input" name="searchBy">
-
-                @foreach (var fields in ViewBag.SearchFields)
-                {
-                    if (fields.Key == ViewBag.CurrentSearchBy)
+                    @foreach (var fields in ViewBag.SearchFields)
                     {
-                        <option value="@fields.Key" selected="selected">@fields.Value</option>
-                    }
-                    <option value="@fields.Key">@fields.Value</option>
-                }
-            </select>
-            <input type="search" id="search" name="searchString" value="@ViewBag.CurrentSearchString" class="search-input" placeholder="Search.." />
-            <button class="btn btn-dark">Search</button>
-            <a class="btn btn-danger" asp-action="Index">Clear all</a>
-            @if (User.IsInRole("admin"))
-            {
-                <a class="btn btn-primary" asp-action="CreatePatientMVC">Create</a>
-            }
-        </div>
-
-
-        <table class="table table-hover border shadow-lg text-black">
-            <thead>
-                <!-- Here I use sorting as with partial view-->
-                <tr>
-                    @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData){
-                    {"ColumnName", nameof(PatientViewModel.Name)},
-                    {"Display", "Name"},
-                    })
-
-                    @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData){
-                    {"ColumnName", nameof(PatientViewModel.LastName)},
-                    {"Display", "Last name"},
-                    })
-
-                    @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData){
-                    {"ColumnName", nameof(PatientViewModel.Email)},
-                    {"Display", "Email"},
-                    })
-
-                    @if (User.IsInRole("admin") || User.IsInRole("psychologist") || User.IsInRole("psychiatrist"))
-                    {
-
-                        <th>
-                            Age
-                        </th>
-                        @if (User.IsInRole("admin"))
+                        if (fields.Key == ViewBag.CurrentSearchBy)
                         {
-                            <th>
-                                Operations
-                            </th>
+                            <option value="@fields.Key" selected="selected">@fields.Value</option>
                         }
-
+                        <option value="@fields.Key">@fields.Value</option>
                     }
-
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var patient in Model)
+                </select>
+                <input type="search" id="search" name="searchString" value="@ViewBag.CurrentSearchString" class="search-input" placeholder="Search.." />
+                <button >Search</button>
+                <a  asp-action="Index">Clear all</a>
+                @if (User.IsInRole("admin"))
                 {
-                    <tr>
+                    <a  asp-action="CreatePatientMVC">Create</a>
+                }
+            </div>
 
-                        <td>
-                            @Html.DisplayFor(modelItem => patient.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => patient.LastName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => patient.Email)
-                        </td>
+
+            <table>
+                <thead>
+                    <!-- Here I use sorting that is implemented in partial view-->
+                    <tr>
+                        @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData){
+                        {"ColumnName", nameof(PatientViewModel.Name)},
+                        {"Display", "Name"},
+                        })
+
+                        @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData){
+                        {"ColumnName", nameof(PatientViewModel.LastName)},
+                        {"Display", "Last name"},
+                        })
+
+                        @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData){
+                        {"ColumnName", nameof(PatientViewModel.Email)},
+                        {"Display", "Email"},
+                        })
 
                         @if (User.IsInRole("admin") || User.IsInRole("psychologist") || User.IsInRole("psychiatrist"))
                         {
 
-                            <td>
-                                @Math.Round((DateTime.Now - patient.DateOfBirth).TotalDays / 365.25)
-                            </td>
-
+                            <th>
+                                Age
+                            </th>
                             @if (User.IsInRole("admin"))
                             {
-                                <td class="operations-index">
-                                    <a class="btn btn-info " asp-action="PatientDetails" asp-route-id="@patient.Id">Details</a>
-                                    <a class="btn btn-warning " asp-action="EditPatient" asp-route-id="@patient.Id">Edit</a>
-                                   <a class="btn btn-danger " asp-action="DeletePatient" asp-route-id="@patient.Id">Delete</a>
-
-                                </td>
+                                <th>
+                                    Operations
+                                </th>
                             }
 
                         }
 
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var patient in Model)
+                    {
+                        <tr>
 
-    </div>
-</form>
+                            <td>
+                                @Html.DisplayFor(modelItem => patient.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => patient.LastName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => patient.Email)
+                            </td>
+
+                            @if (User.IsInRole("admin") || User.IsInRole("psychologist") || User.IsInRole("psychiatrist"))
+                            {
+
+                                <td>
+                                    @Math.Round((DateTime.Now - patient.DateOfBirth).TotalDays / 365.25)
+                                </td>
+
+                                @if (User.IsInRole("admin"))
+                                {
+                                    <td class="operations-index">
+                                        <a  asp-action="PatientDetails" asp-route-id="@patient.Id">Details</a>
+                                        <a  asp-action="EditPatient" asp-route-id="@patient.Id">Edit</a>
+                                        <a  asp-action="DeletePatient" asp-route-id="@patient.Id">Delete</a>
+
+                                    </td>
+                                }
+
+                            }
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+
+    </form>
+</div>

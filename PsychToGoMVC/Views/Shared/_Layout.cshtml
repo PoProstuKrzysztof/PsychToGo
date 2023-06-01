@@ -7,70 +7,46 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/PsychToGo.Client.styles.css" asp-append-version="true" />
 </head>
 <body>
 
-    <header class="header">
-        <a asp-controller="Home" class="logo-header" asp-action="Index">PsychToGo</a>
-        <nav class="navbar">
-
-            
-
-            @if (httpAccessor.HttpContext.Session.GetString("JWTToken") != null &&
-           httpAccessor.HttpContext.Session.GetString("JWTToken").ToString().Length > 0)
-            {
-                @if (User.IsInRole("admin"))
-                {
-                    <a asp-controller="Psychiatrist" asp-action="Index">Psychiatrists</a>
-                    <a asp-controller="Psychologist" asp-action="Index">Psychologists</a>
-                    <a asp-controller="Medicine" asp-action="Index">Medicines</a>
-                    <a asp-controller="Auth" asp-action="Register">New User</a>
-                }
-
-                @if (!(User.IsInRole("patient")))
-                {
-                    <a asp-controller="Patient" asp-action="Index">Patients</a>
-                }
-                @if (User.IsInRole("psychologist"))
-                {
-                    <a asp-controller="Psychologist" asp-action="GetPsychologistPatients">Patients list</a>
-                }
-                @if (User.IsInRole("psychiatrist"))
-                {
-                    <a asp-controller="Psychiatrist" asp-action="GetPsychiatristPatients">Patients list</a>
-                    <a asp-controller="Medicine" asp-action="Index">Medicines</a>
-
-                }
-                @if (User.IsInRole("patient"))
-                {
-                    <a asp-controller="Patient" asp-action="PatientProfileInfo">Profile</a>
-                }
-
-            }     
 
 
-           
-            
-        </nav>
 
-         @if (httpAccessor.HttpContext.Session.GetString("JWTToken") != null &&
-         httpAccessor.HttpContext.Session.GetString("JWTToken").ToString().Length > 0)
+    @RenderBody()
+
+
+
+    @if (httpAccessor.HttpContext.Session.GetString("JWTToken") != null &&
+    httpAccessor.HttpContext.Session.GetString("JWTToken").ToString().Length > 0)
+    {
+
+        @if (User.IsInRole("admin"))
         {
-            <a  asp-controller="Auth" class="logout-button" asp-action="Logout">Logout</a>
+            @await Component.InvokeAsync("Admin")
+            
         }
 
 
+        @if (User.IsInRole("psychologist"))
+        {
+            <a asp-controller="Psychologist" asp-action="GetPsychologistPatients">Patients list</a>
+        }
+        @if (User.IsInRole("psychiatrist"))
+        {
+            <a asp-controller="Psychiatrist" asp-action="GetPsychiatristPatients">Patients list</a>
+            <a asp-controller="Medicine" asp-action="Index">Medicines</a>
 
-    </header>
+        }
+        @if (User.IsInRole("patient"))
+        {
+            <a asp-controller="Patient" asp-action="PatientProfileInfo">Profile</a>
+        }
 
-    <main role="main">
+    }
 
-        @RenderBody()
 
-    </main>
 
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

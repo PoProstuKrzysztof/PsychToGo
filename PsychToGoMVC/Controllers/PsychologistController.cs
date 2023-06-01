@@ -4,8 +4,6 @@ using Newtonsoft.Json;
 using PsychToGo.API.DTO;
 using PsychToGo.API.Models;
 using PsychToGo.Client.Enums;
-using PsychToGo.Client.Models;
-using PsychToGo.Client.Services;
 using PsychToGo.Client.Services.Interfaces;
 using System.Data;
 using System.Security.Claims;

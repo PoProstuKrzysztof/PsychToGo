@@ -7,187 +7,104 @@
     ViewBag.CurrentUrl = "~/Medicines/Index";
 }
 
-<head>
-    <link rel="stylesheet" href="~/PsychToGo.Client.styles.css" asp-append-version="true" />
-</head>
 
+<div class="table-list">
 
-<form method="get" asp-action="Index">
-    <h1 class="text-center">MEDICINES</h1>
-    <div class="search-box flex">
-        <div class="flex-1">
-            <select class="search-input" name="searchBy">
-                @foreach (var fields in ViewBag.SearchFields)
-                {
-                    if (fields.Key == ViewBag.CurrentSearchBy)
+    <form method="get" asp-action="Index">
+        <h1 >MEDICINES</h1>
+        <div >
+            <div c>
+                <select class="search-input" name="searchBy">
+                    @foreach (var fields in ViewBag.SearchFields)
                     {
-                        <option value="@fields.Key" selected="selected">@fields.Value</option>
+                        if (fields.Key == ViewBag.CurrentSearchBy)
+                        {
+                            <option value="@fields.Key" selected="selected">@fields.Value</option>
+                        }
+                        <option value="@fields.Key">@fields.Value</option>
                     }
-                    <option value="@fields.Key">@fields.Value</option>
-                }
-            </select>
-            <input type="search" id="search" name="searchString" value="@ViewBag.CurrentSearchString" class="search-input" placeholder="Search.." />
-            <button class="btn btn-dark">Search</button>
-            <a class="btn btn-danger" asp-action="Index">Clear all</a>
-            @if (User.IsInRole( "admin" ))
-            {
-                <a class="btn btn-primary" asp-action="CreateMedicineMVC">Create</a>
-            }
-        </div>
-
-
-
-        <table class="table table-hover border shadow-lg">
-            <thead>
-                <tr>
-
-                    <th>
-                        @Html.DisplayNameFor(model => model.Name)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Description)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.ProductionDate)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.ExpireDate)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.DailyDose)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Ingredients)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.InStock)
-                    </th>
-                    <th>
-                        Operations
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var medicines in Model)
+                </select>
+                <input type="search" id="search" name="searchString" value="@ViewBag.CurrentSearchString" class="search-input" placeholder="Search.." />
+                <button >Search</button>
+                <a class="btn btn-danger" asp-action="Index">Clear all</a>
+                @if (User.IsInRole("admin"))
                 {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => medicines.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => medicines.Description)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => medicines.ProductionDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => medicines.ExpireDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => medicines.DailyDose)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => medicines.Ingredients)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => medicines.InStock)
-                        </td>
-                        @if (User.IsInRole( "admin" ))
-                        {
-                            <td class="operations-index">
-                                <a class="btn btn-info " asp-action="MedicineDetails" asp-route-id="@medicines.Id">Details</a>
-                                <a class="btn btn-warning" asp-action="EditMedicine" asp-route-id="@medicines.Id">Edit</a>
-                                <a class="btn btn-danger " asp-action="DeleteMedicine" asp-route-id="@medicines.Id">Delete</a>
+                    <a class="btn btn-primary" asp-action="CreateMedicineMVC">Create</a>
+                }
+            </div>
 
-                            </td>
-                        }
+
+
+            <table >
+                <thead>
+                    <tr>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Description)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ProductionDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ExpireDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.DailyDose)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Ingredients)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.InStock)
+                        </th>
+                        <th>
+                            Operations
+                        </th>
                     </tr>
-                }
-            </tbody>
-        </table>
-
-    </div>
-</form>
-
-
-@*
-<body>
-    <div class="container border p-5 mt-2">
-        <h1 class="text-primary">Medicines</h1>
-        <hr />
-        <p>
-            <a class="btn btn-outline-primary" asp-action="CreateMedicineMVC">Add</a>
-        </p>
-        <table class="table table-hover border shadow-lg">
-            <thead>
-                <tr>
-
-                    <th>
-                        @Html.DisplayNameFor(model => model.Name)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Description)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.ProductionDate)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.ExpireDate)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.DailyDose)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Ingredients)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.InStock)
-                    </th>
-                    <th>
-                        Operations
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var medicines in Model)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => medicines.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => medicines.Description)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => medicines.ProductionDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => medicines.ExpireDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => medicines.DailyDose)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => medicines.Ingredients)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => medicines.InStock)
-                        </td>
-                        @if (User.IsInRole( "admin" ))
-                        {
+                </thead>
+                <tbody>
+                    @foreach (var medicines in Model)
+                    {
+                        <tr>
                             <td>
-                                <a class="btn btn-warning btn-sm" asp-action="EditMedicine" asp-route-id="@medicines.Id">Edit</a>
-                                <a class="btn btn-danger btn-sm" asp-action="DeleteMedicine" asp-route-id="@medicines.Id">Delete</a>
+                                @Html.DisplayFor(modelItem => medicines.Name)
                             </td>
-                        }
+                            <td>
+                                @Html.DisplayFor(modelItem => medicines.Description)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => medicines.ProductionDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => medicines.ExpireDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => medicines.DailyDose)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => medicines.Ingredients)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => medicines.InStock)
+                            </td>
+                            @if (User.IsInRole("admin"))
+                            {
+                                <td class="operations-index">
+                                    <a class="nav-items" asp-action="MedicineDetails" asp-route-id="@medicines.Id">Details</a>
+                                    <a class="nav-items" asp-action="EditMedicine" asp-route-id="@medicines.Id">Edit</a>
+                                    <a class="nav-items" asp-action="DeleteMedicine" asp-route-id="@medicines.Id">Delete</a>
 
-                    </tr>
-                }
-            </tbody>
-        </table>
+                                </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
 
-    </div>
-</body>
+        </div>
+    </form>
 
-
-*@
+</div>

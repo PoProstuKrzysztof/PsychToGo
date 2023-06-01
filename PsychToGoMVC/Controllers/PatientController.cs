@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PsychToGo.API.DTO;
-using PsychToGo.API.Interfaces;
 using PsychToGo.API.Models;
 using PsychToGo.Client.Enums;
 using PsychToGo.Client.Models;
@@ -64,12 +63,12 @@ public class PatientController : Controller
             ViewBag.CurrentSortBy = sortBy;
             ViewBag.CurrentSortOrder = sortOrder.ToString();
             ViewBag.SortData = "patient";
-            return View(sortedPatients ?? new List<PatientViewModel>());
+            return View( sortedPatients ?? new List<PatientViewModel>());
         }
         else
         {
             ModelState.AddModelError("", $"There are no patients");
-            return View(Enumerable.Empty<PatientViewModel>());
+            return View( Enumerable.Empty<PatientViewModel>());
         }
     }
 

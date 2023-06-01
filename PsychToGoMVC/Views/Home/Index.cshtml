@@ -1,7 +1,5 @@
 ﻿  @using PsychToGo.API.DTO;
 @inject IHttpContextAccessor httpAccessor
-
-
 @model LoginRequestDTO
 
 @{
@@ -10,53 +8,22 @@
 
 <!DOCTYPE html>
 
-<head>
-    <link rel="stylesheet" href="~/PsychToGo.Client.styles.css" asp-append-version="true" />
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel="stylesheet">
-</head>
+
 <body> 
-    <div class="background"></div>
-    <div class="container-homepage">
-        <div class="content">
-            <h2 class="logo"><i>PsychToGo</i></h2>        
-        </div>
+
 
         @if (httpAccessor.HttpContext.Session.GetString( "JWTToken" ) != null &&
         httpAccessor.HttpContext.Session.GetString( "JWTToken" ).ToString().Length > 0)
         {
             // Display after login
+            
         }
         else
         {
-            <div class="log-box">
-                <div class="form-box login">
-                    <form asp method="post" asp-antiforgery="true">
-                        <h2>Log in</h2>
-                        <div asp-validation-summary="All" class="text-danger"></div>
-                        <div class="input-box">
+            @await Component.InvokeAsync("Login");
 
-                            <label>E-mail</label>
-                            <input asp-for="UserName" type="text" placeholder="E-mail..." value="@ViewBag.Login"required />
-
-                           
-                        </div>
-
-                        <div class="input-box">
-
-                            <label>Password</label>
-                            <input asp-for="Password" type="password" placeholder="Password..." required />
-                            
-                        </div>
-                        <div class="m-lg-auto">
-                            <button asp-controller="Auth" asp-action="Login" type="submit" class="btn" value="Submit">Login</button>
-
-                        </div>
-                    </form>
-                </div>
-            </div>
-        }
+       }
         
-    </div>
     
 </body>
 

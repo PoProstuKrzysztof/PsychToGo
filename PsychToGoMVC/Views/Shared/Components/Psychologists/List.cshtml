@@ -4,18 +4,17 @@
 @{
     ViewData["Title"] = "Psychologists";
     ViewBag.CurrentUrl = "~/Psychologist/Index";
-    
+
 }
 
 <div class="table-list">
 
-
 <form method="get" asp-action="Index">
 
-    <h1 >PSYCHOLOGISTS</h1>
-    <div >
+    <h1 class="text-center">PSYCHOLOGISTS</h1>
+    <div class="search-box flex">
         <div class="flex-1">
-            <select  name="searchBy">
+            <select class="search-input" name="searchBy">
                 @foreach (var fields in ViewBag.SearchFields)
                 {
                     if (fields.Key == ViewBag.CurrentSearchBy)
@@ -26,8 +25,8 @@
                 }
             </select>
             <input type="search" id="search" name="searchString" value="@ViewBag.CurrentSearchString" class="search-input" placeholder="Search.." />
-            <button >Search</button>
-            <a  asp-action="Index">Clear all</a>
+            <button class="btn btn-dark">Search</button>
+            <a class="btn btn-danger" asp-action="Index">Clear all</a>
             @if (User.IsInRole("admin"))
             {
                 <a class="btn btn-primary" asp-action="CreatePsychologistMVC">Create</a>
@@ -59,9 +58,9 @@
                     @if (User.IsInRole("admin"))
                     {
 
-                            <th>
-                                Operations
-                            </th>
+                        <th>
+                            Operations
+                        </th>
 
                     }
 
@@ -85,9 +84,9 @@
                         {
 
                             <td class="operations-index">
-                                <a  asp-action="PsychologistDetails" asp-route-id="@psychologist.Id">Details</a>
-                                <a  asp-action="EditPsychologist" asp-route-id="@psychologist.Id">Edit</a>
-                                <a  asp-action="DeletePsychologist" asp-route-id="@psychologist.Id">Delete</a>
+                                <a class="btn btn-info" asp-action="PsychologistDetails" asp-route-id="@psychologist.Id">Details</a>
+                                <a class="btn btn-warning " asp-action="EditPsychologist" asp-route-id="@psychologist.Id">Edit</a>
+                                <a class="btn btn-danger " asp-action="DeletePsychologist" asp-route-id="@psychologist.Id">Delete</a>
 
                             </td>
                         }

@@ -1,0 +1,71 @@
+﻿@using PsychToGo.API.DTO;
+@model LoginRequestDTO
+<!DOCTYPE html>
+
+<head>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+
+
+<form method="post" asp-antiforgery="true">
+    <div class="box">
+        <div class="container">
+            <div class="top-header">
+                <span>Have an account?</span>
+                <header>Login</header>
+            </div>
+
+            <div class="input-field">
+                <input asp-for="UserName" type="text" class="input" placeholder="E-mail" required />
+                <i class="bx bx-user"></i>
+            </div>
+            <div class="input-field">
+                <input asp-for="Password" type="password" class="input" placeholder="Password" required />
+                <i class="bx bx-lock-alt"></i>
+            </div>
+            <div class="input-field">
+                <button asp-controller="Auth" asp-action="Login" type="submit" class="submit">Login</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*<div class="log-box">
+    <div class="form-box login">
+        <form asp method="post" asp-antiforgery="true">
+            <h2>Log in</h2>
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="input-box">
+
+                <label>E-mail</label>
+                <input asp-for="UserName" type="text" placeholder="E-mail..." value="@ViewBag.Login" required />
+
+
+            </div>
+
+            <div class="input-box">
+
+                <label>Password</label>
+                <input asp-for="Password" type="password" placeholder="Password..." required />
+
+            </div>
+            <div class="m-lg-auto">
+                <button asp-controller="Auth" asp-action="Login" type="submit" class="btn" value="Submit">Login</button>
+
+            </div>
+        </form>
+    </div>
+</div>*@

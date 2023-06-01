@@ -22,35 +22,35 @@ public class AuthController : Controller
     public IActionResult Login()
     {
         LoginRequestDTO loginObj = new();
-        return View( loginObj );
+        return View(loginObj);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Login(LoginRequestDTO obj)
     {
-        string response = await _authService.LoginAsync<HttpResponseMessage>( obj );
+        string response = await _authService.LoginAsync<HttpResponseMessage>(obj);
         if (response != string.Empty)
         {
-            LoginResponseDTO model = JsonConvert.DeserializeObject<LoginResponseDTO>( response );
+            LoginResponseDTO model = JsonConvert.DeserializeObject<LoginResponseDTO>(response);
             JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
-            JwtSecurityToken jwt = handler.ReadJwtToken( model.Token );
+            JwtSecurityToken jwt = handler.ReadJwtToken(model.Token);
             //Reading JWT token with claims
-            ClaimsIdentity identity = new ClaimsIdentity( CookieAuthenticationDefaults.AuthenticationScheme );
-            identity.AddClaim( new Claim( ClaimTypes.Name,
-                jwt.Claims.FirstOrDefault( u => u.Type == "unique_name" ).Value ) );
-            identity.AddClaim( new Claim( ClaimTypes.Role,
-                jwt.Claims.FirstOrDefault( u => u.Type == "role" ).Value ) );
+            ClaimsIdentity identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+            identity.AddClaim(new Claim(ClaimTypes.Name,
+                jwt.Claims.FirstOrDefault(u => u.Type == "unique_name").Value));
+            identity.AddClaim(new Claim(ClaimTypes.Role,
+                jwt.Claims.FirstOrDefault(u => u.Type == "role").Value));
 
-            ClaimsPrincipal principal = new ClaimsPrincipal( identity );
-            await HttpContext.SignInAsync( CookieAuthenticationDefaults.AuthenticationScheme, principal );
+            ClaimsPrincipal principal = new ClaimsPrincipal(identity);
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
-            HttpContext.Session.SetString( "JWTToken", model.Token );
-            return RedirectToAction( "Index", "Home" );
+            HttpContext.Session.SetString("JWTToken", model.Token);
+            return RedirectToAction("Index", "Home");
         }
 
-        ModelState.AddModelError( "", $"Invalid username or password" );
-        return RedirectToAction( "Index", "Home" );
+        ModelState.AddModelError("", $"Invalid username or password");
+        return RedirectToAction("Index", "Home");
     }
 
     [HttpGet]
@@ -63,18 +63,18 @@ public class AuthController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Register(RegistrationRequestDTO obj)
     {
-        string register = await _authService.RegisterAsync<HttpResponseMessage>( obj );
+        string register = await _authService.RegisterAsync<HttpResponseMessage>(obj);
         if (register != string.Empty)
         {
             if (obj.Role == "admin")
             {
-                return RedirectToAction( "Index", "Home" );
+                return RedirectToAction("Index", "Home");
             }
 
-            return RedirectToAction( $"Create{obj.Role}MVC", $"{obj.Role}" );
+            return RedirectToAction($"Create{obj.Role}MVC", $"{obj.Role}");
         }
-        ModelState.AddModelError( "", "Error occured while registration." );
-        return View( obj );
+        ModelState.AddModelError("", "Error occured while registration.");
+        return View(obj);
     }
 
     [HttpGet]
@@ -87,7 +87,7 @@ public class AuthController : Controller
     public async Task<IActionResult> Logout()
     {
         await HttpContext.SignOutAsync();
-        HttpContext.Session.SetString( "JWTToken", "" );
-        return RedirectToAction( "Index", "Home" );
+        HttpContext.Session.SetString("JWTToken", "");
+        return RedirectToAction("Index", "Home");
     }
 }
