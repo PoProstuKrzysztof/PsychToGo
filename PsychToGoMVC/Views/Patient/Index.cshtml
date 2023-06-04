@@ -7,7 +7,96 @@
     ViewBag.SortData = "patient";
 }
 
-<div class="table-list">
+
+
+<form method="get" asp-action="Index">
+    <div class="table">
+        <div class="table-header">
+            <p>PATIENTS</p>
+
+
+                <div>
+                    <select name="searchBy" class="search-input">
+
+                        @foreach (var fields in ViewBag.SearchFields)
+                        {
+                            if (fields.Key == ViewBag.CurrentSearchBy)
+                            {
+                                <option value="@fields.Key" selected="selected">@fields.Value</option>
+                            }
+                            <option value="@fields.Key">@fields.Value</option>
+                        }
+                    </select>
+                    <input type="search" id="search" name="searchString" value="@ViewBag.CurrentSearchString" class="search-input" placeholder="Search.." />
+                    <button class="create-button"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    <a class="button-clear" asp-action="Index">Clear all</a>
+                </div>
+            @if (User.IsInRole("admin"))
+            {
+                <button asp-action="CreatePatientMVC" class="create-button"><i class="fa-solid fa-user-plus"></i></button>
+            }
+        </div>
+
+        <div class="table-section">
+            <table>
+                <thead>
+                    <tr>
+                        @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData){
+                        {"ColumnName", nameof(PatientViewModel.Name)},
+                        {"Display", "Name"},
+                        })
+
+                        @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData){
+                        {"ColumnName", nameof(PatientViewModel.LastName)},
+                        {"Display", "Last name"},
+                        })
+
+                        @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData){
+                        {"ColumnName", nameof(PatientViewModel.Email)},
+                        {"Display", "Email"},
+                        })
+
+
+                        @if (User.IsInRole("admin"))
+                        {
+                            <th>
+                                Operations
+                            </th>
+                        }
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var patient in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => patient.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => patient.LastName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => patient.Email)
+                            </td>
+                            <td>
+                                @if (User.IsInRole("admin"))
+                                {
+                                    <button asp-action="PatientDetails" asp-route-id="@patient.Id"><i class="fa-solid fa-user-pen"></i></button>
+                                    <button asp-action="EditPatient" asp-route-id="@patient.Id"><i class="fa-solid fa-address-book"></i></button>
+                                    <button asp-action="DeletePatient" asp-route-id="@patient.Id"><i class="fa-solid fa-user-xmark"></i></button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</form>
+
+@*<div class="table-list">
     <form method="get" asp-action="Index">
 
 
@@ -86,12 +175,6 @@
                                 @Html.DisplayFor(modelItem => patient.Email)
                             </td>
 
-                            @if (User.IsInRole("admin") || User.IsInRole("psychologist") || User.IsInRole("psychiatrist"))
-                            {
-
-                                <td>
-                                    @Math.Round((DateTime.Now - patient.DateOfBirth).TotalDays / 365.25)
-                                </td>
 
                                 @if (User.IsInRole("admin"))
                                 {
@@ -114,3 +197,4 @@
 
     </form>
 </div>
+*@
