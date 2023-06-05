@@ -4,18 +4,17 @@
 @{
     ViewData["Title"] = "Psychologists";
     ViewBag.CurrentUrl = "~/Psychologist/Index";
-    
-}
+    ViewBag.SortData = "psychologist";
 
-<div class="table-list">
+}
 
 
 <form method="get" asp-action="Index">
+    <div class="table">
+        <div class="table-header">
+            <p>PSYCHIATRISTS</p>
+            <select class="search-input" name="searchBy">
 
-    <h1 >PSYCHOLOGISTS</h1>
-    <div >
-        <div class="flex-1">
-            <select  name="searchBy">
                 @foreach (var fields in ViewBag.SearchFields)
                 {
                     if (fields.Key == ViewBag.CurrentSearchBy)
@@ -26,77 +25,91 @@
                 }
             </select>
             <input type="search" id="search" name="searchString" value="@ViewBag.CurrentSearchString" class="search-input" placeholder="Search.." />
-            <button >Search</button>
-            <a  asp-action="Index">Clear all</a>
+            <button class="add-new"><i class="fa-solid fa-magnifying-glass"></i></button>
+            <button class="clear-all" asp-action="Index">Clear all</button>
             @if (User.IsInRole("admin"))
             {
-                <a class="btn btn-primary" asp-action="CreatePsychologistMVC">Create</a>
+                <button class="add-new" asp-action="CreatePsychologistMVC"><i class="fa-solid fa-user-plus"></i></button>
             }
+
+
         </div>
 
-
-
-
-        <table class="table table-hover border shadow-lg">
-            <thead>
-                <!-- Here I use sorting that is implemented in partial view-->
-                <tr>
-                    @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData){
-                    {"ColumnName", nameof(PsychologistDTO.Name)},
-                    {"Display", "Name"},
-                    })
-
-                    @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData){
-                    {"ColumnName", nameof(PsychologistDTO.LastName)},
-                    {"Display", "Last name"},
-                    })
-
-                    @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData){
-                    {"ColumnName", nameof(PsychologistDTO.Email)},
-                    {"Display", "Email"},
-                    })
-
-                    @if (User.IsInRole("admin"))
-                    {
-
-                            <th>
-                                Operations
-                            </th>
-
-                    }
-
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var psychologist in Model)
-                {
+        <div class="table-section">
+            <table>
+                <thead>
+                    <!-- Here I use sorting that is implemented in partial view-->
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => psychologist.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => psychologist.LastName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => psychologist.Email)
-                        </td>
+                        @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData){
+                        {"ColumnName", nameof(PsychologistDTO.Name)},
+                        {"Display", "Name"},
+                        })
 
-                        @if (User.IsInRole("admin"))
+                        @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData){
+                        {"ColumnName", nameof(PsychologistDTO.LastName)},
+                        {"Display", "Last name"},
+                        })
+
+                        @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData){
+                        {"ColumnName", nameof(PsychologistDTO.Email)},
+                        {"Display", "Email"},
+                        })
+
+                        @if (User.IsInRole("admin") || User.IsInRole("psychologist") || User.IsInRole("psychiatrist"))
                         {
 
-                            <td class="operations-index">
-                                <a  asp-action="PsychologistDetails" asp-route-id="@psychologist.Id">Details</a>
-                                <a  asp-action="EditPsychologist" asp-route-id="@psychologist.Id">Edit</a>
-                                <a  asp-action="DeletePsychologist" asp-route-id="@psychologist.Id">Delete</a>
-
-                            </td>
+                            <th>
+                                Age
+                            </th>
+                            @if (User.IsInRole("admin"))
+                            {
+                                <th>
+                                    Operations
+                                </th>
+                            }
                         }
-
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+
+                <tbody>
+                    @foreach (var psychologist in Model)
+                    {
+                        <tr>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => psychologist.Name)
+                            </td>
+                            <td>
+                                <b>@Html.DisplayFor(modelItem => psychologist.LastName)</b>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => psychologist.Email)
+                            </td>
+
+                            @if (User.IsInRole("admin") || User.IsInRole("psychologist") || User.IsInRole("psychiatrist"))
+                            {
+
+                                <td>
+                                    @Math.Round((DateTime.Now - psychologist.DateOfBirth).TotalDays / 365.25)
+                                </td>
+
+                                @if (User.IsInRole("admin"))
+                                {
+                                    <td class="operations-index">
+                                        <button asp-action="PsychologistDetails" asp-route-id="@psychologist.Id"><i class="fa-solid fa-book-open"></i></button>
+                                        <button asp-action="EditPsychologist" asp-route-id="@psychologist.Id"><i class="fa-solid fa-pen-to-square"></i></button>
+                                        <button asp-action="DeletePsychologist" asp-route-id="@psychologist.Id" value=""><i class="fa-solid fa-trash-can"></i></button>
+
+                                    </td>
+                                }
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
 
     </div>
 </form>
-</div>
+
+

@@ -7,13 +7,10 @@
     ViewBag.SortData = "patient";
 }
 
-
-
 <form method="get" asp-action="Index">
     <div class="table">
         <div class="table-header">
             <p>PATIENTS</p>
-
 
                 <div>
                     <select name="searchBy" class="search-input">
@@ -56,14 +53,12 @@
                         {"Display", "Email"},
                         })
 
-
                         @if (User.IsInRole("admin"))
                         {
                             <th>
                                 Operations
                             </th>
                         }
-
                     </tr>
                 </thead>
                 <tbody>
@@ -90,7 +85,6 @@
                         </tr>
                     }
                 </tbody>
-
             </table>
         </div>
     </div>
@@ -99,31 +93,26 @@
 @*<div class="table-list">
     <form method="get" asp-action="Index">
 
-
-        <h1 >PATIENTS</h1>
-        <div >
-            <div >
-                <select  name="searchBy">
-
-                    @foreach (var fields in ViewBag.SearchFields)
-                    {
-                        if (fields.Key == ViewBag.CurrentSearchBy)
-                        {
-                            <option value="@fields.Key" selected="selected">@fields.Value</option>
-                        }
-                        <option value="@fields.Key">@fields.Value</option>
-                    }
-                </select>
-                <input type="search" id="search" name="searchString" value="@ViewBag.CurrentSearchString" class="search-input" placeholder="Search.." />
-                <button >Search</button>
-                <a  asp-action="Index">Clear all</a>
-                @if (User.IsInRole("admin"))
+                @foreach (var fields in ViewBag.SearchFields)
                 {
-                    <a  asp-action="CreatePatientMVC">Create</a>
+                    if (fields.Key == ViewBag.CurrentSearchBy)
+                    {
+                        <option value="@fields.Key" selected="selected">@fields.Value</option>
+                    }
+                    <option value="@fields.Key">@fields.Value</option>
                 }
-            </div>
+            </select>
 
+            <input type="search" id="search" name="searchString" value="@ViewBag.CurrentSearchString" class="search-input" placeholder="Search.." />
+            <button class="add-new">Search</button>
+            <button class="clear-all" asp-action="Index" >Clear all</button>
+            @if (User.IsInRole("admin"))
+            {
+                <button class="add-new" asp-action="CreatePatientMVC">Create</button>
+            }
+        </div>
 
+        <div class="table-section">
             <table>
                 <thead>
                     <!-- Here I use sorting that is implemented in partial view-->
@@ -151,15 +140,14 @@
                             </th>
                             @if (User.IsInRole("admin"))
                             {
-                                <th>
+                               <th>
                                     Operations
-                                </th>
+                               </th>
                             }
-
                         }
-
                     </tr>
                 </thead>
+
                 <tbody>
                     @foreach (var patient in Model)
                     {
@@ -169,32 +157,27 @@
                                 @Html.DisplayFor(modelItem => patient.Name)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => patient.LastName)
+                                <b>@Html.DisplayFor(modelItem => patient.LastName)</b>
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => patient.Email)
                             </td>
 
-
                                 @if (User.IsInRole("admin"))
                                 {
                                     <td class="operations-index">
-                                        <a  asp-action="PatientDetails" asp-route-id="@patient.Id">Details</a>
-                                        <a  asp-action="EditPatient" asp-route-id="@patient.Id">Edit</a>
-                                        <a  asp-action="DeletePatient" asp-route-id="@patient.Id">Delete</a>
-
+                                        <button asp-action="PatientDetails" asp-route-id="@patient.Id"><i class="fa-solid fa-book-open"></i></button>
+                                        <button asp-action="EditPatient"  asp-route-id="@patient.Id"><i class="fa-solid fa-pen-to-square"></i></button>
+                                        <button asp-action="DeletePatient"  asp-route-id="@patient.Id" value=""><i class="fa-solid fa-trash-can"></i></button>
                                     </td>
                                 }
-
                             }
-
                         </tr>
                     }
                 </tbody>
             </table>
-
         </div>
-
+    </div>
+</form>
     </form>
 </div>
-*@

@@ -8,14 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-
 </head>
 <body>
-
-
-
-
-    
 
 
 
@@ -26,7 +20,7 @@
         @if (User.IsInRole("admin"))
         {
             @await Component.InvokeAsync("Admin")
-            
+
         }
 
 
@@ -49,7 +43,7 @@
 
     @RenderBody()
 
-    <script src="https://kit.fontawesome.com/14e87de382.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/ba60151366.js" crossorigin="anonymous"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)

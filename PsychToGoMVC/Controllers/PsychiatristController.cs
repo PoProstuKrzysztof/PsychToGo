@@ -81,6 +81,8 @@ public class PsychiatristController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult CreatePsychiatristMVC(PsychiatristDTO pvm)
     {
+        if (!ModelState.IsValid) return View();
+
         string data = JsonConvert.SerializeObject(pvm);
         StringContent content = new(data, Encoding.UTF8, "application/json");
         HttpResponseMessage response = _client.PostAsync(_client.BaseAddress + "/create", content).Result;
@@ -125,6 +127,8 @@ public class PsychiatristController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult EditPsychiatrist(PsychiatristDTO psychiatrist)
     {
+        if (!ModelState.IsValid) return View();
+
         string data = JsonConvert.SerializeObject(psychiatrist);
 
         StringContent content = new(data, Encoding.UTF8, "application/json");

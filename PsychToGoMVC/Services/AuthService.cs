@@ -7,7 +7,7 @@ namespace PsychToGo.Client.Services;
 
 public class AuthService : IAuthService
 {
-    private readonly Uri baseAdress = new( "https://localhost:7291/api/UsersAuthorize" );
+    private readonly Uri baseAdress = new("https://localhost:7291/api/UsersAuthorize");
     private readonly HttpClient client = new();
 
     public AuthService()
@@ -18,18 +18,17 @@ public class AuthService : IAuthService
     /// <summary>
     /// Login call to API
     /// </summary>
-    /// <typeparam name="T"></typeparam>
     /// <param name="userLogin"></param>
     /// <returns></returns>
     public async Task<string> LoginAsync<T>(LoginRequestDTO userLogin)
     {
-        string data = JsonConvert.SerializeObject( userLogin );
+        string data = JsonConvert.SerializeObject(userLogin);
 
-        StringContent content = new( data,
+        StringContent content = new(data,
                                                   Encoding.UTF8,
-                                                  "application/json" );
+                                                  "application/json");
 
-        HttpResponseMessage response = client.PostAsync( client.BaseAddress + "/login", content ).Result;
+        HttpResponseMessage response = client.PostAsync(client.BaseAddress + "/login", content).Result;
         if (response.IsSuccessStatusCode)
         {
             string result = response.Content.ReadAsStringAsync().Result;
@@ -43,19 +42,18 @@ public class AuthService : IAuthService
     /// <summary>
     /// Register call to API
     /// </summary>
-    /// <typeparam name="T"></typeparam>
     /// <param name="userCreate"></param>
     /// <returns></returns>
     public async Task<string> RegisterAsync<T>(RegistrationRequestDTO userCreate)
     {
-        string data = JsonConvert.SerializeObject( userCreate );
+        string data = JsonConvert.SerializeObject(userCreate);
 
-        StringContent content = new( data,
+        StringContent content = new(data,
                                     Encoding.UTF8,
-                                    "application/json" );
+                                    "application/json");
 
-        HttpResponseMessage response = client.PostAsync( client.BaseAddress + "/register",
-                                                        content ).Result;
+        HttpResponseMessage response = client.PostAsync(client.BaseAddress + "/register",
+                                                        content).Result;
         if (response.IsSuccessStatusCode)
         {
             string result = response.Content.ReadAsStringAsync().Result;

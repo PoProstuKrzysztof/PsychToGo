@@ -63,6 +63,8 @@ public class AuthController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Register(RegistrationRequestDTO obj)
     {
+        if (!ModelState.IsValid) return View(obj);
+
         string register = await _authService.RegisterAsync<HttpResponseMessage>(obj);
         if (register != string.Empty)
         {

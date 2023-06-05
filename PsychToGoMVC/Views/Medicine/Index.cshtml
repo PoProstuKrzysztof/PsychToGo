@@ -5,58 +5,54 @@
 @{
     ViewData["Title"] = "Medicines";
     ViewBag.CurrentUrl = "~/Medicines/Index";
+    ViewBag.SortData = "medicine";
 }
 
 
-<div class="table-list">
 
-    <form method="get" asp-action="Index">
-        <h1 >MEDICINES</h1>
-        <div >
-            <div c>
-                <select class="search-input" name="searchBy">
-                    @foreach (var fields in ViewBag.SearchFields)
-                    {
-                        if (fields.Key == ViewBag.CurrentSearchBy)
-                        {
-                            <option value="@fields.Key" selected="selected">@fields.Value</option>
-                        }
-                        <option value="@fields.Key">@fields.Value</option>
-                    }
-                </select>
-                <input type="search" id="search" name="searchString" value="@ViewBag.CurrentSearchString" class="search-input" placeholder="Search.." />
-                <button >Search</button>
-                <a class="btn btn-danger" asp-action="Index">Clear all</a>
-                @if (User.IsInRole("admin"))
+<form method="get" asp-action="Index">
+    <div class="table">
+        <div class="table-header">
+            <p>MEDICINES</p>
+
+            <select class="search-input" name="searchBy">
+
+                @foreach (var fields in ViewBag.SearchFields)
                 {
-                    <a class="btn btn-primary" asp-action="CreateMedicineMVC">Create</a>
+                    if (fields.Key == ViewBag.CurrentSearchBy)
+                    {
+                        <option value="@fields.Key" selected="selected">@fields.Value</option>
+                    }
+                    <option value="@fields.Key">@fields.Value</option>
                 }
-            </div>
+            </select>
+            <input type="search" id="search" name="searchString" value="@ViewBag.CurrentSearchString" class="search-input" placeholder="Search.." />
+            <button class="add-new"><i class="fa-solid fa-magnifying-glass"></i></button>
+            <button class="clear-all" asp-action="Index">Clear all</button>
+            @if (User.IsInRole("admin"))
+            {
+                <button class="add-new" asp-action="CreateMedicineMVC"><i class="fa-solid fa-user-plus"></i></button>
+            }
 
 
+        </div>
 
-            <table >
+        <div class="table-section">
+            <table>
                 <thead>
                     <tr>
 
                         <th>
                             @Html.DisplayNameFor(model => model.Name)
                         </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Description)
-                        </th>
+
                         <th>
                             @Html.DisplayNameFor(model => model.ProductionDate)
                         </th>
                         <th>
                             @Html.DisplayNameFor(model => model.ExpireDate)
                         </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.DailyDose)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Ingredients)
-                        </th>
+
                         <th>
                             @Html.DisplayNameFor(model => model.InStock)
                         </th>
@@ -65,6 +61,7 @@
                         </th>
                     </tr>
                 </thead>
+
                 <tbody>
                     @foreach (var medicines in Model)
                     {
@@ -72,39 +69,37 @@
                             <td>
                                 @Html.DisplayFor(modelItem => medicines.Name)
                             </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => medicines.Description)
-                            </td>
+
                             <td>
                                 @Html.DisplayFor(modelItem => medicines.ProductionDate)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => medicines.ExpireDate)
                             </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => medicines.DailyDose)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => medicines.Ingredients)
-                            </td>
+
+
                             <td>
                                 @Html.DisplayFor(modelItem => medicines.InStock)
                             </td>
-                            @if (User.IsInRole("admin"))
-                            {
-                                <td class="operations-index">
-                                    <a class="nav-items" asp-action="MedicineDetails" asp-route-id="@medicines.Id">Details</a>
-                                    <a class="nav-items" asp-action="EditMedicine" asp-route-id="@medicines.Id">Edit</a>
-                                    <a class="nav-items" asp-action="DeleteMedicine" asp-route-id="@medicines.Id">Delete</a>
 
-                                </td>
+                            @if (User.IsInRole("admin") || User.IsInRole("psychologist") || User.IsInRole("psychiatrist"))
+                            {
+
+                                @if (User.IsInRole("admin"))
+                                {
+                                    <td class="operations-index">
+                                        <button asp-action="MedicineDetails" asp-route-id="@medicines.Id"><i class="fa-solid fa-book-open"></i></button>
+                                        <button asp-action="EditMedicine" asp-route-id="@medicines.Id"><i class="fa-solid fa-pen-to-square"></i></button>
+                                        <button asp-action="DeleteMedicine" asp-route-id="@medicines.Id" value=""><i class="fa-solid fa-trash-can"></i></button>
+
+                                    </td>
+                                }
                             }
                         </tr>
                     }
                 </tbody>
             </table>
-
         </div>
-    </form>
 
-</div>
+    </div>
+</form>

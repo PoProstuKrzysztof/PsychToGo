@@ -63,6 +63,8 @@ public class MedicineController : Controller
     [Authorize(Roles = "admin")]
     public IActionResult CreateMedicineMVC(MedicineDTO mdo)
     {
+        if (!ModelState.IsValid) return View();
+
         string data = JsonConvert.SerializeObject(mdo);
         StringContent content = new(data,
             Encoding.UTF8,
@@ -109,6 +111,8 @@ public class MedicineController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult EditMedicine(MedicineDTO medicine)
     {
+        if (!ModelState.IsValid) return View(medicine);
+
         string data = JsonConvert.SerializeObject(medicine);
 
         StringContent content = new(data,
