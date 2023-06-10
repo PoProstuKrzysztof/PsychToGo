@@ -4,8 +4,6 @@
 
 @{
     ViewData["Title"] = "Edit patient";
-    PsychiatristDTO psychiatrist = @Model.Psychiatrists.FirstOrDefault();
-    PsychologistDTO psychologist = @Model.Psychologists.FirstOrDefault();
 
 }
 
@@ -17,8 +15,9 @@
             
             <form method="post" asp-antiforgery="true">
                 <input asp-for="Id" hidden />
-                <input asp-for="PsychologistId" type="hidden" value="@psychologist?.Id" />
-                <input asp-for="PsychiatristId" type="hidden" value="@psychiatrist?.Id" />
+                <input asp-for="PsychologistId" type="hidden"  value="@Model.PsychologistId" />
+                <input asp-for="PsychiatristId" type="hidden" value="@Model.PsychiatristId" />
+                <div asp-validation-summary="All" ></div>
 
 
                 <div class="user-details">
@@ -48,7 +47,7 @@
                     </div>
                 </div>
                 <div class="button">
-                    <button type="submit">Save</button>
+                    <button asp-for="EditPatient" type="submit">Save</button>
                 </div>
             </form>
         </div>

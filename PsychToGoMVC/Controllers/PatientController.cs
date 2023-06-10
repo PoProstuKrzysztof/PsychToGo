@@ -48,7 +48,7 @@ public class PatientController : Controller
             {nameof(PatientViewModel.LastName),"Last Name" },
         };
 
-        HttpResponseMessage response = _client.GetAsync(_client.BaseAddress + "/patients").Result;
+        HttpResponseMessage response = _client.GetAsync(_client.BaseAddress + "/list").Result;
         if (response.IsSuccessStatusCode)
         {
             //Searching
@@ -231,30 +231,6 @@ public class PatientController : Controller
             return RedirectToAction("Index");
         }
 
-        try
-        {
-            //populate patient medicine list with medicines
-
-            HttpResponseMessage medicines = await _client.GetAsync(_client.BaseAddress + $"/{id}/medicines");
-            string medicinesContent = medicines.Content.ReadAsStringAsync().Result;
-            editedPatient.Medicines = JsonConvert.DeserializeObject<List<MedicineDTO>>(medicinesContent);
-
-            //Finding patient psychologist and psychiatrist
-            PsychologistDTO? patientPsychologist = await _client.GetFromJsonAsync<PsychologistDTO>(_client.BaseAddress + $"/{id}/psychologist");
-            PsychiatristDTO? patientPsychiatrist = await _client.GetFromJsonAsync<PsychiatristDTO>(_client.BaseAddress + $"/{id}/psychiatrist");
-
-            editedPatient.Psychiatrists = new List<PsychiatristDTO>() { patientPsychiatrist };
-            editedPatient.Psychologists = new List<PsychologistDTO>() { patientPsychologist };
-            //Pass psychologist and psychiatrist to view
-            ViewBag.PsychologistFullName = $"{patientPsychologist.Name} {patientPsychologist.LastName}";
-            ViewBag.PsychiatristFullName = $"{patientPsychiatrist.Name} {patientPsychiatrist.LastName}";
-        }
-        catch (Exception)
-        {
-            ModelState.AddModelError("", "An error occured with api parsing");
-            return BadRequest(ModelState);
-        }
-
         return View(editedPatient);
     }
 
@@ -263,7 +239,7 @@ public class PatientController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> EditPatient(PatientViewModel pvm)
     {
-        if (!ModelState.IsValid) return View(pvm);
+        if (!ModelState.IsValid) return View(pvm.Id);
 
         Patient? updatedPatient = await _service.CreatePatientInstance(pvm);
 

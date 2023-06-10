@@ -4,83 +4,65 @@
     ViewData["Title"] = "Create Patient";
 }
 
-<h1 class="text-center text-black">Create Patient</h1>
+<body class="form-body">
+    <div class="container-form">
+        <div class="title-form">Edit</div>
+        <div class="form-content">
 
+            <form method="post" asp-antiforgery="true">
+                <input asp-for="Id" hidden />
 
-<hr />
-<body>
-    <form class="form-create" method="post" asp-antiforgery="true">
+                <div class="user-details">
+                    <div class="input-box-form">
+                        <span class="details">Name</span>
+                        <input type="text" asp-for="Name" placeholder="Enter name.." value="@Model.Name" required />
+                    </div>
+                    <div class="input-box-form">
+                        <span class="details">Surname</span>
+                        <input type="text" asp-for="LastName" placeholder="Enter last name.." value="@Model.LastName" required />
+                    </div>
+                    <div class="input-box-form">
+                        <span class="details">Day of birth</span>
+                        <input type="date" asp-for="DateOfBirth" placeholder="Enter your birthday.." value="@Model.DateOfBirth.ToString("yyyy-MM-dd")" min="@DateTime.Today.ToString("yyyy-MM-dd")" required />
+                    </div>
+                    <div class="input-box-form">
+                        <span class="details">E-mail</span>
+                        <input type="email" asp-for="Email" placeholder="Enter email.." value="@Model.Email" required />
+                    </div>
+                    <div class="input-box-form">
+                        <span class="details">Phone</span>
+                        <input type="tel" asp-for="Phone" placeholder="Enter phone.." value="@Model.Phone" required />
+                    </div>
+                    <div class="input-box-form">
+                        <span class="details">Address</span>
+                        <input type="text" asp-for="Address" placeholder="Enter address.." value="@Model.Address" required />
+                    </div>
+                    <div class="input-box-form">
+                        <span class="details">Address</span>
+                        @Html.DropDownListFor(model => model.PsychologistId, new SelectList(Model.Psychologists, "Id","Name"),"- Select - ")
+                    </div>
+                    <div class="input-box-form">
+                        <span class="details">Psychiatrist</span>
+                        @Html.DropDownListFor(model => model.PsychiatristId, new SelectList(Model.Psychiatrists, "Id","Name"),"- Select - ")
+                    </div>
+                    <div class="input-box-form">
+                        <span class="details">Medicines</span>
+                        @Html.ListBoxFor(model => model.MedicinesId, new MultiSelectList(Model.Medicines, "Id","Name"))
 
-        <input asp-for="Id" hidden />
-
-        <div>
-            <label asp-for="Name" class="control-label">Name</label>
-            <input asp-for="Name" class="form-control" placeholder="Enter name" type="text" required />
-            <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="button">
+                    <button asp-action="CreatePatientMVC" type="submit">Submit</button>
+                </div>
+            </form>
         </div>
-
-
-        <div>
-            <label asp-for="LastName" class="control-label">Last name</label>
-            <input asp-for="LastName" class="form-control" placeholder="Enter last name" type="text" required />
-            <span asp-validation-for="LastName" class="text-danger"></span>
-        </div>
-
-
-        <div>
-            <label asp-for="Email" class="control-label">E-mail</label>
-            <input asp-for="Email" class="form-control" placeholder="Enter e-mail" type="email" required />
-            <span asp-validation-for="Email" class="text-danger"></span>
-        </div>
-
-
-        <div>
-            <label asp-for="Phone" class="control-label">Phone</label>
-            <input asp-for="Phone" class="form-control" placeholder="Enter phone number" type="tel" required />
-            <span asp-validation-for="Phone" class="text-danger"></span>
-        </div>
-
-
-        <div>
-            <label asp-for="DateOfBirth" class="control-label">Date of birth</label>
-            <input asp-for="DateOfBirth" min="1960-01-01" max="2023-01-01" placeholder="Enter date of birth" class="form-control" type="date" required />
-            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
-
-        </div>
-
-        <div>
-            <label asp-for="Address" class="control-label">Address</label>
-            <input asp-for="Address" class="form-control" type="text" placeholder="Enter address" name="Address" required />
-            <span asp-validation-for="Address" class="text-danger"></span>
-
-        </div>
-
-        <div>
-            @Html.LabelFor(model => model.PsychologistId, "Psychologist")
-            @Html.DropDownListFor(model => model.PsychologistId, new SelectList(Model.Psychologists, "Id","Name"),"- Select - ")
-
-        </div>
-
-        <div>
-            @Html.LabelFor(model => model.PsychiatristId, "Psychiatrist")
-            @Html.DropDownListFor(model => model.PsychiatristId, new SelectList(Model.Psychiatrists, "Id","Name"),"- Select - ")
-
-        </div>
-
-        <div>
-            @Html.LabelFor(model => model.MedicinesId, "Medicines")
-        </div>
-
-
-        <div>
-            @Html.ListBoxFor(model => model.MedicinesId, new MultiSelectList(Model.Medicines, "Id","Name"))
-        </div>
-
-        <div>
-            <button asp-action="CreatePatientMVC" class="btn btn-primary">Create</button>
-        </div>
-    </form>
+    </div>
 </body>
+
+
+
+
+
 
 
 

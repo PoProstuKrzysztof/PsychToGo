@@ -16,27 +16,27 @@
     <div class="table">
         <div class="table-header">
             <p>PSYCHIATRISTS</p>
+            <div>
+                <select class="search-input" name="searchBy">
 
-            <select class="search-input" name="searchBy">
-
-                @foreach (var fields in ViewBag.SearchFields)
-                {
-                    if (fields.Key == ViewBag.CurrentSearchBy)
+                    @foreach (var fields in ViewBag.SearchFields)
                     {
-                        <option value="@fields.Key" selected="selected">@fields.Value</option>
+                        if (fields.Key == ViewBag.CurrentSearchBy)
+                        {
+                            <option value="@fields.Key" selected="selected">@fields.Value</option>
+                        }
+                        <option value="@fields.Key">@fields.Value</option>
                     }
-                    <option value="@fields.Key">@fields.Value</option>
-                }
-            </select>
-            <input type="search" id="search" name="searchString" value="@ViewBag.CurrentSearchString" class="search-input" placeholder="Search.." />
-            <button class="add-new"><i class="fa-solid fa-magnifying-glass"></i></button>
-            <button class="clear-all" asp-action="Index">Clear all</button>
+                </select>
+                <input type="search" id="search" name="searchString" value="@ViewBag.CurrentSearchString" class="search-input" placeholder="Search.." />
+                <button class="add-new"><i class="fa-solid fa-magnifying-glass"></i></button>
+                <button class="clear-all" asp-action="Index">Clear all</button>
+
+            </div>
             @if (User.IsInRole("admin"))
             {
                 <button class="add-new" asp-action="CreatePsychiatristMVC"><i class="fa-solid fa-user-plus"></i></button>
             }
-
-
         </div>
 
         <div class="table-section">

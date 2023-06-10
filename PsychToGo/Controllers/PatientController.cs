@@ -51,7 +51,7 @@ public class PatientController : Controller
         return Ok(_mapper.Map<PsychologistDTO>(psychologist));
     }
 
-    [HttpGet("patients")]
+    [HttpGet("list")]
     [ResponseCache(CacheProfileName = "Cache60")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ICollection<Patient>))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

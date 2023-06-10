@@ -12,25 +12,25 @@
         <div class="table-header">
             <p>PATIENTS</p>
 
-                <div>
-                    <select name="searchBy" class="search-input">
+            <div>
+                <select name="searchBy" class="search-input">
 
-                        @foreach (var fields in ViewBag.SearchFields)
+                    @foreach (var fields in ViewBag.SearchFields)
+                    {
+                        if (fields.Key == ViewBag.CurrentSearchBy)
                         {
-                            if (fields.Key == ViewBag.CurrentSearchBy)
-                            {
-                                <option value="@fields.Key" selected="selected">@fields.Value</option>
-                            }
-                            <option value="@fields.Key">@fields.Value</option>
+                            <option value="@fields.Key" selected="selected">@fields.Value</option>
                         }
-                    </select>
-                    <input type="search" id="search" name="searchString" value="@ViewBag.CurrentSearchString" class="search-input" placeholder="Search.." />
-                    <button class="create-button"><i class="fa-solid fa-magnifying-glass"></i></button>
-                    <a class="button-clear" asp-action="Index">Clear all</a>
-                </div>
+                        <option value="@fields.Key">@fields.Value</option>
+                    }
+                </select>
+                <input type="search" id="search" name="searchString" value="@ViewBag.CurrentSearchString" class="search-input" placeholder="Search.." />
+                <button class="add-new"><i class="fa-solid fa-magnifying-glass"></i></button>
+                <button class="clear-all" asp-action="Index">Clear all</button>
+            </div>
             @if (User.IsInRole("admin"))
             {
-                <button asp-action="CreatePatientMVC" class="create-button"><i class="fa-solid fa-user-plus"></i></button>
+                <button class="add-new" asp-action="CreatePatientMVC"><i class="fa-solid fa-user-plus"></i></button>
             }
         </div>
 
@@ -89,95 +89,3 @@
         </div>
     </div>
 </form>
-
-@*<div class="table-list">
-    <form method="get" asp-action="Index">
-
-                @foreach (var fields in ViewBag.SearchFields)
-                {
-                    if (fields.Key == ViewBag.CurrentSearchBy)
-                    {
-                        <option value="@fields.Key" selected="selected">@fields.Value</option>
-                    }
-                    <option value="@fields.Key">@fields.Value</option>
-                }
-            </select>
-
-            <input type="search" id="search" name="searchString" value="@ViewBag.CurrentSearchString" class="search-input" placeholder="Search.." />
-            <button class="add-new">Search</button>
-            <button class="clear-all" asp-action="Index" >Clear all</button>
-            @if (User.IsInRole("admin"))
-            {
-                <button class="add-new" asp-action="CreatePatientMVC">Create</button>
-            }
-        </div>
-
-        <div class="table-section">
-            <table>
-                <thead>
-                    <!-- Here I use sorting that is implemented in partial view-->
-                    <tr>
-                        @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData){
-                        {"ColumnName", nameof(PatientViewModel.Name)},
-                        {"Display", "Name"},
-                        })
-
-                        @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData){
-                        {"ColumnName", nameof(PatientViewModel.LastName)},
-                        {"Display", "Last name"},
-                        })
-
-                        @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData){
-                        {"ColumnName", nameof(PatientViewModel.Email)},
-                        {"Display", "Email"},
-                        })
-
-                        @if (User.IsInRole("admin") || User.IsInRole("psychologist") || User.IsInRole("psychiatrist"))
-                        {
-
-                            <th>
-                                Age
-                            </th>
-                            @if (User.IsInRole("admin"))
-                            {
-                               <th>
-                                    Operations
-                               </th>
-                            }
-                        }
-                    </tr>
-                </thead>
-
-                <tbody>
-                    @foreach (var patient in Model)
-                    {
-                        <tr>
-
-                            <td>
-                                @Html.DisplayFor(modelItem => patient.Name)
-                            </td>
-                            <td>
-                                <b>@Html.DisplayFor(modelItem => patient.LastName)</b>
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => patient.Email)
-                            </td>
-
-                                @if (User.IsInRole("admin"))
-                                {
-                                    <td class="operations-index">
-                                        <button asp-action="PatientDetails" asp-route-id="@patient.Id"><i class="fa-solid fa-book-open"></i></button>
-                                        <button asp-action="EditPatient"  asp-route-id="@patient.Id"><i class="fa-solid fa-pen-to-square"></i></button>
-                                        <button asp-action="DeletePatient"  asp-route-id="@patient.Id" value=""><i class="fa-solid fa-trash-can"></i></button>
-                                    </td>
-                                }
-                            }
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    </div>
-</form>
-    </form>
-</div>

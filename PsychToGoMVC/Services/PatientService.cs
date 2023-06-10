@@ -110,7 +110,7 @@ public class PatientService : IPatientService
 
     public async Task<List<PatientViewModel>> GetFilteredPatients(string? searchBy, string? searchString)
     {
-        HttpResponseMessage response = _client.GetAsync(_client.BaseAddress + "/patients").Result;
+        HttpResponseMessage response = _client.GetAsync(_client.BaseAddress + "/list").Result;
         var patientsList = await response.Content.ReadFromJsonAsync<List<PatientViewModel>>();
         var matchingPatients = patientsList;
         if (string.IsNullOrEmpty(searchBy) || string.IsNullOrEmpty(searchString))
