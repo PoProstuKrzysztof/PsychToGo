@@ -91,7 +91,7 @@ public class PatientController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CreatePatientMVC(PatientViewModel pvm)
     {
-        if (!ModelState.IsValid) return View();
+       
 
         Patient? newPatient = await _service.CreatePatientInstance(pvm);
         string data = JsonConvert.SerializeObject(newPatient);

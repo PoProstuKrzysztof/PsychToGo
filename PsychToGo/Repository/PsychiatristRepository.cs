@@ -24,9 +24,9 @@ public class PsychiatristRepository : IPsychiatristRepository
             int savedEntity = await _context.SaveChangesAsync();
             return savedEntity > 0 ? true : false;
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            throw;
+            throw new InvalidOperationException(e.Message);
         }
     }
 
@@ -48,9 +48,9 @@ public class PsychiatristRepository : IPsychiatristRepository
 
             return false;
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            throw;
+            throw new InvalidOperationException(e.Message);
         }
     }
 
@@ -61,9 +61,9 @@ public class PsychiatristRepository : IPsychiatristRepository
             await _context.AddAsync(psychiatrist);
             return await Save();
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            throw;
+            throw new InvalidOperationException(e.Message);
         }
     }
 
@@ -82,9 +82,9 @@ public class PsychiatristRepository : IPsychiatristRepository
 
             return findPsychiatrist;
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            throw;
+            throw new InvalidOperationException(e.Message);
         }
     }
 
@@ -103,9 +103,9 @@ public class PsychiatristRepository : IPsychiatristRepository
 
             return psychiatristPatients;
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            throw;
+            throw new InvalidOperationException(e.Message);
         }
     }
 
@@ -118,9 +118,9 @@ public class PsychiatristRepository : IPsychiatristRepository
                 .AsNoTracking()
                 .ToListAsync();
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            throw;
+            throw new InvalidOperationException(e.Message);
         }
     }
 
@@ -130,9 +130,9 @@ public class PsychiatristRepository : IPsychiatristRepository
         {
             return await _context.Psychiatrists.AnyAsync(x => x.Id == id);
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            throw;
+            throw new InvalidOperationException(e.Message);
         }
     }
 
@@ -143,9 +143,9 @@ public class PsychiatristRepository : IPsychiatristRepository
             _context.Update(psychiatrist);
             return await Save();
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            throw;
+            throw new InvalidOperationException(e.Message);
         }
     }
 
@@ -157,9 +157,9 @@ public class PsychiatristRepository : IPsychiatristRepository
             _context.Remove(psychiatrist);
             return await Save();
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            throw;
+            throw new InvalidOperationException(e.Message);
         }
     }
 }

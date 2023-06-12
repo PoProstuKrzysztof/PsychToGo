@@ -23,9 +23,9 @@ public class MedicineRepository : IMedicineRepository
             int entitySaved = await _context.SaveChangesAsync();
             return entitySaved > 0 ? true : false;
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            throw;
+            throw new InvalidOperationException(e.Message);
         }
     }
 
@@ -45,9 +45,9 @@ public class MedicineRepository : IMedicineRepository
 
             return false;
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            throw;
+            throw new InvalidOperationException(e.Message);
         }
     }
 
@@ -59,9 +59,9 @@ public class MedicineRepository : IMedicineRepository
 
             return await Save();
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            throw;
+            throw new InvalidOperationException(e.Message);
         }
     }
 
@@ -74,9 +74,9 @@ public class MedicineRepository : IMedicineRepository
                 .Where(x => x.Id == id)
                 .FirstOrDefaultAsync();
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            throw;
+            throw new InvalidOperationException(e.Message);
         }
     }
 
@@ -92,9 +92,9 @@ public class MedicineRepository : IMedicineRepository
             string expireDateFormat = expireDate.ToString("yyyy-MM-dd");
             return expireDateFormat;
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            throw;
+            throw new InvalidOperationException(e.Message);
         }
     }
 
@@ -107,9 +107,9 @@ public class MedicineRepository : IMedicineRepository
                 .Select(m => m.InStock)
                 .FirstOrDefaultAsync();
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            throw;
+            throw new InvalidOperationException(e.Message);
         }
     }
 
@@ -122,9 +122,9 @@ public class MedicineRepository : IMedicineRepository
                 .AsNoTracking().
                 ToListAsync();
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            throw;
+            throw new InvalidOperationException(e.Message);
         }
     }
 
@@ -142,9 +142,9 @@ public class MedicineRepository : IMedicineRepository
 
             return true;
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            throw;
+            throw new InvalidOperationException(e.Message);
         }
     }
 
@@ -159,9 +159,9 @@ public class MedicineRepository : IMedicineRepository
 
             return await Save();
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            throw;
+            throw new InvalidOperationException(e.Message);
         }
     }
 
@@ -172,9 +172,9 @@ public class MedicineRepository : IMedicineRepository
             _context.Remove(medicine);
             return await Save();
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            throw;
+            throw new InvalidOperationException(e.Message);
         }
     }
 }

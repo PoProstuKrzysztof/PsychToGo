@@ -19,8 +19,8 @@ public class PatientViewModel
     public string LastName { get; set; } = string.Empty;
 
     [Required( ErrorMessage = "The e-mail adress is required" )]
-    [RegularExpression( @"^([0-9a-zA-Z]([\+\-_\.][0-9a-zA-Z]+)*)+@(([0-9a-zA-Z][-\w]*[0-9a-zA-Z]*\.)+[a-zA-Z0-9]{2,3})$" )]
-    [EmailAddress( ErrorMessage = "Invalid email address" )]
+    [EmailAddress(ErrorMessage = "Invalid email address")]
+    
     public string Email { get; set; } = string.Empty;
 
     [Required]

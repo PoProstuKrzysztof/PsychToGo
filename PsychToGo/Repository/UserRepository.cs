@@ -24,14 +24,14 @@ public class UserRepository : IUserRepository
     {
         _context = context;
         _userManager = userManager;
-        secretKey = configuration.GetValue<string>( "ApiSettings:Secret" );
+        secretKey = configuration.GetValue<string>("ApiSettings:Secret");
         _mapper = mapper;
         _roleManager = roleManager;
     }
 
     public bool IsUniqueUser(string username)
     {
-        AppUser? user = _context.ApplicationUsers.FirstOrDefault( x => x.UserName == username );
+        AppUser? user = _context.ApplicationUsers.FirstOrDefault(x => x.UserName == username);
         if (user == null)
         {
             return true;
@@ -47,53 +47,60 @@ public class UserRepository : IUserRepository
     /// <returns></returns>
     public async Task<LoginResponseDTO> Login(LoginRequestDTO loginRequest)
     {
-        AppUser? user = _context.ApplicationUsers
-            .FirstOrDefault( x => x.UserName.ToLower() == loginRequest.UserName.ToLower() );
-
-        bool isValidPassword = await _userManager.CheckPasswordAsync( user, loginRequest.Password );
-        if (!isValidPassword)
+        try
         {
-            return new LoginResponseDTO()
-            {
-                Token = "",
-                User = _mapper.Map<UserDTO>( user )
-            };
-        }
+            AppUser? user = _context.ApplicationUsers
+            .FirstOrDefault(x => x.UserName.ToLower() == loginRequest.UserName.ToLower());
 
-        if (user == null)
-        {
-            return new LoginResponseDTO()
+            bool isValidPassword = await _userManager.CheckPasswordAsync(user, loginRequest.Password);
+            if (!isValidPassword)
             {
-                Token = "",
-                User = _mapper.Map<UserDTO>( user )
-            };
-        }
+                return new LoginResponseDTO()
+                {
+                    Token = "",
+                    User = _mapper.Map<UserDTO>(user)
+                };
+            }
 
-        //generating JWT token
-        IList<string> roles = await _userManager.GetRolesAsync( user );
-        JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
-        byte[] key = Encoding.ASCII.GetBytes( secretKey );
-
-        SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor()
-        {
-            Subject = new ClaimsIdentity( new Claim[]
+            if (user == null)
             {
+                return new LoginResponseDTO()
+                {
+                    Token = "",
+                    User = _mapper.Map<UserDTO>(user)
+                };
+            }
+
+            //generating JWT token
+            IList<string> roles = await _userManager.GetRolesAsync(user);
+            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+            byte[] key = Encoding.ASCII.GetBytes(secretKey);
+
+            SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor()
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
                 new Claim( ClaimTypes.Name, user.UserName.ToString() ),
                 //Adding roles to user, for now its first role that iterator encounters
                 new Claim( ClaimTypes.Role, roles.FirstOrDefault() )
-            } ),
-            Expires = DateTime.UtcNow.AddDays( 14 ),
-            SigningCredentials = new( new SymmetricSecurityKey( key ), SecurityAlgorithms.HmacSha256Signature )
-        };
+                }),
+                Expires = DateTime.UtcNow.AddDays(14),
+                SigningCredentials = new(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
 
-        SecurityToken token = tokenHandler.CreateToken( tokenDescriptor );
-        LoginResponseDTO loginResponse = new LoginResponseDTO()
+            SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
+            LoginResponseDTO loginResponse = new LoginResponseDTO()
+            {
+                Token = tokenHandler.WriteToken(token),
+                User = _mapper.Map<UserDTO>(user)
+            };
+
+            return loginResponse;
+        }
+        catch (Exception e)
         {
-            Token = tokenHandler.WriteToken( token ),
-            User = _mapper.Map<UserDTO>( user )
-        };
-
-        return loginResponse;
+            throw new InvalidOperationException(e.Message);
+        }
     }
 
     /// <summary>
@@ -116,18 +123,18 @@ public class UserRepository : IUserRepository
         try
         {
             //For development, change role name every time if you want to assign user to specific role
-            IdentityResult result = await _userManager.CreateAsync( user, registrationRequest.Password );
+            IdentityResult result = await _userManager.CreateAsync(user, registrationRequest.Password);
             if (result.Succeeded)
             {
-                await _userManager.AddToRoleAsync( user, registrationRequest.Role );
+                await _userManager.AddToRoleAsync(user, registrationRequest.Role);
 
-                AppUser? userToReturn = _context.ApplicationUsers.FirstOrDefault( u => u.UserName == registrationRequest.UserName );
-                return _mapper.Map<UserDTO>( userToReturn );
+                AppUser? userToReturn = _context.ApplicationUsers.FirstOrDefault(u => u.UserName == registrationRequest.UserName);
+                return _mapper.Map<UserDTO>(userToReturn);
             }
         }
-        catch (Exception ex)
+        catch (Exception e)
         {
-            throw;
+            throw new InvalidOperationException(e.Message);
         }
 
         return new UserDTO();

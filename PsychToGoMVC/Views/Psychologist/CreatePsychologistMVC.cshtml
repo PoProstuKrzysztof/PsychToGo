@@ -2,65 +2,56 @@
 @model PsychologistDTO
 
 @{
-    ViewData["Title"] = "Create psychologist";
+    ViewData["Title"] = "Create Psychologist";
 }
 
-<h1 class="text-center text-black">Create Psychologist</h1>
+<body class="form-body">
+    <div class="container-form">
+        <div class="title-form">Create psychologist</div>
+        <div class="form-content">
 
-<hr />
-<body>
-    <form class="form-create" method="post" asp-antiforgery="true">
-        <input asp-for="Id" hidden />
+            <form method="post" asp-antiforgery="true">
 
-        <div>
-            <label asp-for="Name" class="control-label">Name</label>
-            <input asp-for="Name" class="form-control" placeholder="Enter name" type="text" required />
-            <span asp-validation-for="Name" class="text-danger"></span>
+                <div asp-validation-summary="All" class="error-summary"></div>
+
+                <div class="user-details">
+                    <div class="input-box-form">
+                        <span class="details">Name</span>
+                        <input type="text" asp-for="Name" placeholder="Enter name.." required />
+                    </div>
+                    <div class="input-box-form">
+                        <span class="details">Surname</span>
+                        <input type="text" asp-for="LastName" placeholder="Enter last name.." required />
+                    </div>
+                    <div class="input-box-form">
+                        <span class="details">Day of birth</span>
+                        <input type="date" asp-for="DateOfBirth" placeholder="Enter your birthday.." max="@DateTime.Today.ToString("yyyy-MM-dd")" required />
+                    </div>
+                    <div class="input-box-form">
+                        <span class="details">E-mail</span>
+                        <input type="email" asp-for="Email" placeholder="Enter email.." required />
+                    </div>
+                    <div class="input-box-form">
+                        <span class="details">Phone</span>
+                        <input type="tel" asp-for="Phone" placeholder="Enter phone.." required />
+                    </div>
+                    <div class="input-box-form">
+                        <span class="details">Address</span>
+                        <input type="text" asp-for="Address" placeholder="Enter address.." required />
+                    </div>
+                </div>
+                <div class="button">
+                    <button asp-action="CreatePsychologistMVC" type="submit">SUBMIT</button>
+                </div>
+            </form>
         </div>
-
-        <div>
-
-            <label asp-for="LastName" class="control-label">Last name</label>
-            <input asp-for="LastName" class="form-control" placeholder="Enter last name" type="text" required />
-            <span asp-validation-for="LastName" class="text-danger"></span>
-        </div>
-
-        <div>
-            <label asp-for="Email" class="control-label">E-mail</label>
-            <input asp-for="Email" class="form-control" placeholder="Enter e-mail" type="email" required />
-            
-        </div>
-
-        <div>
-            <label asp-for="Phone" class="control-label">Phone</label>
-            <input asp-for="Phone" class="form-control" placeholder="Enter phone number" type="tel" required />
-            <span asp-validation-for="Phone" class="text-danger"></span>
-        </div>
-
-        <div>
-            <label asp-for="DateOfBirth" class="control-label">Date of birth</label>
-            <input asp-for="DateOfBirth" min="1960-01-01" placeholder="Enter date of birth" class="form-control" type="date" required />
-            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
-        </div>
-
-        <div>
-            <label asp-for="Address" class="control-label">Address</label>
-            <input asp-for="Address" class="form-control" type="text" placeholder="Enter address" name="Address" required />
-            <span asp-validation-for="Address" class="text-danger"></span>
-        </div>
-
-        <div>
-            <button class="btn btn-outline-primary" asp-action="CreatePsychologistMVC">Create</button>
-            <a class="btn btn-primary" asp-action="Index" asp-controller="Psychologist">List</a>
-        </div>
-
-    </form>
+    </div>
 </body>
 
 
 @section Scripts {
     @{
-        await Html.RenderPartialAsync( "_ValidationScriptsPartial" );
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
 

@@ -24,9 +24,9 @@ public class PatientRepository : IPatientRepository
 
             return await Save();
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            throw;
+            throw new InvalidOperationException(e.Message);
         }
     }
 
@@ -57,7 +57,7 @@ public class PatientRepository : IPatientRepository
         }
         catch (Exception e)
         {
-            throw;
+            throw new InvalidOperationException(e.Message);
         }
     }
 
@@ -76,9 +76,9 @@ public class PatientRepository : IPatientRepository
                 .FirstOrDefaultAsync(x => x.Id == psychiatristId);
             return await Save();
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            throw;
+            throw new InvalidOperationException(ex.Message);
         }
     }
 
@@ -101,9 +101,9 @@ public class PatientRepository : IPatientRepository
             await _context.AddAsync(patient);
             return await Save();
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            throw;
+            throw new InvalidOperationException(e.Message);
         }
     }
 
@@ -114,9 +114,9 @@ public class PatientRepository : IPatientRepository
             await _context.AddAsync(patient);
             return await Save();
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            throw;
+            throw new InvalidOperationException(ex.Message);
         }
     }
 
@@ -127,9 +127,9 @@ public class PatientRepository : IPatientRepository
             int savedEntity = await _context.SaveChangesAsync();
             return savedEntity > 0 ? true : false;
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            throw;
+            throw new InvalidOperationException(e.Message);
         }
     }
 
@@ -142,9 +142,9 @@ public class PatientRepository : IPatientRepository
 
             return patient;
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            throw;
+            throw new InvalidOperationException(e.Message);
         }
     }
 
@@ -157,9 +157,9 @@ public class PatientRepository : IPatientRepository
 
             return patient;
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            throw;
+            throw new InvalidOperationException(e.Message);
         }
     }
 
@@ -189,9 +189,9 @@ public class PatientRepository : IPatientRepository
 
             return patientMedicines;
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            throw;
+            throw new InvalidOperationException(e.Message);
         }
     }
 
@@ -204,9 +204,9 @@ public class PatientRepository : IPatientRepository
                 .AsNoTracking()
                 .ToListAsync();
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            throw;
+            throw new InvalidOperationException(e.Message);
         }
     }
 
@@ -231,9 +231,9 @@ public class PatientRepository : IPatientRepository
             _context.Remove(patient);
             return await Save();
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            throw;
+            throw new InvalidOperationException(e.Message);
         }
     }
 
@@ -254,9 +254,9 @@ public class PatientRepository : IPatientRepository
 
             return patientPsychologist;
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            throw;
+            throw new InvalidOperationException(e.Message);
         }
     }
 
@@ -276,9 +276,9 @@ public class PatientRepository : IPatientRepository
 
             return patientPsychiatrist;
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            throw;
+            throw new InvalidOperationException(e.Message);
         }
     }
 
@@ -296,9 +296,9 @@ public class PatientRepository : IPatientRepository
 
             return false;
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            throw;
+            throw new InvalidOperationException(e.Message);
         }
     }
 }

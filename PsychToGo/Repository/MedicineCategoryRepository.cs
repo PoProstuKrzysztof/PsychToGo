@@ -33,9 +33,9 @@ public class MedicineCategoryRepository : IMedicineCategoryRepository
 
             return false;
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            throw;
+            throw new InvalidOperationException(e.Message);
         }
     }
 
@@ -46,9 +46,9 @@ public class MedicineCategoryRepository : IMedicineCategoryRepository
             await _context.AddAsync(category);
             return await Save();
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            throw;
+            throw new InvalidOperationException(e.Message);
         }
     }
 
@@ -59,9 +59,9 @@ public class MedicineCategoryRepository : IMedicineCategoryRepository
             int savedEntity = await _context.SaveChangesAsync();
             return savedEntity > 0 ? true : false;
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            throw;
+            throw new InvalidOperationException(e.Message);
         }
     }
 
@@ -83,9 +83,9 @@ public class MedicineCategoryRepository : IMedicineCategoryRepository
             }
             return medicines;
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            throw;
+            throw new InvalidOperationException(e.Message);
         }
     }
 
@@ -100,9 +100,9 @@ public class MedicineCategoryRepository : IMedicineCategoryRepository
 
             return await _context.MedicinesCategories.Where(s => s.Name == categoryName.ToLower()).FirstOrDefaultAsync();
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            throw;
+            throw new InvalidOperationException(e.Message);
         }
     }
 
@@ -117,9 +117,9 @@ public class MedicineCategoryRepository : IMedicineCategoryRepository
 
             return await _context.MedicinesCategories.Where(x => x.Id == categoryId).FirstOrDefaultAsync();
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            throw;
+            throw new InvalidOperationException(e.Message);
         }
     }
 
@@ -129,9 +129,9 @@ public class MedicineCategoryRepository : IMedicineCategoryRepository
         {
             return await _context.MedicinesCategories.OrderBy(x => x.Name).ToListAsync();
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            throw;
+            throw new InvalidOperationException(e.Message);
         }
     }
 
@@ -141,9 +141,9 @@ public class MedicineCategoryRepository : IMedicineCategoryRepository
         {
             return await _context.MedicinesCategories.AnyAsync(x => x.Name == categoryName);
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            throw;
+            throw new InvalidOperationException(e.Message);
         }
     }
 
@@ -153,9 +153,9 @@ public class MedicineCategoryRepository : IMedicineCategoryRepository
         {
             return await _context.MedicinesCategories.AnyAsync(x => x.Id == categoryId);
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            throw;
+            throw new InvalidOperationException(e.Message);
         }
     }
 
@@ -166,9 +166,9 @@ public class MedicineCategoryRepository : IMedicineCategoryRepository
             _context.Update(medicineCategory);
             return await Save();
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            throw;
+            throw new InvalidOperationException(e.Message);
         }
     }
 
@@ -179,9 +179,9 @@ public class MedicineCategoryRepository : IMedicineCategoryRepository
             _context.Remove(medicineCategory);
             return await Save();
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            throw;
+            throw new InvalidOperationException(e.Message);
         }
     }
 }

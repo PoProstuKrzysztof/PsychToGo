@@ -5,86 +5,70 @@
     ViewData["Title"] = "Create medicine";
 }
 
-<h1 class="text-center text-black">Create Medicine</h1>
+<body class="form-body">
+    <div class="container-form">
+        <div class="title-form">Create patient</div>
+        <div class="form-content">
 
+            <form method="post" asp-antiforgery="true">
 
-<hr />
+                <div asp-validation-summary="All" class="error-summary"></div>
+                <input asp-for="Id" hidden />
 
+                <div class="user-details">
+                    <div class="input-box-form">
+                        <span class="details">Name</span>
+                        <input type="text" asp-for="Name" placeholder="Enter name.." required />
+                    </div>
+                    <div class="input-box-form">
+                        <span class="details">Category Id</span>
+                        <input asp-for="CategoryId" type="number" required />
+                    </div>
 
+                    <div class="input-box-form">
+                        <span class="details">Production Date</span>
+                        <input asp-for="ProductionDate" max="@DateTime.Today.ToString("yyyy-MM-dd")" type="date" required />
+                    </div>
 
+                    <div class="input-box-form">
+                        <span class="details">Expire Date</span>
+                        <input asp-for="ExpireDate" min="@DateTime.Today.ToString("yyyy-MM-dd")" type="date" required />
+                    </div>
+                    <div class="input-box-form">
+                        <span class="details">Daily Dose</span>
+                        <input asp-for="DailyDose" type="number" required />
+                    </div>
+                    <div class="input-box-form">
+                        <span class="details">In Stock</span>
+                        <input asp-for="InStock" type="number" required />
+                    </div>
+                    <div class="input-box-form">
+                        <span class="details">Description</span>
 
-<body>
-    <form class="form-create" method="post" asp-antiforgery="true">
-
-        <input asp-for="Id" hidden />
-
-        <div>
-            <label asp-for="Name" class="control-label">Name</label>
-            <input asp-for="Name" class="form-control" placeholder="Enter name" type="text" required />
-            <span asp-validation-for="Name" class="text-danger"></span>
+                        <textarea type="text" asp-for="Description" placeholder="Enter description..." rows="4" required></textarea>
+                    </div>
+                    <div class="input-box-form">
+                        <span class="details">Ingredients</span>
+                        <textarea type="text" asp-for="Ingredients" placeholder="Enter ingredients..." rows="4" required></textarea>
+                    </div>
+                </div>
+                <div class="button">
+                    <button asp-action="CreateMedicineMVC" type="submit">Submit</button>
+                </div>
+            </form>
         </div>
-
-        <div>
-            <label asp-for="ProductionDate" class="control-label">Production date</label>
-            <input asp-for="ProductionDate" max="@DateTime.Today.ToString("yyyy-MM-dd")" class="form-control" placeholder="Enter production date" type="date" required />
-            <span asp-validation-for="ProductionDate" class="text-danger"></span>
-
-        </div>
-
-        <div>
-            <label asp-for="ExpireDate" class="control-label">Expire date</label>
-            <input asp-for="ExpireDate" min="@DateTime.Today.ToString("yyyy-MM-dd") + 1" class="form-control" placeholder="Enter expire date" type="date" required />
-            <span asp-validation-for="ExpireDate" class="text-danger"></span>
-
-        </div>
-
-        <div>
-            <label asp-for="DailyDose" class="control-label">Daily dose </label>
-            <input asp-for="DailyDose" placeholder="Enter daily dose" class="form-control" type="number" required />
-            <span asp-validation-for="DailyDose" class="text-danger"></span>
-
-        </div>
-
-        <div>
-            <label asp-for="InStock" class="control-label">In stock </label>
-            <input asp-for="InStock" placeholder="Enter in stock value" class="form-control" type="number" required />
-            <span asp-validation-for="InStock" class="text-danger"></span>
-
-        </div>
-
-        <div>
-            <label asp-for="CategoryId" class="control-label">Category </label>
-            <input asp-for="CategoryId" placeholder="Enter in category id" class="form-control" type="number" required />
-
-        </div>
-
-        <div>
-            <label asp-for="Description" class="control-label">Description</label>
-            <textarea asp-for="Description" rows="4" class="form-control " placeholder="Enter description" required></textarea>
-            <span asp-validation-for="Description" class="text-danger"></span>
-        </div>
-
-
-        <div>
-            <label asp-for="Ingredients" class="control-label">Ingredients</label>
-            <textarea asp-for="Ingredients" rows="4" class="form-control" type="text" placeholder="Enter ingredients" required></textarea>
-            <span asp-validation-for="Ingredients" class="text-danger"></span>
-        </div>
-
-
-        <div>
-            <button asp-action="CreateMedicineMVC" class="btn btn-primary ">Create</button>
-            <a class="btn btn-primary " asp-action="Index">List</a>
-        </div>
-
-
-    </form>
+    </div>
 </body>
+
+
+
+
+
 
 
 
 @section Scripts {
     @{
-        await Html.RenderPartialAsync( "_ValidationScriptsPartial" );
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
