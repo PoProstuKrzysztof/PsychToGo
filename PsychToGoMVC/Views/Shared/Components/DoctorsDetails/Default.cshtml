@@ -1,0 +1,59 @@
+﻿@using PsychToGo.API.Models;
+@using PsychToGo.API.DTO;
+@model PatientViewModel
+
+
+
+
+<body class="form-body">
+    <div class="container-details">
+        <div class="title-form">Assignments</div>
+        <div class="form-content">
+            <div class="doctor-assigment-details">
+                <div class="category-details">
+                    <span class="doctor-details-title">Psychologist</span>
+                    <div class="psychologist-details">
+                        @foreach (var psychologist in Model.Psychologists)
+                        {
+
+                            <span class="details">Full name: @psychologist.Name @psychologist.LastName</span>
+
+                            <span class="details">Telephone: @psychologist.Phone</span>
+
+                            <span class="details">E-mail: @psychologist.Email</span>
+
+                        }
+                    </div>
+                    @if (Model.Psychiatrists != null)
+                    {
+                        <span class="doctor-details-title">Psychiatrist</span>
+                        <div class="psychiatrist-details">
+                            @foreach (var psychiatrist in Model.Psychiatrists)
+                            {
+
+                                <span class="details">Full name: @psychiatrist.Name @psychiatrist.LastName</span>
+
+
+                                <span class="details">Telephone: @psychiatrist.Phone</span>
+
+
+                                <span class="details">E-mail: @psychiatrist.Email</span>
+                            }
+                        </div>
+                        <span class="doctor-details-title">Medicines</span>
+                        <div class="medicine-details">
+                            @foreach (var medicine in Model.Medicines)
+                            {
+                                <span class="details-title">@medicine.Name</span>
+                                <span class="details">Expire date: @medicine.ExpireDate.ToString("yyyy-MM-dd")</span>
+                                <span class="details">Daily dose: @medicine.DailyDose</span>
+
+                            }
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

@@ -9,6 +9,7 @@ using ProtoBuf.Serializers;
 namespace PsychToGo.API.Controllers;
 
 [Route("api/[controller]")]
+[ApiConventionType(typeof(DefaultApiConventions))]
 [ApiController]
 public class PatientController : Controller
 {
@@ -26,7 +27,6 @@ public class PatientController : Controller
     }
 
     [HttpGet("{id}/psychiatrist")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetPatientPsychiatrist(int id)
     {
         Psychiatrist? psychiatrist = await _patientRepository.GetPatientPsychiatrist(id);
@@ -39,8 +39,6 @@ public class PatientController : Controller
     }
 
     [HttpGet("{id}/psychologist")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetPatientPsychologist(int id)
     {
         Psychologist? psychologist = await _patientRepository.GetPatientPsychologist(id);
@@ -53,9 +51,6 @@ public class PatientController : Controller
 
     [HttpGet("list")]
     [ResponseCache(CacheProfileName = "Cache60")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ICollection<Patient>))]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetAllPatients()
     {
         ICollection<Patient> patients = await _patientRepository.GetPatients();

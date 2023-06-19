@@ -14,8 +14,8 @@
     }
 }
 
-.error-summary{
-    color:red;
+.error-summary {
+    color: red;
 }
 
 * {
@@ -145,8 +145,6 @@ a {
     width: 250px;
 }
 
-
-
 .table-header {
     display: flex;
     position: relative;
@@ -224,7 +222,7 @@ td button:hover {
 thead th {
     position: sticky;
     top: 0;
-    background-color: #c4b685;
+    background-color: #dbdbdb;
     font-size: 15px;
 }
 
@@ -245,15 +243,15 @@ tr {
     position: relative;
 }
 
-
 .form-body {
     height: 100vh;
     display: flex;
     align-items: center;
     box-sizing: border-box;
+    overflow-y: auto;
 }
 
-.container-form {
+.container-form, .container-details {
     max-width: 700px;
     width: 100%;
     background: #fff;
@@ -262,25 +260,28 @@ tr {
     display: flex;
     flex-direction: column;
     border-radius: 10px;
-    box-shadow: 0px 5px 10px rgba(0,0,0,0.15);
+    box-shadow: 0 0 10px 2px #000000;
 }
 
-.container-form .title-form {
+    .container-details > div {
+        margin-bottom: 15px;
+    }
+
+    .container-form, .container-details .title-form {
         font-size: 25px;
         display: inline-flex;
         font-weight: 600;
         text-transform: uppercase;
         justify-content: center;
         position: relative;
-}
+    }
 
-
-.container-form form .user-details {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        margin: 20px 0 12px 0;
-}
+        .container-form form .user-details {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin: 20px 0 12px 0;
+        }
 
 form .user-details .input-box-form {
     margin-bottom: 15px;
@@ -311,7 +312,6 @@ form .user-details .input-box-form {
     font-size: 12px;
 }
 
-
 form .user-details .input-box-form input:focus,
 form .user-details .input-box-form input:valid {
     border-color: #c4b685;
@@ -327,7 +327,6 @@ form .button {
     width: 100%;
     outline: none;
     font-size: 1rem;
-   
 }
 
 .input-box-form .select-list {
@@ -338,26 +337,56 @@ form .button {
     height: 60%;
 }
 
-
 form .button button {
     height: 100%;
     width: 100%;
     outline: none;
     border: none;
     color: #000000;
-    font-weight: 500;
-    letter-spacing: 1px;
+    font-weight: 700;
+    letter-spacing: 5px;
     transition: all 0.3s cubic-bezier(0.25, 0.1, 0.35, 1.07);
     cursor: pointer;
     background-color: #ebcf80;
     border-radius: 20px;
+    text-transform: uppercase;
 }
 
- form .button button:hover {
-            background: #e0a353;
- }
+    form .button button:hover {
+        background: #e0a353;
+    }
+
+.psychologist-details,
+.psychiatrist-details,
+.patient-details,
+.medicine-details {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.category-details div {
+    border: 1px solid #000000;
+}
+
+.doctor-details-title {
+    font-size: 24px;
+    background-color: #e4d5af
+}
+
+.details-title {
+    font-size: 20px;
+    background-color: #e5decc
+}
+
+.container-details {
+    max-width: 600px;
+    min-height: 700px;
+}
 
 
+.patient-details{
+    min-height:600px;
+}
 @media (max-width:584px) {
     .container-form {
         max-width: 500px;

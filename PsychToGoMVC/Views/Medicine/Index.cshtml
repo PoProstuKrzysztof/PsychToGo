@@ -91,8 +91,8 @@
                                 @if (User.IsInRole("admin"))
                                 {
                                     <td class="operations-index">
-                                        <button asp-action="MedicineDetails" asp-route-id="@medicines.Id"><i class="fa-solid fa-book-open"></i></button>
-                                        <button asp-action="EditMedicine" asp-route-id="@medicines.Id"><i class="fa-solid fa-pen-to-square"></i></button>
+                                        <button asp-action="MedicineDetails" asp-route-id="@medicines.Id"><i class="fa-solid fa-pen-to-square "></i></button>
+                                        <button asp-action="EditMedicine" asp-route-id="@medicines.Id"><i class=" fa-solid fa-book-open"></i></button>
                                         <button asp-action="DeleteMedicine" asp-route-id="@medicines.Id" value=""><i class="fa-solid fa-trash-can"></i></button>
 
                                     </td>

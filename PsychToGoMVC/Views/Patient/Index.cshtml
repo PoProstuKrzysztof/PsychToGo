@@ -77,8 +77,8 @@
                             <td>
                                 @if (User.IsInRole("admin"))
                                 {
-                                    <button asp-action="PatientDetails" asp-route-id="@patient.Id"><i class="fa-solid fa-user-pen"></i></button>
-                                    <button asp-action="EditPatient" asp-route-id="@patient.Id"><i class="fa-solid fa-address-book"></i></button>
+                                    <button asp-action="PatientDetails" asp-route-id="@patient.Id"><i class="fa-solid fa-address-book"></i></button>
+                                    <button asp-action="EditPatient" asp-route-id="@patient.Id"><i class="fa-solid fa-user-pen"></i></button>
                                     <button asp-action="DeletePatient" asp-route-id="@patient.Id"><i class="fa-solid fa-user-xmark"></i></button>
                                 }
                             </td>

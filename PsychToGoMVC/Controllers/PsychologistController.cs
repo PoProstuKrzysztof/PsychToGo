@@ -23,11 +23,11 @@ public class PsychologistController : Controller
         BaseAddress = new Uri("https://localhost:7291/api/Psychologist")
     };
 
-    private readonly IHttpContextAccessor _httpContext;
+    private readonly IHttpContextAccessor _accessor;
 
-    public PsychologistController(IHttpContextAccessor httpContext, IPsychologistService service)
+    public PsychologistController(IHttpContextAccessor accessor, IPsychologistService service)
     {
-        _httpContext = httpContext;
+        _accessor = accessor;
         _serivce = service;
     }
 
@@ -145,7 +145,13 @@ public class PsychologistController : Controller
     {
         //Getting user e-mail here so It can locate his Id in database and view all his patients
 
-        Claim? psychologistAsUser = _httpContext.HttpContext.User?.FindFirst(ClaimTypes.Name);
+        var context = _accessor.HttpContext;
+        if (context == null)
+        {
+            throw new ArgumentException("Http connection wasn't established.");
+        }
+
+        Claim? psychologistAsUser = context.User?.FindFirst(ClaimTypes.Name);
 
         if (psychologistAsUser == null)
         {

@@ -23,12 +23,12 @@ public class PatientController : Controller
         BaseAddress = new Uri("https://localhost:7291/api/Patient")
     };
 
-    private readonly IHttpContextAccessor _httpContext;
+    private readonly IHttpContextAccessor _accessor;
 
-    public PatientController(IPatientService patientService, IHttpContextAccessor httpContext)
+    public PatientController(IPatientService patientService, IHttpContextAccessor accessor)
     {
         _service = patientService;
-        _httpContext = httpContext;
+        _accessor = accessor;
     }
 
     /// <summary>
@@ -91,8 +91,6 @@ public class PatientController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CreatePatientMVC(PatientViewModel pvm)
     {
-       
-
         Patient? newPatient = await _service.CreatePatientInstance(pvm);
         string data = JsonConvert.SerializeObject(newPatient);
         StringContent content = new(data,
@@ -125,12 +123,24 @@ public class PatientController : Controller
         return RedirectToAction("CreatePatientMVC");
     }
 
+    /// <summary>
+    /// Controller to retrieve patient profile when he is logged in
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
     [HttpGet]
     [Authorize(Roles = "patient, admin")]
     public async Task<IActionResult> PatientProfileInfo()
     {
         //Checking for user with matching patient id
-        Claim? patientAsUser = _httpContext.HttpContext.User?.FindFirst(ClaimTypes.Name);
+        var context = _accessor.HttpContext;
+
+        if (context == null)
+        {
+            throw new ArgumentException("Http connection wasn't established.");
+        }
+
+        Claim? patientAsUser = context.User?.FindFirst(ClaimTypes.Name);
 
         if (patientAsUser == null)
         {
@@ -138,6 +148,7 @@ public class PatientController : Controller
         }
 
         //Getting patient, his psychologist and psychiatrist
+
         List<PatientDTO> patients = await _client.GetFromJsonAsync<List<PatientDTO>>(_client.BaseAddress + "/patients");
 
         int patientId = patients
@@ -171,6 +182,11 @@ public class PatientController : Controller
         return View(patientParsedToPatientViewModel);
     }
 
+    /// <summary>
+    /// Controller to retrieve patient profile from patient list
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpGet]
     [Authorize(Roles = "admin")]
     public async Task<IActionResult> PatientDetails(int id)

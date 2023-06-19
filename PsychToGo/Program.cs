@@ -12,6 +12,7 @@ using PsychToGo.API.Models.Identity;
 using PsychToGo.API.Repository;
 using System.Text;
 
+[assembly: ApiConventionType(typeof(DefaultApiConventions))]
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 //CACHING

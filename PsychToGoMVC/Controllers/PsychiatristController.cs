@@ -23,12 +23,12 @@ public class PsychiatristController : Controller
         BaseAddress = new Uri("https://localhost:7291/api/Psychiatrist")
     };
 
-    private readonly IHttpContextAccessor _httpContext;
+    private readonly IHttpContextAccessor _accessor;
 
-    public PsychiatristController(IHttpContextAccessor httpContext, IPsychiatristService service)
+    public PsychiatristController(IHttpContextAccessor accessor, IPsychiatristService service)
     {
         _service = service;
-        _httpContext = httpContext;
+        _accessor = accessor;
     }
 
     public async Task<IActionResult> Index(string searchBy, string? searchString,
@@ -147,7 +147,14 @@ public class PsychiatristController : Controller
     {
         //Getting user e-mail here so It can locate his Id in database and view all his patients
 
-        Claim? psychiatristAsuser = _httpContext.HttpContext.User?.FindFirst(ClaimTypes.Name);
+        var context = _accessor.HttpContext;
+
+        if (context == null)
+        {
+            throw new ArgumentException("Http connection wasn't established.");
+        }
+
+        Claim? psychiatristAsuser = context.User?.FindFirst(ClaimTypes.Name);
 
         if (psychiatristAsuser == null)
         {

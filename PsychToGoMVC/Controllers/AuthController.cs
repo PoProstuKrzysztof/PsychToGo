@@ -35,6 +35,7 @@ public class AuthController : Controller
             LoginResponseDTO model = JsonConvert.DeserializeObject<LoginResponseDTO>(response);
             JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
             JwtSecurityToken jwt = handler.ReadJwtToken(model.Token);
+
             //Reading JWT token with claims
             ClaimsIdentity identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
             identity.AddClaim(new Claim(ClaimTypes.Name,

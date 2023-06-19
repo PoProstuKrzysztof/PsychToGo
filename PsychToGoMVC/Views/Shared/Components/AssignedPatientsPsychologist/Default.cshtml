@@ -1,0 +1,29 @@
+﻿@using PsychToGo.API.DTO;
+@model PsychologistDTO
+
+
+<body class="form-body">
+    <div class="container-details">
+        <div class="title-form">assigned patients</div>
+        <div class="category-details">
+            <span class="doctor-details-title">Patients</span>
+            <div class="patient-details">
+                @if (ViewBag.Patients != null)
+                {
+                    @foreach (var patient in ViewBag.Patients as List<PatientDTO>)
+                    {
+                        <span class="details-title">@patient.Name @patient.LastName</span>
+                        <span class="details">E-mail: @patient.Email</span>
+                        <span class="details">Phone: @patient.Phone</span>
+                    }
+                }
+                else
+                {
+                    <span class="details">Patients not assigned</span>
+                }
+            </div>
+
+        </div>
+    </div>
+
+</body>
