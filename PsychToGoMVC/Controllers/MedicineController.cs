@@ -126,4 +126,26 @@ public class MedicineController : Controller
         ModelState.AddModelError("", $"An error occurred when editing medicine");
         return View(medicine);
     }
+
+    [HttpGet]
+    [Authorize(Roles = "admin,psychiatrist")]
+    public async Task<IActionResult> MedicineDetails(int id)
+    {
+        var medicine = await _client.GetFromJsonAsync<MedicineDTO>(_client.BaseAddress + $"/{id}");
+        if (medicine == null)
+        {
+            return NotFound();
+        }
+
+        var medicineCategory = await _service.GetMedicineCategoryById(medicine.CategoryId);
+
+        if (medicineCategory == null)
+        {
+            return NotFound("Category is not assigned to medicine");
+        }
+
+        ViewBag.CategoryMedicine = medicineCategory.Name;
+
+        return View(medicine);
+    }
 }

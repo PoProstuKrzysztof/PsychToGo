@@ -1,4 +1,59 @@
-﻿
+﻿@using PsychToGo.API.DTO;
+
+@model MedicineDTO
+
+
 @{
     ViewData["Title"] = "Details";
 }
+
+
+
+
+
+<body class="form-body">
+    <div class="container-details">
+        <div class="title-form">Details</div>
+        <div class="form-content">
+            <div class="user-details">
+                <div class="input-box-form">
+                    <span class="details">Name</span>
+                    <input type="text" asp-for="Name"  value="@Model.Name" readonly />
+                </div>
+                <div class="input-box-form">
+                    <span class="details">Category</span>
+                    <input asp-for="CategoryId" type="text" value="@ViewBag.CategoryMedicine" readonly />
+                </div>
+
+                <div class="input-box-form">
+                    <span class="details">Production Date</span>
+                    <input asp-for="ProductionDate" type="date" value="@Model.ProductionDate.ToString("yyyy-MM-dd")" readonly />
+                </div>
+
+                <div class="input-box-form">
+                    <span class="details">Expire Date</span>
+                    <input asp-for="ExpireDate" type="date" value="@Model.ExpireDate.ToString("yyyy-MM-dd")" readonly />
+                </div>
+                <div class="input-box-form">
+                    <span class="details">Daily Dose</span>
+                    <input asp-for="DailyDose" type="number" value="@Model.DailyDose" readonly />
+                </div>
+
+                <div class="input-box-form">
+                    <span class="details">In Stock</span>
+                    <input asp-for="InStock" type="number" value="@Model.InStock" readonly />
+                </div>
+
+                <div class="input-box-form">
+                    <span class="details">Description</span>
+                    <textarea type="text" asp-for="Description" rows="4" value="@Model.Description" readonly></textarea>
+                </div>
+
+                <div class="input-box-form">
+                    <span class="details">Ingredients</span>
+                    <textarea type="text" asp-for="Ingredients" rows="4" value="@Model.Ingredients" readonly></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

@@ -6,4 +6,6 @@ public interface IMedicineService
 {
     Task<List<MedicineDTO>> GetFilteredMedicines(string searchBy,
  string searchString);
+
+    Task<MedicineCategoryDTO> GetMedicineCategoryById(int id);
 }

@@ -72,6 +72,7 @@ public class MedicineRepository : IMedicineRepository
         {
             return await _context.Medicines
                 .Where(x => x.Id == id)
+                .Include(x => x.Category)
                 .FirstOrDefaultAsync();
         }
         catch (Exception e)

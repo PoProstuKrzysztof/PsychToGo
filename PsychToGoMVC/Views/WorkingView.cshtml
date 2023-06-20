@@ -1,4 +1,4 @@
-﻿@using PsychToGo.API.Models;
+﻿@*@using PsychToGo.API.Models;
 @using PsychToGo.API.DTO;
 @model PatientViewModel
 
@@ -8,33 +8,42 @@
 }
 
 
-<body class="details-page">
-    <div class="details-container" >
-        <div class="credentials-patient">
-            <div class="details">
-                <span> TEST</span>
-            </div>
-            <div class="details">
-                <span> TEST</span>
-            </div>
-            <div class="details">
-                <span> TEST</span>
-            </div>
-            <div class="details">
-                <span> TEST</span>
-            </div>
-            <div class="details">
-                <span> TEST</span>
-            </div>
-            <div class="details">
-                <span> TEST</span>
+<body class="form-body">
+    <div class="container-details">
+        <div class="title-form">Details</div>
+        <div class="form-content">
+
+            <div class="user-details">
+                <div class="input-box-form">
+                    <span class="details">Name</span>
+                    <input type="text" asp-for="Name" placeholder="Enter name.." value="@Model.Name" required />
+                </div>
+                <div class="input-box-form">
+                    <span class="details">Surname</span>
+                    <input asp-for="CategoryId" type="number" value="@Model.CategoryId" required />
+                </div>
+                <div class="input-box-form">
+                    <span class="details">Day of birth</span>
+                    <input type="date" asp-for="DateOfBirth" value="@Model.DateOfBirth.ToString("yyyy-MM-dd")" min="1960-01-01" readonly />
+                </div>
+                <div class="input-box-form">
+                    <span class="details">E-mail</span>
+                    <input type="email" asp-for="Email" value="@Model.Email" readonly />
+                </div>
+                <div class="input-box-form">
+                    <span class="details">Phone</span>
+                    <input type="tel" asp-for="Phone" value="@Model.Phone" readonly />
+                </div>
+                <div class="input-box-form">
+                    <span class="details">Address</span>
+                    <input type="text" asp-for="Address" value="@Model.Address" readonly />
+                </div>
             </div>
         </div>
     </div>
+
 </body>
 
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}
+@await Component.InvokeAsync("DoctorsDetails");
+
+*@

@@ -267,21 +267,22 @@ tr {
         margin-bottom: 15px;
     }
 
-    .container-form, .container-details .title-form {
-        font-size: 25px;
-        display: inline-flex;
-        font-weight: 600;
-        text-transform: uppercase;
-        justify-content: center;
-        position: relative;
-    }
 
-        .container-form form .user-details {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            margin: 20px 0 12px 0;
-        }
+.title-form {
+    font-size: 25px;
+    display: inline-flex;
+    font-weight: 600;
+    text-transform: uppercase;
+    justify-content: center;
+    position: relative;
+}
+
+.container-form form .user-details {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 20px 0 12px 0;
+}
 
 form .user-details .input-box-form {
     margin-bottom: 15px;
@@ -384,9 +385,10 @@ form .button button {
 }
 
 
-.patient-details{
-    min-height:600px;
+.patient-details {
+    min-height: 600px;
 }
+
 @media (max-width:584px) {
     .container-form {
         max-width: 500px;
