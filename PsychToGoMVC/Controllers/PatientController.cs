@@ -306,8 +306,6 @@ public class PatientController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> AssignPsychiatristMVC(PatientViewModel patient)
     {
-        if (!ModelState.IsValid) return View();
-
         Patient? assignedPatient = await _service.CreatePatientInstance(patient);
 
         string data = JsonConvert.SerializeObject(assignedPatient);

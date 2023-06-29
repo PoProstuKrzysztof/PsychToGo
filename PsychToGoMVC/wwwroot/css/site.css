@@ -333,9 +333,14 @@ form .button {
 .input-box-form .select-list {
     border: 1px solid #000000;
     border-radius: 5px;
-    border-bottom-width: 3px;
-    width: 105%;
+    border-bottom-width: 2px;
+    width: 100%;
     height: 60%;
+}
+
+.dasboard-psychologist{
+    background-color:antiquewhite;
+    z-index:2;
 }
 
 form .button button {
@@ -345,7 +350,7 @@ form .button button {
     border: none;
     color: #000000;
     font-weight: 700;
-    letter-spacing: 5px;
+    letter-spacing: 2px;
     transition: all 0.3s cubic-bezier(0.25, 0.1, 0.35, 1.07);
     cursor: pointer;
     background-color: #ebcf80;
@@ -388,6 +393,58 @@ form .button button {
 .patient-details {
     min-height: 600px;
 }
+
+.assign-container {
+    background-color: #efe8d4;
+    min-height: 700px;
+    width: 50%;
+    border: 1px solid #000000;
+    border-radius: 15px;
+    margin: 0 auto;
+    padding: 10px 5px 10px 5px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+    .assign-container > .assign-patient-module {
+        background-color: #fffcfc;
+        border: 1px solid #0000003e;
+        border-radius: inherit;
+        box-shadow: 5px 5px 5px 1px;
+        margin: 20px 10px 0 10px;
+        padding: 0 15px 15px 15px;
+        width: 50%;
+        align-self: center;
+    }
+
+.assign-patient-module span {
+    font-size: 20px;
+    letter-spacing: 1px;
+    padding-bottom: 30px;
+    ;
+}
+
+.assign-patient-module a {
+    display: block;
+    height: 100%;
+    width: 50%;
+    margin:0 auto;
+    text-align: center;
+    color: #000000;
+    font-weight: 700;
+    padding: 10px 25px 10px 25px;
+    letter-spacing: 2px;
+    transition: all 0.3s cubic-bezier(0.25, 0.1, 0.35, 1.07);
+    cursor: pointer;
+    background-color: #ebcf80;
+    border-radius: 20px;
+    text-transform: uppercase;
+}
+
+    .assign-patient-module a:hover {
+        background: #e0a353;
+    }
 
 @media (max-width:584px) {
     .container-form {

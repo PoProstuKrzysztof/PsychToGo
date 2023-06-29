@@ -1,30 +1,28 @@
-﻿
-@using PsychToGo.API.Models;
+﻿@using PsychToGo.API.Models;
 @using PsychToGo.API.DTO;
 @model List<Patient>
 
 @{
-    ViewData["Title"] = "Patient list";
+    ViewData["Title"] = "Assign Patients";
 }
 
-<h1 class="text-center">
-    Assign psychiatrist to patient
-</h1>
-<hr />
-
-<div class="container border-4 w-50">
-    @if (Model.Count == 0)
-    {
-        <p class="text-center ">All your patients already have psychiatrist assigned.</p>
-    }
-    <ol class="list-group list-group-numbered ">
-        @foreach (var patient in Model)
+<body class="form-body">
+    <div class="assign-container">
+        @if (!Model.Any())
         {
-            <li class="list-group-item ">
-                <strong>@patient.Name @patient.LastName</strong>
-                <a class="btn btn-primary ms-2" asp-action="AssignPsychiatristMVC" asp-controller="Patient" asp-route-id="@patient.Id">Assign</a>
-            </li>
+            <span>All your patients already have psychiatrist.</span>
         }
-    </ol>
+        else
+        {
+            @foreach (var patient in Model)
+            {
+                <div class="assign-patient-module">
+                    <span>@patient.Name @patient.LastName </span>
+                    <a asp-action="AssignPsychiatristMVC" asp-controller="Patient" asp-route-id="@patient.Id">Assign</a>
+                </div>
+            }
+        }
+    </div>
+</body>
 
-</div>
+

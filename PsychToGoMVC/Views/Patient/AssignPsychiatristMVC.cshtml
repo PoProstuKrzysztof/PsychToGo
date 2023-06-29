@@ -4,7 +4,40 @@
     ViewData["Title"] = "Assign psychiatrist";
 }
 
-<h1 class="text-center">Assign psychiatrist to <strong>@Model.Name @Model.LastName</strong></h1>
+<body class="form-body">
+    <div class="container-form">
+        <div class="title-form">Choose psychiatrist</div>
+        <div class="form-content">
+            <form method="post" asp-antiforgery="true">
+                <input asp-for="Name" hidden value="@Model.Name" />
+                <input asp-for="LastName" hidden value="@Model.LastName" />
+                <input asp-for="Email" hidden value="@Model.Email" />
+                <input asp-for="DateOfBirth" hidden value="@Model.DateOfBirth.ToString("yyyy-MM-dd")" />
+                <input asp-for="Address" hidden value="@Model.Address" />
+                <input asp-for="PsychologistId" hidden value="@Model.PsychologistId" />
+                <input asp-for="Phone" hidden value="@Model.Phone" />
+                <input asp-for="MedicinesId" hidden value="@Model.MedicinesId" />
+                <input asp-for="Id" hidden value="@Model.Id" />
+
+                <div class="input-box-form ">
+                    <span class="details">Psychiatrist</span>
+                    <div class="select-list">
+                        @Html.DropDownListFor(model => model.PsychiatristId, new SelectList(Model.Psychiatrists, "Id","Name"),"- Select - ")
+                    </div>
+
+                </div>
+
+                <div class="button">
+                    <button type="submit">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+
+
+@*<h1 class="text-center">Assign psychiatrist to <strong>@Model.Name @Model.LastName</strong></h1>
 <hr />
 <body>
     <div class="container border-2 col-md-2">
@@ -30,3 +63,4 @@
         </form>
     </div>
 </body>
+*@

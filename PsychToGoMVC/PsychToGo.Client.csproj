@@ -37,10 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Shared\Components\Medicines\" />
     <Folder Include="Views\Shared\Components\Patients\" />
-    <Folder Include="Views\Shared\Components\Psychiatrists\" />
-    <Folder Include="Views\Shared\Components\Psychologists\" />
   </ItemGroup>
 
 </Project>

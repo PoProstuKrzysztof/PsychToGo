@@ -26,12 +26,12 @@
 
         @if (User.IsInRole("psychologist"))
         {
-            <a asp-controller="Psychologist" asp-action="GetPsychologistPatients">Patients list</a>
+            @await Component.InvokeAsync("Psychologist")
         }
         @if (User.IsInRole("psychiatrist"))
         {
-            <a asp-controller="Psychiatrist" asp-action="GetPsychiatristPatients">Patients list</a>
-            <a asp-controller="Medicine" asp-action="Index">Medicines</a>
+            
+           @await Component.InvokeAsync("Psychiatrist")
 
         }
         @if (User.IsInRole("patient"))
