@@ -4,124 +4,40 @@
     ViewData["Title"] = "Profile info";
 }
 
-<div class="container-fluid">
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
-            <h1 class="text-center">Profile</h1>
-            <hr />
+<body class="form-body">
+    <div class="container-details">
+        <div class="title-form">Details</div>
+        <div class="form-content">
 
-            <input asp-for="Id" hidden />
-
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label asp-for="Name" class="control-label">Name</label>
-                        <input asp-for="Name" class="form-control" value="@Model.Name" readonly />
-                    </div>
+            <div class="user-details">
+                <div class="input-box-form">
+                    <span class="details">Name</span>
+                    <input type="text" asp-for="Name" value="@Model.Name" readonly />
                 </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label asp-for="LastName" class="control-label">Last name</label>
-                        <input asp-for="LastName" class="form-control" value="@Model.LastName" readonly />
-                    </div>
+                <div class="input-box-form">
+                    <span class="details">Surname</span>
+                    <input type="text" asp-for="LastName" value="@Model.LastName" readonly />
                 </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label asp-for="Email" class="control-label">E-mail</label>
-                        <input asp-for="Email" class="form-control" type="email" value="@Model.Email" readonly />
-                    </div>
+                <div class="input-box-form">
+                    <span class="details">Day of birth</span>
+                    <input type="date" asp-for="DateOfBirth" value="@Model.DateOfBirth.ToString("yyyy-MM-dd")" min="1960-01-01" readonly />
                 </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label asp-for="Phone" class="control-label">Phone</label>
-                        <input asp-for="Phone" class="form-control" type="tel" value="@Model.Phone" readonly />
-                    </div>
+                <div class="input-box-form">
+                    <span class="details">E-mail</span>
+                    <input type="email" asp-for="Email" value="@Model.Email" readonly />
                 </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label asp-for="DateOfBirth" class="control-label ">Date of birth</label>
-                        <input asp-for="DateOfBirth" class="form-control" type="date" value="@Model.DateOfBirth.ToString("yyyy-MM-dd")" min="1960-01-01" readonly />
-                    </div>
+                <div class="input-box-form">
+                    <span class="details">Phone</span>
+                    <input type="tel" asp-for="Phone" value="@Model.Phone" readonly />
                 </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label asp-for="Address" class="control-label">Address</label>
-                        <input asp-for="Address" class="form-control" value="@Model.Address" readonly />
-                    </div>
+                <div class="input-box-form">
+                    <span class="details">Address</span>
+                    <input type="text" asp-for="Address" value="@Model.Address" readonly />
                 </div>
-            </div>
-            <hr />
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <h4>Assigned Psychologists:</h4>
-
-                        @foreach (var psychologist in Model.Psychologists)
-                        {
-                            <span>Full name: @psychologist.Name @psychologist.LastName </span>
-                            <br />
-                            <span>Telephone: @psychologist.Phone </span>
-                            <br />
-                            <span>E-mail: @psychologist.Email</span>
-                        }
-
-                    </div>
-                </div>
-                @if (Model.Psychiatrists != null)
-                {
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <h4>Assigned Psychiatrists:</h4>
-
-                            @foreach (var psychiatrist in Model.Psychiatrists)
-                            {
-                                <span>Full name: @psychiatrist.Name @psychiatrist.LastName</span>
-                                <br />
-                                <span>Telephone: @psychiatrist.Phone</span>
-
-                                <br />
-                                <span>E-mail: @psychiatrist.Email</span>
-                                <br />
-                            }
-
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <h4>Assigned Medicines:</h4>
-
-                        @foreach (var medicine in Model.Medicines)
-                        {
-                            <span>Name of the medicine: @medicine.Name</span>
-
-                            <br />
-                            <span>Daily dose: @medicine.DailyDose</span>
-
-                            <br />
-                            <span>Expire date: @medicine.ExpireDate.ToString("yyyy-MM-dd")</span>
-
-                            <br />
-                        }
-                    </div>
-                }
-                else
-                {
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <h4>Assigned psychiatrists:</h4>
-                            <span>Psychiatrist not assigned</span>                           
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <h4>Prescribed medicines:</h4>
-                            <span>There are not prescribed medicines</span>
-                        </div>
-                    </div>
-                }
             </div>
         </div>
     </div>
-</div>
+
+</body>
+
+@await Component.InvokeAsync("DoctorsDetails");

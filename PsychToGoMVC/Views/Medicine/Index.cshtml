@@ -31,7 +31,7 @@
                 <input type="search" id="search" name="searchString" value="@ViewBag.CurrentSearchString" class="search-input" placeholder="Search.." />
                 <button class="add-new"><i class="fa-solid fa-magnifying-glass"></i></button>
                 <button class="clear-all" asp-action="Index">Clear all</button>
-                
+
 
             </div>
             @if (User.IsInRole("admin"))
@@ -59,9 +59,12 @@
                         <th>
                             @Html.DisplayNameFor(model => model.InStock)
                         </th>
-                        <th>
-                            Operations
-                        </th>
+                        @if (User.IsInRole("admin"))
+                        {
+                            <th>
+                                Operations
+                            </th>
+                        }
                     </tr>
                 </thead>
 

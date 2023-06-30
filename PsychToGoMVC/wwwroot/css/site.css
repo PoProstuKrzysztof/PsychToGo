@@ -399,6 +399,7 @@ form .button button {
     min-height: 700px;
     width: 50%;
     border: 1px solid #000000;
+    box-shadow: 2px 1px 4px 1px;
     border-radius: 15px;
     margin: 0 auto;
     padding: 10px 5px 10px 5px;
@@ -411,7 +412,7 @@ form .button button {
         background-color: #fffcfc;
         border: 1px solid #0000003e;
         border-radius: inherit;
-        box-shadow: 5px 5px 5px 1px;
+        box-shadow: 2px 2px 5px 2px;
         margin: 20px 10px 0 10px;
         padding: 0 15px 15px 15px;
         width: 50%;
@@ -439,6 +440,7 @@ form .button button {
     cursor: pointer;
     background-color: #ebcf80;
     border-radius: 20px;
+    box-shadow: 2px 2px 6px 2px;
     text-transform: uppercase;
 }
 

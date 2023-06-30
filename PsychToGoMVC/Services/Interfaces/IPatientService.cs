@@ -7,15 +7,17 @@ namespace PsychToGo.Client.Services.Interfaces;
 
 public interface IPatientService
 {
-    Task<Patient> CreatePatientInstance(PatientViewModel pvm);
+    Task<Patient> CreatePatientViewModel(PatientViewModel pvm);
 
-    Task<PatientViewModel> CreateParsedPatientInstance(int id);
+    Task<PatientViewModel> CreateParsedPatientViewModel(int id);
 
-    Task<ICollection<PsychologistDTO>> PsychologistsList();
+    Task<ICollection<PsychologistDTO>> GetPsychologistsList();
 
-    Task<ICollection<PsychiatristDTO>> PsychiatristsList();
+    Task<ICollection<PsychiatristDTO>> GetPsychiatristsList();
 
-    Task<ICollection<MedicineDTO>> MedicinesList();
+    Task<ICollection<MedicineDTO>> GetMedicinesList();
+
+    Task<ICollection<MedicineDTO>>? GetMedicinesAssigned(int id);
 
     Task<List<PatientViewModel>> GetFilteredPatients(string searchBy,
         string searchString);

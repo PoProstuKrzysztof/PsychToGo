@@ -130,9 +130,9 @@ public class PatientController : Controller
 
         ICollection<Medicine>? patientMedicines = await _patientRepository
             .GetPatientMedicines(id);
-        if (patientMedicines == null)
+        if (!patientMedicines.Any())
         {
-            return NotFound();
+            return Ok(patientMedicines);
         }
 
         if (!ModelState.IsValid)
@@ -248,7 +248,7 @@ public class PatientController : Controller
 
         if (!await _patientRepository.AssignMedicine(patientId, medicineId))
         {
-            ModelState.AddModelError("Error", "Something went wrong assigning medicine");
+            ModelState.AddModelError("Error", "Medicine is already assigned to patient");
             return StatusCode(500, ModelState);
         }
 

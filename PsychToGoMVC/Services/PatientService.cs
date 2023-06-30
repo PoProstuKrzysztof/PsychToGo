@@ -20,7 +20,7 @@ public class PatientService : IPatientService
         _client.BaseAddress = _baseAddress;
     }
 
-    public async Task<PatientViewModel> CreateParsedPatientInstance(int id)
+    public async Task<PatientViewModel> CreateParsedPatientViewModel(int id)
     {
         Patient? findPatient = await _client.GetFromJsonAsync<Patient>(_client.BaseAddress + $"/{id}");
 
@@ -68,7 +68,7 @@ public class PatientService : IPatientService
         return parsedPatient;
     }
 
-    public async Task<Patient> CreatePatientInstance(PatientViewModel pvm)
+    public async Task<Patient> CreatePatientViewModel(PatientViewModel pvm)
     {
         Patient newPatient = new()
         {
@@ -86,21 +86,21 @@ public class PatientService : IPatientService
         return newPatient;
     }
 
-    public async Task<ICollection<PsychiatristDTO>> PsychiatristsList()
+    public async Task<ICollection<PsychiatristDTO>> GetPsychiatristsList()
     {
         ICollection<PsychiatristDTO>? psychiatrists = await _client
             .GetFromJsonAsync<ICollection<PsychiatristDTO>>(_psychiatristAddress + $"/list");
         return psychiatrists;
     }
 
-    public async Task<ICollection<PsychologistDTO>> PsychologistsList()
+    public async Task<ICollection<PsychologistDTO>> GetPsychologistsList()
     {
         ICollection<PsychologistDTO>? psychologists = await _client
             .GetFromJsonAsync<ICollection<PsychologistDTO>>(_psychologistAddress + $"/list");
         return psychologists;
     }
 
-    public async Task<ICollection<MedicineDTO>> MedicinesList()
+    public async Task<ICollection<MedicineDTO>> GetMedicinesList()
     {
         List<MedicineDTO>? medicines = await _client
             .GetFromJsonAsync<List<MedicineDTO>>(_medicinesAddress + $"/list");
@@ -176,5 +176,13 @@ public class PatientService : IPatientService
         };
 
         return sortedPatients;
+    }
+
+    public async Task<ICollection<MedicineDTO>>? GetMedicinesAssigned(int id)
+    {
+        ICollection<MedicineDTO>? medicinesAssigned = await
+            _client.GetFromJsonAsync<ICollection<MedicineDTO>>(_baseAddress + $"/{id}/medicines");
+
+        return medicinesAssigned ?? new List<MedicineDTO>();
     }
 }

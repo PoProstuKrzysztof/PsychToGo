@@ -1,49 +1,48 @@
-﻿@*@using PsychToGo.API.Models;
-@using PsychToGo.API.DTO;
-@model PatientViewModel
-
-@{
-    ViewData["Title"] = "Details";
-
-}
-
-
-<body class="form-body">
-    <div class="container-details">
-        <div class="title-form">Details</div>
-        <div class="form-content">
-
-            <div class="user-details">
-                <div class="input-box-form">
-                    <span class="details">Name</span>
-                    <input type="text" asp-for="Name" placeholder="Enter name.." value="@Model.Name" required />
+﻿@*<body>
+    <form method="post" asp-antiforgery="true">
+        <div class="container border p-4">
+            <div class="row text-center">
+                <h1>Register</h1>
+            </div>
+            <div class="row text-center">
+                <div asp-validation-summary="All" class="text-danger"></div>
+            </div>
+            <div class="row">
+                <div class="col-6 offset-3 pb-3">
+                    <input asp-for="UserName" type="text" class="form-control" placeholder="E-mail..." />
+                    <span asp-validation-for="UserName" class="text-danger"></span>
                 </div>
-                <div class="input-box-form">
-                    <span class="details">Surname</span>
-                    <input asp-for="CategoryId" type="number" value="@Model.CategoryId" required />
+                <div class="col-6 offset-3 pb-3">
+                    <input asp-for="Name" type="text" class="form-control" placeholder="Name..." />
+                    <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
-                <div class="input-box-form">
-                    <span class="details">Day of birth</span>
-                    <input type="date" asp-for="DateOfBirth" value="@Model.DateOfBirth.ToString("yyyy-MM-dd")" min="1960-01-01" readonly />
+                <div class="col-6 offset-3 pb-3">
+                    <input asp-for="LastName" type="text" class="form-control" placeholder="Last name..." />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
                 </div>
-                <div class="input-box-form">
-                    <span class="details">E-mail</span>
-                    <input type="email" asp-for="Email" value="@Model.Email" readonly />
+                <div class="col-6 offset-3 pb-3">
+                    <input asp-for="Password" type="password" class="form-control" placeholder="Password..." />
+                    <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
-                <div class="input-box-form">
-                    <span class="details">Phone</span>
-                    <input type="tel" asp-for="Phone" value="@Model.Phone" readonly />
+                <div class="col-6 offset-3 pb-3">
+                    <input asp-for="ConfirmPassowrd" type="password" class="form-control" placeholder="Re-enter password..." />
+                    <span asp-validation-for="ConfirmPassowrd" class="text-danger"></span>
                 </div>
-                <div class="input-box-form">
-                    <span class="details">Address</span>
-                    <input type="text" asp-for="Address" value="@Model.Address" readonly />
+                <div class="col-6 offset-3 pb-3">
+                    <label asp-for="Role">Role</label>
+                    <select asp-for="Role" class="form-control">
+                        <option value="admin">Admin</option>
+                        <option value="psychologist">Psychologist</option>
+                        <option value="patient">Patient</option>
+                        <option value="psychiatrist">Psychiatrist</option>
+                    </select>
+                    <span asp-validation-for="Role" class="text-danger"></span>
+                </div>
+                <div class="col-6 offset-3 p-2">
+                    <button type="submit" class="btn btn-success form-control" value="Submit">Register</button>
                 </div>
             </div>
         </div>
-    </div>
+    </form>
 
-</body>
-
-@await Component.InvokeAsync("DoctorsDetails");
-
-*@
+</body>*@

@@ -6,7 +6,72 @@
     ViewData["Title"] = "Register";
 }
 
-<body>
+<body class="form-body">
+    <div class="container-form">
+        <div class="title-form">Register</div>
+        <div class="form-content">
+
+            <form method="post" asp-antiforgery="true">
+
+                <div asp-validation-summary="All" class="error-summary"></div>
+
+                <div class="user-details">
+                    <div class="input-box-form">
+                        <span class="details">E-mail...</span>
+                        <input type="text" asp-for="UserName" placeholder="Enter e-mail.." required />
+                    </div>
+                    <div class="input-box-form">
+                        <span class="details">Name</span>
+                        <input type="text" asp-for="Name" placeholder="Enter name.." required />
+                        <span asp-validation-for="Name" class="error-summary"></span>
+
+                    </div>
+                    <div class="input-box-form">
+                        <span class="details">Surname</span>
+                        <input type="text" asp-for="LastName" placeholder="Enter last name.." required />
+                        <span asp-validation-for="LastName" class="error-summary"></span>
+
+                    </div>
+                    <div class="input-box-form">
+                        <span class="details">Password</span>
+                        <input type="password" asp-for="Password" placeholder="Enter password.." required />
+                        <span asp-validation-for="Password" class="error-summary"></span>
+
+                    </div>
+                    <div class="input-box-form">
+                        <span class="details">Confirm Passowrd</span>
+                        <input type="password" asp-for="ConfirmPassowrd" placeholder="Re-type password" required />
+                    </div>
+                    <div class="input-box-form">
+                        <span class="details">Role</span>
+                        <select asp-for="Role" class="select-list">
+                            <option value="admin">Admin</option>
+                            <option value="psychologist">Psychologist</option>
+                            <option value="patient">Patient</option>
+                            <option value="psychiatrist">Psychiatrist</option>
+                        </select>
+                        <span asp-validation-for="Role" class="error-summary"></span>
+
+                    </div>
+
+                </div>
+                <div class="button">
+                    <button type="submit">Register</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+
+@*<body>
     <form method="post" asp-antiforgery="true">
         <div class="container border p-4">
             <div class="row text-center">
@@ -61,3 +126,4 @@
         await Html.RenderPartialAsync( "_ValidationScriptsPartial" );
     }
 }
+*@

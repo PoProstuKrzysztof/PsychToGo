@@ -36,7 +36,7 @@
         }
         @if (User.IsInRole("patient"))
         {
-            <a asp-controller="Patient" asp-action="PatientProfileInfo">Profile</a>
+            @await Component.InvokeAsync("Patient")
         }
 
     }
