@@ -38,7 +38,7 @@ In PM Console
 ```
 next
 ```bash
- Update-databse
+ Update-database
 ```
 
 After that, in PowerShell 
