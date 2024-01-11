@@ -1,15 +1,16 @@
 # PsychToGo 👨‍⚕️
-A web application for mental health centers that organizes data flow within the organization for patients, psychiatrists, and psychologists. By sending patients to each other and giving prescriptions if necessary, psychiatrists and psychologists can collaborate with one another. 
+A web-based application for mental health clinics that manages data flow between patients, psychiatrists, and psychologists. Psychiatrists and psychologists are able to collaborate by directing patients to each other and prescribing prescriptions if necessary. 
 
 ### A brief description of how the application work 📑
 
-The entire application will rely on an administrator to add new users. These users will be patients, psychologists and psychiatrists. Administrator fill's all of their's sensitive informations after creating a new account.
+The entire application will rely on the administrator to add new users. These users will include patients, psychologists, and psychiatrists. The administrator enters all of their necessary information after creating a new account.
 
-By default, the psychologist is assigned to the patient. When it's necessary, the psychologist has the option to place him under the care of a psychiatrist, who will write him a prescription for medicine. Since they will be able to collaborate based on the needs of the patient, this will make the work of the psychiatrist and psychologist much quicker and simpler.
+By default, the patient gets assigned a psychologist. When it is required, the psychologist might refer him to a psychiatrist, who will issue him a prescription for drugs. Because they will be able to collaborate depending on the patient's needs, the psychiatrist and psychologist's job will be a lot faster and easier.
+My first larger project, in which I developed my own API using the REST standard. 
 
 ### Technologies used 💻
 + C# 11
-+ .NET 7 Framework
++ .NET 7
 + SQL 
 + JWT 
 + Entity Framework
