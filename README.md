@@ -31,6 +31,8 @@ My first larger project, in which I developed my own API using the REST standard
 
 ### Data seed instructions 🌱
 It works with your local SQL server for now, so you have to connect it to the program and then seed data by adding migration and applying it.
+
+
 In PM Console
 
 ```bash
@@ -41,11 +43,18 @@ next
  Update-database
 ```
 
-After that, in PowerShell 
+Now in Developer PowerShell
 
+```bash
+cd PsychToGo
+```
+Next
 ```bash
 dotnet run seeddata
 ```
+Sometimes it throws an exception, just try command again and it should work just fine.
+
+
 After seeding is done, in 
 ```bash
  PsychToGo.API.DataSeed 
