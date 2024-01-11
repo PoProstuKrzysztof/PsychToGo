@@ -30,7 +30,45 @@ By default, the psychologist is assigned to the patient. When it's necessary, th
 
 ### Data seed instructions 🌱
 It works with your local SQL server for now, so you have to connect it to the program and then seed data by adding migration and applying it.
+In PM Console
 
-To seed data, after you connect it to database, open package manger (Tools > NuGet Package manager). Then write "Add-migration InitialCreate", next write "Update-database" and then run seed data by clicking on the project in "Solution explorer" and "Open in terminal" at the end of the list.
-Run command "dotnet run seeddata", after seeding is done, you have to go into "DataSeed" class and go at the end of the file until you see commented code. Proceed as in instructions in code.
-(Sometimes seeddata after executing instructions doesn't work, In that case, simply restart your IDE )
+```bash
+  Add-Migration InitialCreate
+```
+next
+```bash
+ Update-databse
+```
+
+After that, in PowerShell 
+
+```bash
+dotnet run seeddata
+```
+After seeding is done, in 
+```bash
+ PsychToGo.API.DataSeed 
+```
+Comment code between line 19 and 313, and uncomment code below, and run 
+
+```bash
+dotnet run seeddata
+```
+
+Sometimes seeddata after executing instructions doesn't work, In that case, simply restart your IDE
+
+
+## Login credentials
+
+All credentials are fictitious and unrelated to real people. 
+
+| Role | Login     | Password                |
+| :-------- | :------- | :------------------------- |
+| `Admin` | `admin@gmail.com` | Admin123 |
+| `Psychologist` | `antonina.malecka@gmail.com` | Test!23 |
+| `Psychologist` | `mariusz.wilczyn@gmail.com` | Test!23 |
+| `Psychiatrist` | `lena.wozniak@gmail.com` | Test!23 |
+| `Psychiatrist` | `patrycja.bednarska@gmail.com` | Test!23 |
+| `Patient` | `maciej.kizug@gmail.com` | Test!23 |
+| `Patient` | `jagoda.kow@gmail.com` | Test!23 |
+
