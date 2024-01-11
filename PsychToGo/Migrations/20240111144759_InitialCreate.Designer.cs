@@ -9,10 +9,10 @@ using PsychToGo.API.Data;
 
 #nullable disable
 
-namespace PsychToGo.Migrations
+namespace PsychToGo.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230223201203_InitialCreate")]
+    [Migration("20240111144759_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -158,7 +158,7 @@ namespace PsychToGo.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("PsychToGo.Models.Identity.AppUser", b =>
+            modelBuilder.Entity("PsychToGo.API.Models.Identity.AppUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -178,7 +178,6 @@ namespace PsychToGo.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
@@ -188,7 +187,6 @@ namespace PsychToGo.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedEmail")
@@ -231,7 +229,7 @@ namespace PsychToGo.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("PsychToGo.Models.Medicine", b =>
+            modelBuilder.Entity("PsychToGo.API.Models.Medicine", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -273,7 +271,7 @@ namespace PsychToGo.Migrations
                     b.ToTable("Medicines");
                 });
 
-            modelBuilder.Entity("PsychToGo.Models.MedicineCategory", b =>
+            modelBuilder.Entity("PsychToGo.API.Models.MedicineCategory", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -290,7 +288,7 @@ namespace PsychToGo.Migrations
                     b.ToTable("MedicinesCategories");
                 });
 
-            modelBuilder.Entity("PsychToGo.Models.Patient", b =>
+            modelBuilder.Entity("PsychToGo.API.Models.Patient", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -336,7 +334,7 @@ namespace PsychToGo.Migrations
                     b.ToTable("Patients");
                 });
 
-            modelBuilder.Entity("PsychToGo.Models.PatientMedicine", b =>
+            modelBuilder.Entity("PsychToGo.API.Models.PatientMedicine", b =>
                 {
                     b.Property<int>("PatientId")
                         .HasColumnType("int");
@@ -351,7 +349,7 @@ namespace PsychToGo.Migrations
                     b.ToTable("PatientMedicines");
                 });
 
-            modelBuilder.Entity("PsychToGo.Models.Psychiatrist", b =>
+            modelBuilder.Entity("PsychToGo.API.Models.Psychiatrist", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -387,7 +385,7 @@ namespace PsychToGo.Migrations
                     b.ToTable("Psychiatrists");
                 });
 
-            modelBuilder.Entity("PsychToGo.Models.Psychologist", b =>
+            modelBuilder.Entity("PsychToGo.API.Models.Psychologist", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -434,7 +432,7 @@ namespace PsychToGo.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("PsychToGo.Models.Identity.AppUser", null)
+                    b.HasOne("PsychToGo.API.Models.Identity.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -443,7 +441,7 @@ namespace PsychToGo.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("PsychToGo.Models.Identity.AppUser", null)
+                    b.HasOne("PsychToGo.API.Models.Identity.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -458,7 +456,7 @@ namespace PsychToGo.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PsychToGo.Models.Identity.AppUser", null)
+                    b.HasOne("PsychToGo.API.Models.Identity.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -467,16 +465,16 @@ namespace PsychToGo.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("PsychToGo.Models.Identity.AppUser", null)
+                    b.HasOne("PsychToGo.API.Models.Identity.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("PsychToGo.Models.Medicine", b =>
+            modelBuilder.Entity("PsychToGo.API.Models.Medicine", b =>
                 {
-                    b.HasOne("PsychToGo.Models.MedicineCategory", "Category")
+                    b.HasOne("PsychToGo.API.Models.MedicineCategory", "Category")
                         .WithMany("Medicines")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -485,13 +483,13 @@ namespace PsychToGo.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("PsychToGo.Models.Patient", b =>
+            modelBuilder.Entity("PsychToGo.API.Models.Patient", b =>
                 {
-                    b.HasOne("PsychToGo.Models.Psychiatrist", "Psychiatrist")
+                    b.HasOne("PsychToGo.API.Models.Psychiatrist", "Psychiatrist")
                         .WithMany("Patients")
                         .HasForeignKey("PsychiatristId");
 
-                    b.HasOne("PsychToGo.Models.Psychologist", "Psychologist")
+                    b.HasOne("PsychToGo.API.Models.Psychologist", "Psychologist")
                         .WithMany("Patients")
                         .HasForeignKey("PsychologistId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -502,15 +500,15 @@ namespace PsychToGo.Migrations
                     b.Navigation("Psychologist");
                 });
 
-            modelBuilder.Entity("PsychToGo.Models.PatientMedicine", b =>
+            modelBuilder.Entity("PsychToGo.API.Models.PatientMedicine", b =>
                 {
-                    b.HasOne("PsychToGo.Models.Medicine", "Medicine")
+                    b.HasOne("PsychToGo.API.Models.Medicine", "Medicine")
                         .WithMany("PatientMedicines")
                         .HasForeignKey("MedicineId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PsychToGo.Models.Patient", "Patient")
+                    b.HasOne("PsychToGo.API.Models.Patient", "Patient")
                         .WithMany("PatientMedicines")
                         .HasForeignKey("PatientId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -521,27 +519,27 @@ namespace PsychToGo.Migrations
                     b.Navigation("Patient");
                 });
 
-            modelBuilder.Entity("PsychToGo.Models.Medicine", b =>
+            modelBuilder.Entity("PsychToGo.API.Models.Medicine", b =>
                 {
                     b.Navigation("PatientMedicines");
                 });
 
-            modelBuilder.Entity("PsychToGo.Models.MedicineCategory", b =>
+            modelBuilder.Entity("PsychToGo.API.Models.MedicineCategory", b =>
                 {
                     b.Navigation("Medicines");
                 });
 
-            modelBuilder.Entity("PsychToGo.Models.Patient", b =>
+            modelBuilder.Entity("PsychToGo.API.Models.Patient", b =>
                 {
                     b.Navigation("PatientMedicines");
                 });
 
-            modelBuilder.Entity("PsychToGo.Models.Psychiatrist", b =>
+            modelBuilder.Entity("PsychToGo.API.Models.Psychiatrist", b =>
                 {
                     b.Navigation("Patients");
                 });
 
-            modelBuilder.Entity("PsychToGo.Models.Psychologist", b =>
+            modelBuilder.Entity("PsychToGo.API.Models.Psychologist", b =>
                 {
                     b.Navigation("Patients");
                 });

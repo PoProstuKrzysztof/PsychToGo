@@ -16,14 +16,13 @@
     @if (httpAccessor.HttpContext.Session.GetString("JWTToken") != null &&
     httpAccessor.HttpContext.Session.GetString("JWTToken").ToString().Length > 0)
     {
+         //Uses component from Shared/Components
 
         @if (User.IsInRole("admin"))
         {
             @await Component.InvokeAsync("Admin")
 
         }
-
-
         @if (User.IsInRole("psychologist"))
         {
             @await Component.InvokeAsync("Psychologist")

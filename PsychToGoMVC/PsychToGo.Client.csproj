@@ -9,6 +9,7 @@
     <ApplicationIcon>emergency_medicine_clinic_pharmacy_heh_cross_sign_hospital_icon_210687.ico</ApplicationIcon>
   </PropertyGroup>
 
+	
   <ItemGroup>
     <Content Include="emergency_medicine_clinic_pharmacy_heh_cross_sign_hospital_icon_210687.ico" />
   </ItemGroup>

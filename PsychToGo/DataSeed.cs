@@ -39,7 +39,7 @@ public class DataSeed
                             Address = "Wróżkowa 5"
                  },
             };
-            _context.Psychiatrists.AddRange( psychiatrist );
+            _context.Psychiatrists.AddRange(psychiatrist);
             _context.SaveChanges();
         }
 
@@ -69,7 +69,7 @@ public class DataSeed
                  Address = "Migdałowa 33a",
                 },
             };
-            _context.Psychologists.AddRange( psychologists );
+            _context.Psychologists.AddRange(psychologists);
             _context.SaveChanges();
         };
 
@@ -96,7 +96,7 @@ public class DataSeed
 
             PasswordHash = HashPassword("Test!23")
                 },
-                          new AppUser()
+                          new ()
                 {
             UserName = "antonina.malecka@gmail.com",
             Email = "antonina.malecka@gmail.com",
@@ -143,10 +143,8 @@ public class DataSeed
             PasswordHash = HashPassword("Test!23")
                 }
             };
-            foreach (AppUser user in appUsers)
-            {
-                _context.Users.Add( user );
-            }
+            _context.ApplicationUsers.AddRange(appUsers);
+            
 
             List<IdentityRole> roles = new List<IdentityRole>()
             {
@@ -171,48 +169,49 @@ public class DataSeed
                     NormalizedName= "PATIENT",
                 }
             };
-            _context.Roles.AddRange( roles );
-            _context.SaveChanges();
+            _context.Roles.AddRange(roles);
+            
 
             List<IdentityUserRole<string>> userRoles = new List<IdentityUserRole<string>>();
-            userRoles.Add( new IdentityUserRole<string>
+            userRoles.Add(new IdentityUserRole<string>
             {
                 UserId = appUsers[0].Id,
-                RoleId = roles.First( q => q.Name == "Admin" ).Id
-            } );
-            userRoles.Add( new IdentityUserRole<string>
+                RoleId = roles.First(q => q.Name == "admin").Id
+            });
+            userRoles.Add(new IdentityUserRole<string>
             {
                 UserId = appUsers[1].Id,
-                RoleId = roles.First( q => q.Name == "PSYCHOLOGIST" ).Id
-            } );
-            userRoles.Add( new IdentityUserRole<string>
+                RoleId = roles.First(q => q.Name == "psychologist").Id
+            });
+            userRoles.Add(new IdentityUserRole<string>
             {
                 UserId = appUsers[2].Id,
-                RoleId = roles.First( q => q.Name == "PSYCHOLOGIST" ).Id
-            } );
-            userRoles.Add( new IdentityUserRole<string>
+                RoleId = roles.First(q => q.Name == "psychologist").Id
+            });
+            userRoles.Add(new IdentityUserRole<string>
             {
                 UserId = appUsers[3].Id,
-                RoleId = roles.First( q => q.Name == "PSYCHIATRIST" ).Id
-            } );
-            userRoles.Add( new IdentityUserRole<string>
+                RoleId = roles.First(q => q.Name == "psychiatrist").Id
+            });
+            userRoles.Add(new IdentityUserRole<string>
             {
                 UserId = appUsers[4].Id,
-                RoleId = roles.First( q => q.Name == "PSYCHIATRIST" ).Id
-            } );
-            userRoles.Add( new IdentityUserRole<string>
+                RoleId = roles.First(q => q.Name == "psychiatrist").Id
+            });
+            userRoles.Add(new IdentityUserRole<string>
             {
                 UserId = appUsers[5].Id,
-                RoleId = roles.First( q => q.Name == "PATIENT" ).Id
-            } );
-            userRoles.Add( new IdentityUserRole<string>
+                RoleId = roles.First(q => q.Name == "patient").Id
+            });
+            userRoles.Add(new IdentityUserRole<string>
             {
                 UserId = appUsers[6].Id,
-                RoleId = roles.First( q => q.Name == "PATIENT" ).Id
-            } );
+                RoleId = roles.First(q => q.Name == "patient").Id
+            });
 
+            _context.UserRoles.AddRange(userRoles);
             //Add more app users like psychologist/patient/psychiatrist
-            _context.ApplicationUsers.AddRange( appUsers );
+            //_context.ApplicationUsers.AddRange(appUsers);
             _context.SaveChanges();
         }
         if (!_context.Patients.Any())
@@ -243,7 +242,7 @@ public class DataSeed
                 }
             };
 
-            _context.Patients.AddRange( patients );
+            _context.Patients.AddRange(patients);
             _context.SaveChanges();
         }
 
@@ -308,42 +307,42 @@ public class DataSeed
                     }
                 }
             };
-            _context.Medicines.AddRange( medicines );
+            _context.Medicines.AddRange(medicines);
             _context.SaveChanges();
         }
 
         //First seed code above, after that, comment it, uncomment code belove and run seeddata again
         //If it doesn't work, restart visual studio and try again
 
-        //if (!_context.PatientMedicines.Any())
-        //{
-        //    var patientMedicines = new List<PatientMedicine>()
-        //    {
-        //        new PatientMedicine()
-        //        {
-        //            PatientId = 1,
-        //            MedicineId = 1,
-        //        },
-        //        new PatientMedicine()
-        //        {
-        //            PatientId = 1,
-        //            MedicineId = 2,
-        //        },
-        //        new PatientMedicine()
-        //        {
-        //            PatientId = 1,
-        //            MedicineId = 3,
-        //        },
-        //        new PatientMedicine()
-        //        {
-        //            PatientId = 2,
-        //            MedicineId = 3,
-        //        },
+        if (!_context.PatientMedicines.Any())
+        {
+            var patientMedicines = new List<PatientMedicine>()
+                {
+                    new PatientMedicine()
+                    {
+                        PatientId = 1,
+                        MedicineId = 1,
+                    },
+                    new PatientMedicine()
+                    {
+                        PatientId = 1,
+                        MedicineId = 2,
+                    },
+                    new PatientMedicine()
+                    {
+                        PatientId = 1,
+                        MedicineId = 3,
+                    },
+                    new PatientMedicine()
+                    {
+                        PatientId = 2,
+                        MedicineId = 3,
+                    },
 
-        //    };
-        //    _context.PatientMedicines.AddRange( patientMedicines );
-        //    _context.SaveChanges();
-        //}
+                };
+            _context.PatientMedicines.AddRange(patientMedicines);
+            _context.SaveChanges();
+        }
     }
 
     /// <summary>
@@ -351,9 +350,9 @@ public class DataSeed
     /// </summary>
     /// <param name="password"></param>
     /// <returns></returns>
-    private string HashPassword(string password)
-    {
-        PasswordHasher<AppUser> passwordHasher = new PasswordHasher<AppUser>();
-        return passwordHasher.HashPassword( null, password );
-    }
-}
+    string HashPassword(string password)
+        {
+            PasswordHasher<AppUser> passwordHasher = new PasswordHasher<AppUser>();
+            return passwordHasher.HashPassword(null, password);
+        }
+} 

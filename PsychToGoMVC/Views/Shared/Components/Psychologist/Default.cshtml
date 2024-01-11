@@ -5,8 +5,10 @@
     <nav>
         <ul>
             <li><a asp-controller="Home" asp-action="Index"><span class="nav-item">Psychologist dashboard</span></a></li>
+            <li><a asp-controller="Patient" asp-action="Index"><span class="nav-items"><i class="fa-solid fa-users-line"></i>Patients</span></a></li>
             <li><a asp-controller="Psychologist" asp-action="GetPsychologistPatients"><span class="nav-items"><i class="fa-solid fa-users"></i>Assign patients</span></a></li>
             <li><a asp-controller="Auth" asp-action="Logout"><span class="nav-items"><i class="fa-solid fa-arrow-right-from-bracket"></i>Logout</span></a></li>
+
         </ul>
     </nav>
 

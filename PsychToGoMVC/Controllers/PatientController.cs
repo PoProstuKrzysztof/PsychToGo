@@ -34,7 +34,7 @@ public class PatientController : Controller
     /// <summary>
     /// Displaying list of patients, with sorting and searching functionality, default option for sorting is ascending
     /// </summary>
-    [Authorize(Roles = "admin")]
+    [Authorize(Roles = "admin, psychologist,psychiatrist")]
     [ResponseCache(CacheProfileName = "Cache60")]
     public async Task<IActionResult> Index(string searchBy, string? searchString,
         string sortBy = nameof(PatientViewModel.Name),
@@ -228,7 +228,7 @@ public class PatientController : Controller
         HttpResponseMessage response = _client.DeleteAsync(_client.BaseAddress + $"/{id}").Result;
         if (response.IsSuccessStatusCode)
         {
-            return RedirectToAction("Index");
+            return View("Index");
         }
         ModelState.AddModelError("", "An error occured while deleting patient");
         return BadRequest(ModelState);
