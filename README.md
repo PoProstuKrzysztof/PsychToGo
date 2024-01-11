@@ -3,7 +3,7 @@ A web-based application for mental health clinics that manages data flow between
 
 ### A brief description of how the application work 📑
 
-The entire application will rely on the administrator to add new users. These users will include patients, psychologists, and psychiatrists. The administrator enters all of their necessary information after creating a new account.
+The entire application is relying on the administrator to add new users. These users will include patients, psychologists, and psychiatrists. The administrator enters all of their necessary information after creating a new account.
 
 By default, the patient gets assigned a psychologist. When it is required, the psychologist might refer him to a psychiatrist, who will issue him a prescription for drugs. Because they will be able to collaborate depending on the patient's needs, the psychiatrist and psychologist's job will be a lot faster and easier.
 My first larger project, in which I developed my own API using the REST standard. 
