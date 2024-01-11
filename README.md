@@ -54,20 +54,6 @@ dotnet run seeddata
 ```
 Sometimes it throws an exception, just try command again and it should work just fine.
 
-
-After seeding is done, in 
-```bash
- PsychToGo.API.DataSeed 
-```
-Comment code between line 19 and 313, and uncomment code below, and run 
-
-```bash
-dotnet run seeddata
-```
-
-Sometimes seeddata after executing instructions doesn't work, In that case, simply restart your IDE
-
-
 ## Login credentials
 
 All credentials are fictitious and unrelated to real people. 
